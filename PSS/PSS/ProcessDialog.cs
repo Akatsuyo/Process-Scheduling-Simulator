@@ -28,5 +28,48 @@ namespace PSS
             burstValue.Value = process.Burst;
             arrivalValue.Value = process.Arrival;
         }
+
+        private void buttonOK_Click(object sender, EventArgs e)
+        {
+            ClearErrorLabels();
+            bool error = false;
+            if (idValue.Text == "")
+            {
+                idError.Text = "ID cannot be empty!";
+                error = true;
+            }
+            else if (MainMenu.processList.Where(x => x.ID == idValue.Text).Count() != 0)
+            {
+                idError.Text = "This ID already exists!";
+                error = true;
+            }
+            if (burstValue.Value < 1 || burstValue.Value > 100)
+            {
+                burstError.Text = "Must be between 1 and 100!";
+                error = true;
+            }
+            if (arrivalValue.Value < 0 || arrivalValue.Value > 100)
+            {
+                arrivalError.Text = "Must be between 0 and 100!";
+                error = true;
+            }
+            if (!error)
+            {
+                DialogResult = DialogResult.OK;
+                Close();
+            }
+        }
+
+        private void ProcessDialog_Load(object sender, EventArgs e)
+        {
+            ClearErrorLabels();
+        }
+
+        private void ClearErrorLabels()
+        {
+            idError.Text = "";
+            burstError.Text = "";
+            arrivalError.Text = "";
+        }
     }
 }
