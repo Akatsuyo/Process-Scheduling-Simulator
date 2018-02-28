@@ -7,12 +7,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Reflection;
 
 namespace PSS
 {
     public partial class MainMenu : Form
     {
         public static BindingList<Process> processList;
+        public static string selectedAlg;
+        public static int selectedSpeed;
 
         public MainMenu()
         {
@@ -23,6 +26,9 @@ namespace PSS
         {
             processList = new BindingList<Process>();
             processData.DataSource = processList;
+
+            MethodInfo[] methodInfo = typeof(Algorithm).GetMethods(BindingFlags.DeclaredOnly | BindingFlags.Public | BindingFlags.Static);
+            algList.DataSource = methodInfo.Select(x => x.Name).ToList();
         }
 
         private void buttonAddProcess_Click(object sender, EventArgs e)
@@ -40,7 +46,7 @@ namespace PSS
         {
             if (processGridView.SelectedRows.Count > 0)
             {
-                ProcessDialog editProcessDialog = new ProcessDialog();
+                ProcessDialog editProcessDialog = new ProcessDialog(true);
                 editProcessDialog.Text = "Edit Process";
                 Process selected = (Process)processGridView.SelectedRows[0].DataBoundItem;
                 editProcessDialog.SetProcess(selected);
@@ -75,7 +81,12 @@ namespace PSS
 
         private void buttonReady_Click(object sender, EventArgs e)
         {
+            selectedAlg = algList.SelectedItem.ToString();
+            selectedSpeed = simSpeed.Value;
 
+            Simulation simulation = new Simulation();
+            Hide();
+            simulation.Show();
         }
     }
 }

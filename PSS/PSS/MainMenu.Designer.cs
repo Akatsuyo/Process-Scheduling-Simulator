@@ -29,29 +29,31 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle10 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.buttonDeleteProcess = new System.Windows.Forms.Button();
             this.buttonEditProcess = new System.Windows.Forms.Button();
             this.buttonAddProcess = new System.Windows.Forms.Button();
             this.processGridView = new System.Windows.Forms.DataGridView();
-            this.id = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.burst = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.arrival = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.processData = new System.Windows.Forms.BindingSource(this.components);
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.label4 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
-            this.algType = new System.Windows.Forms.ComboBox();
+            this.algList = new System.Windows.Forms.ComboBox();
             this.simSpeed = new System.Windows.Forms.TrackBar();
             this.buttonReady = new System.Windows.Forms.Button();
+            this.name = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.burst = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.arrival = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.priority = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tableLayoutPanel1.SuspendLayout();
             this.flowLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.processGridView)).BeginInit();
@@ -63,11 +65,11 @@
             // tableLayoutPanel1
             // 
             this.tableLayoutPanel1.ColumnCount = 5;
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 35F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 35F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 15F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 20F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 15F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 10F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 5F));
             this.tableLayoutPanel1.Controls.Add(this.flowLayoutPanel1, 2, 1);
             this.tableLayoutPanel1.Controls.Add(this.processGridView, 0, 1);
             this.tableLayoutPanel1.Controls.Add(this.label1, 0, 0);
@@ -94,7 +96,7 @@
             this.flowLayoutPanel1.Controls.Add(this.buttonAddProcess);
             this.flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.flowLayoutPanel1.FlowDirection = System.Windows.Forms.FlowDirection.BottomUp;
-            this.flowLayoutPanel1.Location = new System.Drawing.Point(395, 63);
+            this.flowLayoutPanel1.Location = new System.Drawing.Point(547, 63);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
             this.flowLayoutPanel1.Size = new System.Drawing.Size(108, 189);
             this.flowLayoutPanel1.TabIndex = 3;
@@ -140,29 +142,30 @@
             this.processGridView.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.ColumnHeader;
             this.processGridView.BackgroundColor = System.Drawing.SystemColors.Control;
             this.processGridView.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
-            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle6.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle6.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            dataGridViewCellStyle6.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle6.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle6.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.processGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle6;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.processGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.processGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.processGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.id,
+            this.name,
             this.burst,
-            this.arrival});
+            this.arrival,
+            this.priority});
             this.tableLayoutPanel1.SetColumnSpan(this.processGridView, 2);
             this.processGridView.DataSource = this.processData;
-            dataGridViewCellStyle10.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle10.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle10.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            dataGridViewCellStyle10.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle10.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle10.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle10.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.processGridView.DefaultCellStyle = dataGridViewCellStyle10;
+            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle6.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle6.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            dataGridViewCellStyle6.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle6.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle6.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.processGridView.DefaultCellStyle = dataGridViewCellStyle6;
             this.processGridView.Dock = System.Windows.Forms.DockStyle.Fill;
             this.processGridView.Location = new System.Drawing.Point(13, 63);
             this.processGridView.MultiSelect = false;
@@ -172,44 +175,8 @@
             this.processGridView.RowHeadersVisible = false;
             this.processGridView.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.processGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.processGridView.Size = new System.Drawing.Size(376, 189);
+            this.processGridView.Size = new System.Drawing.Size(528, 189);
             this.processGridView.TabIndex = 2;
-            // 
-            // id
-            // 
-            this.id.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            this.id.DataPropertyName = "ID";
-            dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            this.id.DefaultCellStyle = dataGridViewCellStyle7;
-            this.id.HeaderText = "ID";
-            this.id.Name = "id";
-            this.id.ReadOnly = true;
-            this.id.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.id.Width = 190;
-            // 
-            // burst
-            // 
-            this.burst.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            this.burst.DataPropertyName = "Burst";
-            dataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            this.burst.DefaultCellStyle = dataGridViewCellStyle8;
-            this.burst.HeaderText = "Burst";
-            this.burst.Name = "burst";
-            this.burst.ReadOnly = true;
-            this.burst.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.burst.Width = 80;
-            // 
-            // arrival
-            // 
-            this.arrival.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            this.arrival.DataPropertyName = "Arrival";
-            dataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            this.arrival.DefaultCellStyle = dataGridViewCellStyle9;
-            this.arrival.HeaderText = "Arrival";
-            this.arrival.Name = "arrival";
-            this.arrival.ReadOnly = true;
-            this.arrival.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.arrival.Width = 80;
             // 
             // label1
             // 
@@ -217,7 +184,7 @@
             this.label1.AutoSize = true;
             this.tableLayoutPanel1.SetColumnSpan(this.label1, 2);
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.label1.Location = new System.Drawing.Point(105, 16);
+            this.label1.Location = new System.Drawing.Point(181, 16);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(191, 37);
             this.label1.TabIndex = 4;
@@ -229,7 +196,7 @@
             this.label2.AutoSize = true;
             this.tableLayoutPanel1.SetColumnSpan(this.label2, 2);
             this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.label2.Location = new System.Drawing.Point(135, 318);
+            this.label2.Location = new System.Drawing.Point(211, 318);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(132, 37);
             this.label2.TabIndex = 5;
@@ -244,9 +211,9 @@
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel2.Controls.Add(this.label4, 0, 1);
             this.tableLayoutPanel2.Controls.Add(this.label3, 0, 0);
-            this.tableLayoutPanel2.Controls.Add(this.algType, 1, 0);
+            this.tableLayoutPanel2.Controls.Add(this.algList, 1, 0);
             this.tableLayoutPanel2.Controls.Add(this.simSpeed, 1, 1);
-            this.tableLayoutPanel2.Location = new System.Drawing.Point(61, 360);
+            this.tableLayoutPanel2.Location = new System.Drawing.Point(137, 360);
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
             this.tableLayoutPanel2.RowCount = 5;
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
@@ -277,33 +244,83 @@
             this.label3.TabIndex = 0;
             this.label3.Text = "Algorithm:";
             // 
-            // algType
+            // algList
             // 
-            this.algType.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.algType.FormattingEnabled = true;
-            this.algType.Location = new System.Drawing.Point(148, 4);
-            this.algType.Name = "algType";
-            this.algType.Size = new System.Drawing.Size(121, 21);
-            this.algType.TabIndex = 2;
+            this.algList.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.algList.FormattingEnabled = true;
+            this.algList.Location = new System.Drawing.Point(148, 4);
+            this.algList.Name = "algList";
+            this.algList.Size = new System.Drawing.Size(121, 21);
+            this.algList.TabIndex = 2;
             // 
             // simSpeed
             // 
             this.simSpeed.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.simSpeed.Location = new System.Drawing.Point(157, 32);
+            this.simSpeed.Minimum = 1;
             this.simSpeed.Name = "simSpeed";
             this.simSpeed.Size = new System.Drawing.Size(104, 23);
             this.simSpeed.TabIndex = 4;
+            this.simSpeed.Value = 1;
             // 
             // buttonReady
             // 
             this.buttonReady.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
-            this.buttonReady.Location = new System.Drawing.Point(411, 485);
+            this.buttonReady.Location = new System.Drawing.Point(563, 485);
             this.buttonReady.Name = "buttonReady";
             this.buttonReady.Size = new System.Drawing.Size(75, 23);
             this.buttonReady.TabIndex = 7;
             this.buttonReady.Text = "Ready";
             this.buttonReady.UseVisualStyleBackColor = true;
             this.buttonReady.Click += new System.EventHandler(this.buttonReady_Click);
+            // 
+            // name
+            // 
+            this.name.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.name.DataPropertyName = "Name";
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            this.name.DefaultCellStyle = dataGridViewCellStyle2;
+            this.name.HeaderText = "Name";
+            this.name.Name = "name";
+            this.name.ReadOnly = true;
+            this.name.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.name.Width = 190;
+            // 
+            // burst
+            // 
+            this.burst.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.burst.DataPropertyName = "Burst";
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            this.burst.DefaultCellStyle = dataGridViewCellStyle3;
+            this.burst.HeaderText = "Burst";
+            this.burst.Name = "burst";
+            this.burst.ReadOnly = true;
+            this.burst.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.burst.Width = 80;
+            // 
+            // arrival
+            // 
+            this.arrival.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.arrival.DataPropertyName = "Arrival";
+            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            this.arrival.DefaultCellStyle = dataGridViewCellStyle4;
+            this.arrival.HeaderText = "Arrival";
+            this.arrival.Name = "arrival";
+            this.arrival.ReadOnly = true;
+            this.arrival.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.arrival.Width = 80;
+            // 
+            // priority
+            // 
+            this.priority.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.priority.DataPropertyName = "Priority";
+            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            this.priority.DefaultCellStyle = dataGridViewCellStyle5;
+            this.priority.HeaderText = "Priority";
+            this.priority.Name = "priority";
+            this.priority.ReadOnly = true;
+            this.priority.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.priority.Width = 80;
             // 
             // MainMenu
             // 
@@ -337,16 +354,17 @@
         private System.Windows.Forms.Button buttonDeleteProcess;
         private System.Windows.Forms.Button buttonEditProcess;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn id;
-        private System.Windows.Forms.DataGridViewTextBoxColumn burst;
-        private System.Windows.Forms.DataGridViewTextBoxColumn arrival;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.ComboBox algType;
+        private System.Windows.Forms.ComboBox algList;
         private System.Windows.Forms.TrackBar simSpeed;
         private System.Windows.Forms.Button buttonReady;
+        private System.Windows.Forms.DataGridViewTextBoxColumn name;
+        private System.Windows.Forms.DataGridViewTextBoxColumn burst;
+        private System.Windows.Forms.DataGridViewTextBoxColumn arrival;
+        private System.Windows.Forms.DataGridViewTextBoxColumn priority;
     }
 }
 

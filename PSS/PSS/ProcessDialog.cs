@@ -12,35 +12,34 @@ namespace PSS
 {
     public partial class ProcessDialog : Form
     {
-        public ProcessDialog()
+        private bool editing;
+
+        public ProcessDialog(bool edit = false)
         {
             InitializeComponent();
+            editing = edit;
         }
 
         public Process GetProcess()
         {
-            return new Process(idValue.Text, (int)burstValue.Value, (int)arrivalValue.Value);
+            return new Process(nameValue.Text, (int)burstValue.Value, (int)arrivalValue.Value, (int)priorityValue.Value);
         }
 
         public void SetProcess(Process process)
         {
-            idValue.Text = process.ID;
+            nameValue.Text = process.Name;
             burstValue.Value = process.Burst;
             arrivalValue.Value = process.Arrival;
+            priorityValue.Value = process.Priority;
         }
 
         private void buttonOK_Click(object sender, EventArgs e)
         {
             ClearErrorLabels();
             bool error = false;
-            if (idValue.Text == "")
+            if (nameValue.Text == "")
             {
-                idError.Text = "ID cannot be empty!";
-                error = true;
-            }
-            else if (MainMenu.processList.Where(x => x.ID == idValue.Text).Count() != 0)
-            {
-                idError.Text = "This ID already exists!";
+                nameError.Text = "Name cannot be empty!";
                 error = true;
             }
             if (burstValue.Value < 1 || burstValue.Value > 100)
@@ -51,6 +50,11 @@ namespace PSS
             if (arrivalValue.Value < 0 || arrivalValue.Value > 100)
             {
                 arrivalError.Text = "Must be between 0 and 100!";
+                error = true;
+            }
+            if (priorityValue.Value < 0 || priorityValue.Value > 100)
+            {
+                priorityError.Text = "Must be between 0 and 100!";
                 error = true;
             }
             if (!error)
@@ -67,9 +71,10 @@ namespace PSS
 
         private void ClearErrorLabels()
         {
-            idError.Text = "";
+            nameError.Text = "";
             burstError.Text = "";
             arrivalError.Text = "";
+            priorityError.Text = "";
         }
     }
 }

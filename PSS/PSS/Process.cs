@@ -8,21 +8,34 @@ namespace PSS
 {
     public class Process
     {
-        private string id;
+        private static int nextId = 0;
+
+        private int id;
+        private string name;
         private int burst;
         private int arrival;
+        private int priority;
+        private int progress;
 
-        public Process(string id, int burst, int arrival)
+        public Process(string name, int burst, int arrival, int priority)
         {
-            this.id = id;
+            id = nextId++;
+            this.name = name;
             this.burst = burst;
             this.arrival = arrival;
+            this.priority = priority;
+            progress = 0;
         }
 
-        public string ID
+        public int ID
         {
             get { return id; }
-            set { id = value; }
+        }
+
+        public string Name
+        {
+            get { return name; }
+            set { name = value; }
         }
 
         public int Burst
@@ -35,6 +48,18 @@ namespace PSS
         {
             get { return arrival; }
             set { arrival = value; }
+        }
+
+        public int Priority
+        {
+            get { return priority; }
+            set { priority = value; }
+        }
+
+        public int Progress
+        {
+            get { return progress; }
+            set { progress = value; }
         }
     }
 }
