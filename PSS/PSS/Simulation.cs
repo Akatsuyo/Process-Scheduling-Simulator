@@ -12,76 +12,50 @@ namespace PSS
 {
     public partial class Simulation : Form
     {
-        public static List<Process> processList;
-        public static ProgressBar[] progressBars;
-        public static Queue<int> readyQueue = new Queue<int>();
+        private static ProgressBar[] prBars;
 
-        private bool finished = false;
+        private static Scheduler scheduler;
 
-        public Simulation()
+        public Simulation(Scheduler sch)
         {
+            scheduler = sch;
+
             InitializeComponent();
-        }
-
-        private async void buttonStartSim_Click(object sender, EventArgs e)
-        {
-            buttonStopSim.Enabled = true;
-            Scheduler scheduler = new Scheduler();
-            scheduler.Algorithm = MainMenu.selectedAlg;
-            scheduler.AnimationSpeed = MainMenu.selectedSpeed;
-            
-            while (!finished)
-            {
-                scheduler.Step();
-                for (int i = 0; i < progressBars.Length; i++)
-                {
-                    progressBars[i].Value = processList[i].Progress;
-                }
-                labelUtil.Text = scheduler.Utilization + "%";
-                labelTurnaround.Text = scheduler.Turnaround.ToString();
-                labelCurrTime.Text = scheduler.ElapsedTime.ToString();
-                labelCompletion.Text = (progressBars.Select(x => x.Value).Sum() / processList.Count).ToString() + "%";
-
-                finished = true;
-                for (int i = 0; i < processList.Count; i++)
-                {
-                    if (processList[i].Progress < 100)
-                    {
-                        finished = false;
-                        break;
-                    }
-                }
-
-                if (!finished)
-                    await Task.Delay(200);
-            }
-
-            buttonStopSim.Enabled = false;
         }
 
         private void Simulation_Load(object sender, EventArgs e)
         {
-            processList = MainMenu.processList.ToList();
-
             labelUtil.Text = "-";
             labelTurnaround.Text = "-";
             labelCurrTime.Text = "-";
             labelCompletion.Text = "-";
+            labelrQueue.Text = "";
 
+            // Process table
             TableLayoutPanel tlp = new TableLayoutPanel
             {
                 ColumnCount = 5,
-                RowCount = MainMenu.processList.Count + 1,
-                Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right
+                RowCount = scheduler.ProcessCount + 1,
+                Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right,
+                Height = (scheduler.ProcessCount + 1) * 30
             };
+
+            // Column styles
             for (int i = 0; i < 5; i++)
             {
                 tlp.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 20));
             }
-            //for (int i = 0; i < MainMenu.processList.Count + 1; i++)
-            //{
-            //    tlp.RowStyles.Add(new RowStyle(SizeType.Percent, 100 / (MainMenu.processList.Count + 1)));
-            //}
+
+            // Row styles
+            for (int i = 0; i < scheduler.ProcessCount + 1; i++)
+            {
+                tlp.RowStyles.Add(new RowStyle(SizeType.Absolute, 30));
+            }
+
+            tableLayoutPanel1.Controls.Add(tlp, 3, 1);
+            tableLayoutPanel1.SetRowSpan(tlp, 5);
+
+            // Headers
             string[] headers = { "Name", "Burst", "Arrival", "Priority", "Progress" };
             Label[] headerLabels = new Label[headers.Length];
             for (int i = 0; i < headers.Length; i++)
@@ -89,30 +63,77 @@ namespace PSS
                 headerLabels[i] = new Label
                 {
                     Text = headers[i],
-                    Anchor = AnchorStyles.None,
+                    Dock = DockStyle.Fill,
+                    TextAlign = ContentAlignment.MiddleCenter,
+                    AutoSize = false,
                     Font = new Font("Microsoft Sans Serif", 12)
                 };
 
                 tlp.Controls.Add(headerLabels[i], i, 0);
             }
 
-            progressBars = new ProgressBar[processList.Count];
-            for (int i = 0; i < processList.Count; i++)
+            // Data
+            prBars = new ProgressBar[scheduler.ProcessCount];
+            for (int i = 0; i < scheduler.ProcessCount; i++)
             {
                 for (int j = 0; j < 4; j++)
                 {
-                    tlp.Controls.Add(new Label {
-                        Text = typeof(Process).GetProperty(headers[j]).GetValue(processList[i]).ToString(),
-                        Anchor = AnchorStyles.None
+                    tlp.Controls.Add(new Label
+                    {
+                        Text = typeof(Process).GetProperty(headers[j]).GetValue(scheduler.ProcessAt(i)).ToString(),
+                        Dock = DockStyle.Fill,
+                        TextAlign = ContentAlignment.MiddleCenter,
+                        AutoSize = false,
                     }, j, i + 1);
                 }
 
-                progressBars[i] = new ProgressBar();
-                tlp.Controls.Add(progressBars[i], 4, i + 1);
+                prBars[i] = new ProgressBar
+                {
+                    Height = 30,
+                    Minimum = 0,
+                    Step = 1,
+                    Maximum = scheduler.ProcessAt(i).Burst
+                };
+                tlp.Controls.Add(prBars[i], 4, i + 1);
+            }
+        }
+
+        private async void buttonStartSim_Click(object sender, EventArgs e)
+        {
+            buttonStartSim.Enabled = false;
+            buttonStopSim.Enabled = true;
+
+            while (true)
+            {
+                bool ok = scheduler.Step();
+
+                // Update UI
+                labelUtil.Text = (Math.Round((double)scheduler.Worktime / scheduler.ElapsedTime, 2) * 100).ToString() + "%";
+                labelTurnaround.Text = scheduler.Turnaround.ToString();
+                labelCurrTime.Text = scheduler.ElapsedTime.ToString();
+
+                for (int i = 0; i < scheduler.ProcessCount; i++)
+                {
+                    prBars[i].Value = scheduler.ProcessAt(i).Progress;
+                }
+
+                string rqueue = "";
+                for (int i = scheduler.QueueList.Count - 1; i >= 0; i--)
+                {
+                    rqueue += "P#";
+                    rqueue += scheduler.QueueList[i];
+                    rqueue += " ";
+                }
+                labelrQueue.Text = rqueue;
+
+                if (!ok)
+                    break;
+
+                await Task.Delay(1000);
             }
 
-            tableLayoutPanel1.Controls.Add(tlp, 3, 1);
-            tableLayoutPanel1.SetRowSpan(tlp, 5);
+            buttonStartSim.Enabled = true;
+            buttonStopSim.Enabled = false;
         }
     }
 }

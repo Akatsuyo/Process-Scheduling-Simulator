@@ -3,18 +3,49 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace PSS
 {
-    class Scheduler
+    public class Scheduler
     {
-        private string selectedAlg;
+        private List<Process> prList;
+        private IAlgorithm selectedAlg;
         private int animSpeed;
-        private int util;
+        private Queue<int> rQueue;
+        private CPU cpu;
+        private int worktime;
         private int turn;
         private int elapsed;
 
-        public string Algorithm
+        public Scheduler(List<Process> list, IAlgorithm alg, int speed)
+        {
+            prList = list;
+            selectedAlg = alg;
+            animSpeed = speed;
+            rQueue = new Queue<int>();
+            cpu = new CPU();
+            worktime = 0;
+            turn = 0;
+            elapsed = 0;
+        }
+
+        public int ProcessCount
+        {
+            get { return prList.Count; }
+        }
+
+        public Process ProcessAt(int i)
+        {
+            return prList[i];
+        }
+
+        public List<int> QueueList
+        {
+            get { return rQueue.ToList(); }
+        }
+
+        public IAlgorithm Algorithm
         {
             get { return selectedAlg; }
             set { selectedAlg = value; }
@@ -26,10 +57,10 @@ namespace PSS
             set { animSpeed = value; }
         }
 
-        public int Utilization
+        public int Worktime
         {
-            get { return util; }
-            set { util = value; }
+            get { return worktime; }
+            set { worktime = value; }
         }
 
         public int Turnaround
@@ -44,9 +75,31 @@ namespace PSS
             set { elapsed = value; }
         }
 
-        public void Step()
+        public bool Step()
         {
-            typeof(Algorithm).GetMethod(selectedAlg).Invoke(null, null);
+            selectedAlg.IssueWork(prList, rQueue, cpu);
+
+            // Do cpu work
+            if (cpu.DoWork())
+                worktime++;
+
+            // Update progress
+            if (cpu.ProcessID != -1)
+                prList.Where(x => x.ID == cpu.ProcessID).First().Progress = cpu.CurrentProgress;
+
+            elapsed++;
+            
+            // Check if all processes are done
+            bool done = true;
+            foreach (var pr in prList)
+            {
+                if (pr.Progress != pr.Burst)
+                {
+                    done = false;
+                    break;
+                }
+            }
+            return !done;
         }
     }
 }

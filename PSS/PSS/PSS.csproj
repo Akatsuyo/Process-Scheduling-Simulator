@@ -45,7 +45,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Algorithm.cs" />
+    <Compile Include="CPU.cs" />
+    <Compile Include="IAlgorithm.cs" />
+    <Compile Include="FIFO.cs" />
     <Compile Include="ProcessDialog.cs">
       <SubType>Form</SubType>
     </Compile>

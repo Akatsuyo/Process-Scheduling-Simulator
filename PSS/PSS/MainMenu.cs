@@ -13,9 +13,7 @@ namespace PSS
 {
     public partial class MainMenu : Form
     {
-        public static BindingList<Process> processList;
-        public static string selectedAlg;
-        public static int selectedSpeed;
+        private static BindingList<Process> bPrList;
 
         public MainMenu()
         {
@@ -24,26 +22,34 @@ namespace PSS
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            processList = new BindingList<Process>();
-            processData.DataSource = processList;
+            // Initialize process list
+            bPrList = new BindingList<Process>();
+            processData.DataSource = bPrList;
 
-            MethodInfo[] methodInfo = typeof(Algorithm).GetMethods(BindingFlags.DeclaredOnly | BindingFlags.Public | BindingFlags.Static);
-            algList.DataSource = methodInfo.Select(x => x.Name).ToList();
+            // Get All Implemented IAlgorithms
+            var types = AppDomain.CurrentDomain.GetAssemblies()
+                .SelectMany(x => x.GetTypes())
+                .Where(y => typeof(IAlgorithm).IsAssignableFrom(y) && y.IsClass);
+
+            algList.DataSource = types.ToArray();
+            algList.DisplayMember = "Name";
         }
 
         private void buttonAddProcess_Click(object sender, EventArgs e)
         {
+            // Open a new dialog for adding a process to the list
             ProcessDialog newProcessDialog = new ProcessDialog();
             DialogResult dialogResult = newProcessDialog.ShowDialog();
             if (dialogResult == DialogResult.OK)
             {
-                processList.Add(newProcessDialog.GetProcess());
+                bPrList.Add(newProcessDialog.GetProcess());
             }
             newProcessDialog.Dispose();
         }
 
         private void buttonEditProcess_Click(object sender, EventArgs e)
         {
+            // Open a dialog for editing selected process
             if (processGridView.SelectedRows.Count > 0)
             {
                 ProcessDialog editProcessDialog = new ProcessDialog(true);
@@ -53,7 +59,7 @@ namespace PSS
                 DialogResult dialogResult = editProcessDialog.ShowDialog();
                 if (dialogResult == DialogResult.OK)
                 {
-                    processList[processList.IndexOf(selected)] = editProcessDialog.GetProcess();
+                    bPrList[bPrList.IndexOf(selected)] = editProcessDialog.GetProcess();
                 }
                 editProcessDialog.Dispose();
             }
@@ -65,12 +71,13 @@ namespace PSS
 
         private void buttonDeleteProcess_Click(object sender, EventArgs e)
         {
+            // Delete selected process
             if (processGridView.SelectedRows.Count > 0)
             {
                 DialogResult dialogResult = MessageBox.Show("Are you sure you want to delete this process?", "Delete process", MessageBoxButtons.OKCancel, MessageBoxIcon.Question);
                 if (dialogResult == DialogResult.OK)
                 {
-                    processList.Remove((Process)processGridView.SelectedRows[0].DataBoundItem);
+                    bPrList.Remove((Process)processGridView.SelectedRows[0].DataBoundItem);
                 }
             }
             else
@@ -81,12 +88,21 @@ namespace PSS
 
         private void buttonReady_Click(object sender, EventArgs e)
         {
-            selectedAlg = algList.SelectedItem.ToString();
-            selectedSpeed = simSpeed.Value;
-
-            Simulation simulation = new Simulation();
-            Hide();
-            simulation.Show();
+            // Dont start with empty list
+            if (bPrList.Count == 0)
+            {
+                MessageBox.Show("Process list is empty!", "No processes", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            else
+            {
+                // Open simulation form
+                Simulation simulation = new Simulation(new Scheduler(
+                    bPrList.ToList(),
+                    (IAlgorithm)Activator.CreateInstance((Type)algList.SelectedItem),
+                    simSpeed.Value));
+                Hide();
+                simulation.Show();
+            }
         }
     }
 }

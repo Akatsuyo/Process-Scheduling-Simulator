@@ -42,6 +42,7 @@
             this.buttonStartSim = new System.Windows.Forms.Button();
             this.buttonStopSim = new System.Windows.Forms.Button();
             this.buttonExport = new System.Windows.Forms.Button();
+            this.labelrQueue = new System.Windows.Forms.Label();
             this.tableLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -65,6 +66,7 @@
             this.tableLayoutPanel1.Controls.Add(this.buttonStartSim, 2, 0);
             this.tableLayoutPanel1.Controls.Add(this.buttonStopSim, 2, 1);
             this.tableLayoutPanel1.Controls.Add(this.buttonExport, 2, 5);
+            this.tableLayoutPanel1.Controls.Add(this.labelrQueue, 0, 3);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
@@ -222,6 +224,18 @@
             this.buttonExport.Text = "Export...";
             this.buttonExport.UseVisualStyleBackColor = true;
             // 
+            // labelrQueue
+            // 
+            this.tableLayoutPanel1.SetColumnSpan(this.labelrQueue, 2);
+            this.labelrQueue.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.labelrQueue.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.labelrQueue.Location = new System.Drawing.Point(3, 171);
+            this.labelrQueue.Name = "labelrQueue";
+            this.labelrQueue.Size = new System.Drawing.Size(254, 57);
+            this.labelrQueue.TabIndex = 13;
+            this.labelrQueue.Text = "rQueue";
+            this.labelrQueue.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
             // Simulation
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -254,5 +268,6 @@
         private System.Windows.Forms.Button buttonStartSim;
         private System.Windows.Forms.Button buttonStopSim;
         private System.Windows.Forms.Button buttonExport;
+        private System.Windows.Forms.Label labelrQueue;
     }
 }

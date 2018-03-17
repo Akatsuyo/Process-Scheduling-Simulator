@@ -8,7 +8,7 @@ namespace PSS
 {
     public class Process
     {
-        private static int nextId = 0;
+        private static int nextId = 1;
 
         private int id;
         private string name;

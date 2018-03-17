@@ -20,11 +20,13 @@ namespace PSS
             editing = edit;
         }
 
+        // Returns a process with set values
         public Process GetProcess()
         {
             return new Process(nameValue.Text, (int)burstValue.Value, (int)arrivalValue.Value, (int)priorityValue.Value);
         }
 
+        // Sets control's values based on a process
         public void SetProcess(Process process)
         {
             nameValue.Text = process.Name;
@@ -35,6 +37,7 @@ namespace PSS
 
         private void buttonOK_Click(object sender, EventArgs e)
         {
+            // Validate values, display error message
             ClearErrorLabels();
             bool error = false;
             if (nameValue.Text == "")
