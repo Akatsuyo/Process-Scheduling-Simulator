@@ -135,5 +135,10 @@ namespace PSS
             buttonStartSim.Enabled = true;
             buttonStopSim.Enabled = false;
         }
+
+        private void Simulation_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            Owner.Show();
+        }
     }
 }

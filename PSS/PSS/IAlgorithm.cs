@@ -8,6 +8,6 @@ namespace PSS
 {
     public interface IAlgorithm
     {
-        void IssueWork(List<Process> prList, Queue<int> rQueue, CPU cpu);
+        void IssueWork(List<Process> prList, IEnumerable<int> rQueue, CPU cpu);
     }
 }

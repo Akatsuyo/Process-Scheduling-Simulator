@@ -101,7 +101,7 @@ namespace PSS
                     (IAlgorithm)Activator.CreateInstance((Type)algList.SelectedItem),
                     simSpeed.Value));
                 Hide();
-                simulation.Show();
+                simulation.Show(this);
             }
         }
     }

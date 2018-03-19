@@ -15,25 +15,27 @@ namespace PSS
             stepCount = 0;
         }
 
-        public void IssueWork(List<Process> prList, Queue<int> rQueue, CPU cpu)
+        public void IssueWork(List<Process> prList, IEnumerable<int> rQueue, CPU cpu)
         {
+            var queue = rQueue as Queue<int>;
             // Check for arriving processes
             foreach (var pr in prList)
             {
                 if (pr.Arrival == stepCount)
                 {
                     // Enqueue process
-                    rQueue.Enqueue(pr.ID);
+                    queue.Enqueue(pr.ID);
                 }
             }
 
             // If cpu is not working, start next process in queue
-            if (!cpu.Working && rQueue.Count > 0)
+            if (!cpu.Working && queue.Count > 0)
             {
-                int next = rQueue.Dequeue();
+                int next = queue.Dequeue();
                 cpu.SetProcess(prList.Where(x => x.ID == next).First());
             }
 
+            rQueue = queue as IEnumerable<int>;
             stepCount++;
         }
     }
