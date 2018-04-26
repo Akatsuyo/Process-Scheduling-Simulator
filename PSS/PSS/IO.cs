@@ -64,7 +64,13 @@ namespace PSS
         /// <summary>
         /// Returns the progress of the I/O operation
         /// </summary>
-        public double Progress { get => 1 - (double)remaining / (double)length; }
+        public double Progress
+        {
+            get
+            {
+                return 1 - (double)remaining / (double)length;
+            }
+        }
 
         /// <summary>
         /// It's just a simulation, so data is also simulated

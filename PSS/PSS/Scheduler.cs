@@ -129,7 +129,10 @@ namespace PSS
         /// <summary>
         /// Returns the list of the processes
         /// </summary>
-        public List<PCB> ProcessList { get => processList;  }
+        public List<PCB> ProcessList
+        {
+            get { return processList; }
+        }
 
         /// <summary>
         /// Returns the current scheduling algorithm

@@ -99,7 +99,10 @@ namespace PSS
         /// <summary>
         /// Property of name
         /// </summary>
-        public string Name { get => name; set
+        public string Name
+        {
+            get { return name; }
+            set
             {
                 if (value.Length < 2 || value.Length > 15)
                 {
@@ -114,7 +117,8 @@ namespace PSS
         /// </summary>
         public double IOProbability
         {
-            get => ioProbability * 10; set
+            get { return ioProbability * 10; }
+            set
             {
                 if (value < 0 || value > 1)
                 {
@@ -129,7 +133,8 @@ namespace PSS
         /// </summary>
         public int IOProbabilityPercent
         {
-            get => (int)(ioProbability * 1000); set
+            get { return (int)(ioProbability * 1000); }
+            set
             {
                 if (value < 0 || value > 100)
                 {
@@ -143,7 +148,8 @@ namespace PSS
         /// </summary>
         public IO.Speed IOSwiftness
         {
-            get => ioSwiftness; set => ioSwiftness = value;
+            get { return ioSwiftness; }
+            set { ioSwiftness = value; }
         }
 
         /// <summary>
@@ -151,7 +157,7 @@ namespace PSS
         /// </summary>
         public int Length
         {
-            get => length;
+            get { return length; }
             set
             {
                 if (value < 0)
@@ -167,13 +173,19 @@ namespace PSS
         /// In real life we don't know when the process will finish
         /// We do it because the interactivity
         /// </summary>
-        public double Progress { get => 1 - (double)remainingTick / (double)length; }
+        public double Progress
+        {
+            get { return 1 - (double)remainingTick / (double)length; }
+        }
 
         /// <summary>
         /// Returns the current progress of the I/O operation
         /// If there is no I/O operation it returns 0.0
         /// </summary>
-        public double IOProgress { get => (currentIO != null) ? currentIO.Progress : 0.0; }
+        public double IOProgress
+        {
+            get { return (currentIO != null) ? currentIO.Progress : 0.0; }
+        }
 
         /// <summary>
         /// Calls the IO operation

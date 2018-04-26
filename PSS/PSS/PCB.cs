@@ -66,12 +66,18 @@ namespace PSS
         /// <summary>
         /// Property of process
         /// </summary>
-        public Process Process { get => currentProcess; set => currentProcess = value; }
+        public Process Process
+        {
+            get { return currentProcess; }
+            set { currentProcess = value; }
+        }
 
         /// <summary>
         /// Property of priority
         /// </summary>
-        public int Priority { get => priority;
+        public int Priority
+        {
+            get { return priority; }
             set
             {
                 if (value < 0)
