@@ -146,7 +146,10 @@ namespace PSS
         /// <summary>
         /// Returns the Ready Queue
         /// </summary>
-        public Queue<PCB> ReadyQueue { get => selectedAlgorithm.GetReadyPCBs(); }
+        public Queue<PCB> ReadyQueue
+        {
+            get { return selectedAlgorithm.GetReadyPCBs(); }
+        }
 
         public int Worktime
         {
