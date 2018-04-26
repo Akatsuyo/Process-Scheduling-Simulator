@@ -18,21 +18,23 @@ namespace PSS
         {
             InitializeComponent();
             editing = edit;
+            SwiftnessList.DataSource = Enum.GetValues(typeof(IO.Speed)).Cast<IO.Speed>();
+            nameValue.Select();
         }
 
         // Returns a process with set values
         public Process GetProcess()
         {
-            return new Process(nameValue.Text, (int)burstValue.Value, (int)arrivalValue.Value, (int)priorityValue.Value);
+            return new Process(nameValue.Text, (double)probabilityValue.Value / 100, (IO.Speed)SwiftnessList.SelectedIndex, (int)lengthValue.Value);
         }
 
         // Sets control's values based on a process
         public void SetProcess(Process process)
         {
             nameValue.Text = process.Name;
-            burstValue.Value = process.Burst;
-            arrivalValue.Value = process.Arrival;
-            priorityValue.Value = process.Priority;
+            probabilityValue.Value = (decimal)(process.IOProbability * 100);
+            SwiftnessList.SelectedIndex = (int)process.IOSwiftness;
+            lengthValue.Value = process.Length;
         }
 
         private void buttonOK_Click(object sender, EventArgs e)
@@ -40,24 +42,19 @@ namespace PSS
             // Validate values, display error message
             ClearErrorLabels();
             bool error = false;
-            if (nameValue.Text == "")
+            if (nameValue.Text.Length < 2 || nameValue.Text.Length > 15)
             {
-                nameError.Text = "Name cannot be empty!";
+                nameError.Text = "Must be between 2 and 15!";
                 error = true;
             }
-            if (burstValue.Value < 1 || burstValue.Value > 100)
+            if (probabilityValue.Value < 1 || probabilityValue.Value > 100)
             {
-                burstError.Text = "Must be between 1 and 100!";
+                probabilityError.Text = "Must be between 1 and 100!";
                 error = true;
             }
-            if (arrivalValue.Value < 0 || arrivalValue.Value > 100)
+            if (lengthValue.Value <= 0)
             {
-                arrivalError.Text = "Must be between 0 and 100!";
-                error = true;
-            }
-            if (priorityValue.Value < 0 || priorityValue.Value > 100)
-            {
-                priorityError.Text = "Must be between 0 and 100!";
+                lengthError.Text = "Must be greater than 0!";
                 error = true;
             }
             if (!error)
@@ -75,9 +72,24 @@ namespace PSS
         private void ClearErrorLabels()
         {
             nameError.Text = "";
-            burstError.Text = "";
-            arrivalError.Text = "";
-            priorityError.Text = "";
+            probabilityError.Text = "";
+            swiftnessError.Text = "";
+            lengthError.Text = "";
+        }
+
+        private void ProcessDialog_KeyPress(object sender, System.Windows.Forms.KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                //buttonOK_Click();
+                MessageBox.Show("enter");
+            }
+            if (e.KeyCode == Keys.Escape)
+            {
+                //buttonOK_Click();
+                MessageBox.Show("esc");
+            }
+
         }
     }
 }

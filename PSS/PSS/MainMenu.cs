@@ -13,26 +13,33 @@ namespace PSS
 {
     public partial class MainMenu : Form
     {
-        private static BindingList<Process> bPrList;
+        protected BindingList<Process> processList;
 
         public MainMenu()
         {
             InitializeComponent();
+            labelSimSpeed.Text = simSpeed.Value.ToString();
         }
 
         private void Form1_Load(object sender, EventArgs e)
         {
             // Initialize process list
-            bPrList = new BindingList<Process>();
-            processData.DataSource = bPrList;
+            processList = new BindingList<Process>();
+            processData.DataSource = processList;
 
-            // Get All Implemented IAlgorithms
+            // Get all implemented Algorithms
             var types = AppDomain.CurrentDomain.GetAssemblies()
                 .SelectMany(x => x.GetTypes())
                 .Where(y => typeof(IAlgorithm).IsAssignableFrom(y) && y.IsClass);
 
             algList.DataSource = types.ToArray();
             algList.DisplayMember = "Name";
+        }
+
+        public void ImportNewProcesses(BindingList<Process> processes)
+        {
+            processList = processes;
+            processData.DataSource = processList;
         }
 
         private void buttonAddProcess_Click(object sender, EventArgs e)
@@ -42,7 +49,7 @@ namespace PSS
             DialogResult dialogResult = newProcessDialog.ShowDialog();
             if (dialogResult == DialogResult.OK)
             {
-                bPrList.Add(newProcessDialog.GetProcess());
+                processList.Add(newProcessDialog.GetProcess());
             }
             newProcessDialog.Dispose();
         }
@@ -59,7 +66,7 @@ namespace PSS
                 DialogResult dialogResult = editProcessDialog.ShowDialog();
                 if (dialogResult == DialogResult.OK)
                 {
-                    bPrList[bPrList.IndexOf(selected)] = editProcessDialog.GetProcess();
+                    processList[processList.IndexOf(selected)] = editProcessDialog.GetProcess();
                 }
                 editProcessDialog.Dispose();
             }
@@ -77,7 +84,7 @@ namespace PSS
                 DialogResult dialogResult = MessageBox.Show("Are you sure you want to delete this process?", "Delete process", MessageBoxButtons.OKCancel, MessageBoxIcon.Question);
                 if (dialogResult == DialogResult.OK)
                 {
-                    bPrList.Remove((Process)processGridView.SelectedRows[0].DataBoundItem);
+                    processList.Remove((Process)processGridView.SelectedRows[0].DataBoundItem);
                 }
             }
             else
@@ -89,20 +96,28 @@ namespace PSS
         private void buttonReady_Click(object sender, EventArgs e)
         {
             // Dont start with empty list
-            if (bPrList.Count == 0)
+            if (processList.Count == 0)
             {
                 MessageBox.Show("Process list is empty!", "No processes", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             else
             {
-                // Open simulation form
+                //TODO Calibrate simSpeed
+                // Make a scheduler class from the parameters
                 Simulation simulation = new Simulation(new Scheduler(
-                    bPrList.ToList(),
-                    (IAlgorithm)Activator.CreateInstance((Type)algList.SelectedItem),
-                    simSpeed.Value));
+                    processList.ToList(),
+                    (IAlgorithm)Activator.CreateInstance((Type)algList.SelectedItem)), simSpeed.Value);
+
+                //Hides the main menu
                 Hide();
+                //Shows the simulation
                 simulation.Show(this);
             }
+        }
+
+        private void simSpeed_ValueChanged(object sender, EventArgs e)
+        {
+            labelSimSpeed.Text = simSpeed.Value.ToString();
         }
     }
 }

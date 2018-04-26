@@ -1,24 +1,37 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Collections.Generic;
+using System.ComponentModel;
 
 namespace PSS
 {
     public partial class Simulation : Form
     {
-        private static ProgressBar[] prBars;
+        //Process list table
+        TableLayoutPanel tlp;
 
-        private static Scheduler scheduler;
+        //Speed of the simulation
+        private int speed;
 
-        public Simulation(Scheduler sch)
+        //Booleans of the simulation states
+        private bool pauseSimulation, stopSimulation, atClosing;
+        private Scheduler scheduler;
+
+        private Dictionary<int, ProcessSimulationRow> processes;
+
+        public Simulation(Scheduler sch, int speed)
         {
             scheduler = sch;
+
+            if (speed <= 0 || speed > 1000)
+            {
+                throw new ArgumentException("Parameter must be between 1 and 500", "Simulation Speed");
+            }
+
+            this.speed = speed;
+            processes = new Dictionary<int, ProcessSimulationRow>();
 
             InitializeComponent();
         }
@@ -31,113 +44,185 @@ namespace PSS
             labelCompletion.Text = "-";
             labelrQueue.Text = "";
 
-            // Process table
-            TableLayoutPanel tlp = new TableLayoutPanel
-            {
-                ColumnCount = 5,
-                RowCount = scheduler.ProcessCount + 1,
-                Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right,
-                Height = (scheduler.ProcessCount + 1) * 30
-            };
-
-            // Column styles
-            for (int i = 0; i < 5; i++)
-            {
-                tlp.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 20));
-            }
-
-            // Row styles
-            for (int i = 0; i < scheduler.ProcessCount + 1; i++)
-            {
-                tlp.RowStyles.Add(new RowStyle(SizeType.Absolute, 30));
-            }
-
-            tableLayoutPanel1.Controls.Add(tlp, 3, 1);
-            tableLayoutPanel1.SetRowSpan(tlp, 5);
-
-            // Headers
-            string[] headers = { "Name", "Burst", "Arrival", "Priority", "Progress" };
-            Label[] headerLabels = new Label[headers.Length];
-            for (int i = 0; i < headers.Length; i++)
-            {
-                headerLabels[i] = new Label
-                {
-                    Text = headers[i],
-                    Dock = DockStyle.Fill,
-                    TextAlign = ContentAlignment.MiddleCenter,
-                    AutoSize = false,
-                    Font = new Font("Microsoft Sans Serif", 12)
-                };
-
-                tlp.Controls.Add(headerLabels[i], i, 0);
-            }
-
-            // Data
-            prBars = new ProgressBar[scheduler.ProcessCount];
+            //Add rows to ProcessViewPanel
             for (int i = 0; i < scheduler.ProcessCount; i++)
             {
-                for (int j = 0; j < 4; j++)
-                {
-                    tlp.Controls.Add(new Label
-                    {
-                        Text = typeof(Process).GetProperty(headers[j]).GetValue(scheduler.ProcessAt(i)).ToString(),
-                        Dock = DockStyle.Fill,
-                        TextAlign = ContentAlignment.MiddleCenter,
-                        AutoSize = false,
-                    }, j, i + 1);
-                }
+                AddProcessToProcessViewPanel(scheduler.ProcessAt(i));
+            }
 
-                prBars[i] = new ProgressBar
-                {
-                    Height = 30,
-                    Minimum = 0,
-                    Step = 1,
-                    Maximum = scheduler.ProcessAt(i).Burst
-                };
-                tlp.Controls.Add(prBars[i], 4, i + 1);
+        }
+
+        /// <summary>
+        /// Adds process to the Process View Panel
+        /// </summary>
+        /// <param name="process">The process</param>
+        private void AddProcessToProcessViewPanel(PCB process)
+        {
+            ProcessSimulationRow psp = new ProcessSimulationRow(process.PID, process.Process.Name, process.State)
+            {
+                Height = 30,
+                //FlowLayout is tricky
+                //Element width is determined by an element which has a width explicitly
+                //In our case this is the Header or 'table'
+                Anchor = (AnchorStyles.Left | AnchorStyles.Right)
+            };
+            processes.Add(process.PID, psp);
+            processViewPanel.Controls.Add(psp);
+        }
+
+        private void buttonStartSim_Click(object sender, EventArgs e)
+        {
+            scheduler.Reset();
+
+            buttonStartSim.Enabled = false;
+            buttonStopSim.Enabled = true;
+            buttonPauseSim.Enabled = true;
+
+            StartSimulation();
+
+        }
+
+        private void buttonPauseSim_Click(object sender, EventArgs e)
+        {
+            if (pauseSimulation)
+            {
+                buttonPauseSim.Text = "Pause";
+                StartSimulation();
+            }
+            else
+            {
+                buttonPauseSim.Text = "Resume";
+                PauseSimualtion();
             }
         }
 
-        private async void buttonStartSim_Click(object sender, EventArgs e)
+        private void buttonStopSim_Click(object sender, EventArgs e)
         {
-            buttonStartSim.Enabled = false;
-            buttonStopSim.Enabled = true;
+            StopSimulation();
+        }
 
+        private async void  StartSimulation()
+        {
+            pauseSimulation = false;
+            stopSimulation = false;
+            atClosing = false;
             while (true)
             {
-                bool ok = scheduler.Step();
 
-                // Update UI
-                labelUtil.Text = (Math.Round((double)scheduler.Worktime / scheduler.ElapsedTime, 2) * 100).ToString() + "%";
-                labelTurnaround.Text = scheduler.Turnaround.ToString();
-                labelCurrTime.Text = scheduler.ElapsedTime.ToString();
-
-                for (int i = 0; i < scheduler.ProcessCount; i++)
+                //If we have a paused simulation it breaks immidiately
+                if (pauseSimulation)
                 {
-                    prBars[i].Value = scheduler.ProcessAt(i).Progress;
-                }
-
-                string rqueue = "";
-                for (int i = scheduler.QueueList.Count - 1; i >= 0; i--)
-                {
-                    rqueue += "P#";
-                    rqueue += scheduler.QueueList[i];
-                    rqueue += " ";
-                }
-                labelrQueue.Text = rqueue;
-
-                if (!ok)
                     break;
+                }
 
-                await Task.Delay(1000);
+                bool done = false;
+
+                //When we stop the simulation we need to update the UI
+                if (stopSimulation)
+                {
+                    scheduler.Reset();
+                }
+                //We don't want to take the first step (start the simulation) when we reseted it
+                else
+                {
+                    done = scheduler.Step();
+                }
+
+                //This is required because of the nature of async
+                //If we update the UI after closing we get a sneaky little NullReferenceException
+                if (!atClosing)
+                {
+                    // Update UI
+                    //TODO This doesn't work
+                    labelUtil.Text = (Math.Round((double)scheduler.Worktime / scheduler.ElapsedTime, 2) * 100).ToString() + "%";
+                    //TODO This doesn't work
+                    labelTurnaround.Text = scheduler.Turnaround.ToString();
+                    labelCurrTime.Text = scheduler.ElapsedTime.ToString();
+
+                    //Sets dynamic parameters of processes in the list
+                    foreach (KeyValuePair<int, ProcessSimulationRow> elem in processes)
+                    {
+                        PCB pcb = scheduler.GetProcessByID(elem.Key);
+                        elem.Value.UpdateData(pcb.State, pcb.Process.Progress, pcb.Process.IOProgress);
+                    }
+
+                    //Updates the Ready Queue label
+                    string readyQueueString = "";
+                    foreach (PCB process in scheduler.ReadyQueue)
+                    {
+                        readyQueueString += "P#";
+                        readyQueueString += process.PID.ToString();
+                        readyQueueString += " ";
+                    }
+                    labelrQueue.Text = readyQueueString;
+                }
+
+                //When we updated the UI we don't want to update once more so we break it
+                if (stopSimulation)
+                {
+                    break;
+                }
+
+                //If the simulation is done we break it
+                if (done)
+                {
+                    break;
+                }
+                //Speed is x tick / sec
+                await Task.Delay(1000/speed);
             }
 
-            buttonStartSim.Enabled = true;
-            buttonStopSim.Enabled = false;
+            //If this isn't a paused state (i.e. stop) we have to update the control buttons as well
+            //On pause mode we update it differently
+            if (!pauseSimulation)
+            {
+                buttonStartSim.Enabled = true;
+                buttonStopSim.Enabled = false;
+                buttonPauseSim.Enabled = false;
+            }
+        }
+
+        private void PauseSimualtion()
+        {
+            pauseSimulation = true;
+        }
+
+        private void buttonAddProcess_Click(object sender, EventArgs e)
+        {
+            // Open a new dialog for adding a process to the list
+            ProcessDialog newProcessDialog = new ProcessDialog();
+            DialogResult dialogResult = newProcessDialog.ShowDialog();
+            if (dialogResult == DialogResult.OK)
+            {
+                AddProcessToProcessViewPanel(scheduler.AddAndEncapsulateProcess(newProcessDialog.GetProcess()));
+            }
+            newProcessDialog.Dispose();
+        }
+
+        private void processViewPanel_SizeChanged(object sender, EventArgs e)
+        {
+            processHeadTable.Width = processViewPanel.ClientSize.Width;
+        }
+
+        private void StopSimulation()
+        {
+            stopSimulation = true;
         }
 
         private void Simulation_FormClosed(object sender, FormClosedEventArgs e)
         {
+            //Set the state to closing
+            atClosing = true;
+
+            //Stop the simulation (and reset it)
+            StopSimulation();
+
+            //If we added new processes to the list we need to push them back to the main menu as well
+            BindingList<Process> processes = new BindingList<Process>();
+            scheduler.ProcessList.ForEach(x => processes.Add(x.Process));
+            ((MainMenu)Owner).ImportNewProcesses(processes);
+            
+            //Shows the main menu
             Owner.Show();
         }
     }

@@ -6,67 +6,83 @@ using System.Threading.Tasks;
 
 namespace PSS
 {
+    /// <summary>
+    /// CPU Simulation
+    /// </summary>
     public class CPU
     {
-        private int currPr;
-        private int prBurst;
-        private int prProgress;
-        private bool working;
-        private bool didWork;
+        /// <summary>
+        /// Program Control Block of the process which is currently processed by the CPU
+        /// </summary>
+        private PCB currentProcess;
 
+        /// <summary>
+        /// Is CPU Working? (e.g. process is not blocked and not dead)
+        /// </summary>
+        private bool working;
+
+        /// <summary>
+        /// Constructor of the CPU Simulator
+        /// </summary>
         public CPU()
         {
             working = false;
-            currPr = -1;
+            currentProcess = null;
         }
 
-        public void SetProcess(Process pr)
+        /// <summary>
+        /// Sets the current process
+        /// </summary>
+        /// <param name="process">Process which is dhould be processed by the CPU</param>
+        public void SetProcess(PCB process)
         {
-            currPr = pr.ID;
-            prBurst = pr.Burst;
-            prProgress = pr.Progress;
-            if (prBurst - prProgress > 0)
-                working = true;
+            currentProcess = process;
+            process.Resume();
+            working = true;
         }
 
-        public void Stop()
+        /// <summary>
+        /// Removes the current process from the CPU
+        /// </summary>
+        public void StopProcess()
         {
-            working = false;
-        }
-
-        public bool DoWork()
-        {
-            if (working)
+            if (currentProcess != null)
             {
-                ++prProgress;
-                if (prBurst - prProgress <= 0)
+                currentProcess.Pause();
+                currentProcess = null;
+                working = false;
+            }
+        }
+
+        /// <summary>
+        /// As the method name says, it does work (everything)
+        /// </summary>
+        public void DoWork()
+        {
+            if (currentProcess != null)
+            {
+                currentProcess.Run();
+                if (currentProcess.State == PCB.ProcessState.DEAD)
                 {
-                    // Work done
-                    working = false;
+                    StopProcess();
                 }
-                didWork = true;
-                return true;
-            }
-            else
-            {
-                return false;
             }
         }
 
+        /// <summary>
+        /// Returns the PID of the current process (if there is no process on CPU it returns -1)
+        /// </summary>
         public int ProcessID
         {
-            get { return currPr; }
+            get { return (currentProcess != null) ? currentProcess.PID : -1; }
         }
 
-        public int CurrentProgress
-        {
-            get { return prProgress; }
-        }
-
+        /// <summary>
+        /// Is CPU currently working
+        /// </summary>
         public bool Working
         {
             get { return working; }
-            set { working = value; }
         }
     }
 }

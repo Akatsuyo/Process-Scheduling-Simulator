@@ -29,11 +29,8 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
@@ -41,6 +38,10 @@
             this.buttonEditProcess = new System.Windows.Forms.Button();
             this.buttonAddProcess = new System.Windows.Forms.Button();
             this.processGridView = new System.Windows.Forms.DataGridView();
+            this.name = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.IOProbability = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.IOSwiftness = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Length = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.processData = new System.Windows.Forms.BindingSource(this.components);
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
@@ -50,10 +51,7 @@
             this.algList = new System.Windows.Forms.ComboBox();
             this.simSpeed = new System.Windows.Forms.TrackBar();
             this.buttonReady = new System.Windows.Forms.Button();
-            this.name = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.burst = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.arrival = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.priority = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.labelSimSpeed = new System.Windows.Forms.Label();
             this.tableLayoutPanel1.SuspendLayout();
             this.flowLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.processGridView)).BeginInit();
@@ -142,20 +140,20 @@
             this.processGridView.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.ColumnHeader;
             this.processGridView.BackgroundColor = System.Drawing.SystemColors.Control;
             this.processGridView.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.processGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle4.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            dataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.processGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle4;
             this.processGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.processGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.name,
-            this.burst,
-            this.arrival,
-            this.priority});
+            this.IOProbability,
+            this.IOSwiftness,
+            this.Length});
             this.tableLayoutPanel1.SetColumnSpan(this.processGridView, 2);
             this.processGridView.DataSource = this.processData;
             dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
@@ -178,13 +176,49 @@
             this.processGridView.Size = new System.Drawing.Size(528, 189);
             this.processGridView.TabIndex = 2;
             // 
+            // name
+            // 
+            this.name.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.name.DataPropertyName = "Name";
+            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            this.name.DefaultCellStyle = dataGridViewCellStyle5;
+            this.name.HeaderText = "Name";
+            this.name.Name = "name";
+            this.name.ReadOnly = true;
+            this.name.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.name.Width = 190;
+            // 
+            // IOProbability
+            // 
+            this.IOProbability.DataPropertyName = "IOProbabilityPercent";
+            this.IOProbability.HeaderText = "I/O Probability";
+            this.IOProbability.Name = "IOProbability";
+            this.IOProbability.ReadOnly = true;
+            this.IOProbability.Width = 133;
+            // 
+            // IOSwiftness
+            // 
+            this.IOSwiftness.DataPropertyName = "IOSwiftness";
+            this.IOSwiftness.HeaderText = "I/O Swiftness";
+            this.IOSwiftness.Name = "IOSwiftness";
+            this.IOSwiftness.ReadOnly = true;
+            this.IOSwiftness.Width = 129;
+            // 
+            // Length
+            // 
+            this.Length.DataPropertyName = "Length";
+            this.Length.HeaderText = "Length";
+            this.Length.Name = "Length";
+            this.Length.ReadOnly = true;
+            this.Length.Width = 90;
+            // 
             // label1
             // 
             this.label1.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.label1.AutoSize = true;
-            this.tableLayoutPanel1.SetColumnSpan(this.label1, 2);
+            this.tableLayoutPanel1.SetColumnSpan(this.label1, 5);
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.label1.Location = new System.Drawing.Point(181, 16);
+            this.label1.Location = new System.Drawing.Point(296, 16);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(191, 37);
             this.label1.TabIndex = 4;
@@ -213,6 +247,7 @@
             this.tableLayoutPanel2.Controls.Add(this.label3, 0, 0);
             this.tableLayoutPanel2.Controls.Add(this.algList, 1, 0);
             this.tableLayoutPanel2.Controls.Add(this.simSpeed, 1, 1);
+            this.tableLayoutPanel2.Controls.Add(this.labelSimSpeed, 1, 2);
             this.tableLayoutPanel2.Location = new System.Drawing.Point(137, 360);
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
             this.tableLayoutPanel2.RowCount = 5;
@@ -247,6 +282,7 @@
             // algList
             // 
             this.algList.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.algList.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.algList.FormattingEnabled = true;
             this.algList.Location = new System.Drawing.Point(148, 4);
             this.algList.Name = "algList";
@@ -256,12 +292,16 @@
             // simSpeed
             // 
             this.simSpeed.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.simSpeed.LargeChange = 100;
             this.simSpeed.Location = new System.Drawing.Point(157, 32);
+            this.simSpeed.Maximum = 1000;
             this.simSpeed.Minimum = 1;
             this.simSpeed.Name = "simSpeed";
             this.simSpeed.Size = new System.Drawing.Size(104, 23);
+            this.simSpeed.SmallChange = 20;
             this.simSpeed.TabIndex = 4;
-            this.simSpeed.Value = 1;
+            this.simSpeed.Value = 200;
+            this.simSpeed.ValueChanged += new System.EventHandler(this.simSpeed_ValueChanged);
             // 
             // buttonReady
             // 
@@ -274,53 +314,15 @@
             this.buttonReady.UseVisualStyleBackColor = true;
             this.buttonReady.Click += new System.EventHandler(this.buttonReady_Click);
             // 
-            // name
+            // labelSimSpeed
             // 
-            this.name.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            this.name.DataPropertyName = "Name";
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            this.name.DefaultCellStyle = dataGridViewCellStyle2;
-            this.name.HeaderText = "Name";
-            this.name.Name = "name";
-            this.name.ReadOnly = true;
-            this.name.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.name.Width = 190;
-            // 
-            // burst
-            // 
-            this.burst.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            this.burst.DataPropertyName = "Burst";
-            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            this.burst.DefaultCellStyle = dataGridViewCellStyle3;
-            this.burst.HeaderText = "Burst";
-            this.burst.Name = "burst";
-            this.burst.ReadOnly = true;
-            this.burst.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.burst.Width = 80;
-            // 
-            // arrival
-            // 
-            this.arrival.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            this.arrival.DataPropertyName = "Arrival";
-            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            this.arrival.DefaultCellStyle = dataGridViewCellStyle4;
-            this.arrival.HeaderText = "Arrival";
-            this.arrival.Name = "arrival";
-            this.arrival.ReadOnly = true;
-            this.arrival.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.arrival.Width = 80;
-            // 
-            // priority
-            // 
-            this.priority.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            this.priority.DataPropertyName = "Priority";
-            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            this.priority.DefaultCellStyle = dataGridViewCellStyle5;
-            this.priority.HeaderText = "Priority";
-            this.priority.Name = "priority";
-            this.priority.ReadOnly = true;
-            this.priority.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.priority.Width = 80;
+            this.labelSimSpeed.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.labelSimSpeed.AutoSize = true;
+            this.labelSimSpeed.Location = new System.Drawing.Point(202, 58);
+            this.labelSimSpeed.Name = "labelSimSpeed";
+            this.labelSimSpeed.Size = new System.Drawing.Size(13, 13);
+            this.labelSimSpeed.TabIndex = 5;
+            this.labelSimSpeed.Text = "0";
             // 
             // MainMenu
             // 
@@ -362,9 +364,10 @@
         private System.Windows.Forms.TrackBar simSpeed;
         private System.Windows.Forms.Button buttonReady;
         private System.Windows.Forms.DataGridViewTextBoxColumn name;
-        private System.Windows.Forms.DataGridViewTextBoxColumn burst;
-        private System.Windows.Forms.DataGridViewTextBoxColumn arrival;
-        private System.Windows.Forms.DataGridViewTextBoxColumn priority;
+        private System.Windows.Forms.DataGridViewTextBoxColumn IOProbability;
+        private System.Windows.Forms.DataGridViewTextBoxColumn IOSwiftness;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Length;
+        private System.Windows.Forms.Label labelSimSpeed;
     }
 }
 
