@@ -84,12 +84,12 @@ namespace PSS
 
         }
 
-        private void buttonPauseSim_Click(object sender, EventArgs e)
+        private async void buttonPauseSim_Click(object sender, EventArgs e)
         {
             if (pauseSimulation)
             {
                 buttonPauseSim.Text = "Pause";
-                Simulate();
+                await Simulate();
             }
             else
             {
@@ -110,7 +110,7 @@ namespace PSS
             DialogResult dialogResult = newProcessDialog.ShowDialog();
             if (dialogResult == DialogResult.OK)
             {
-                DisplayProcess(scheduler.AddAndEncapsulateProcess(newProcessDialog.GetProcess()));
+                AddProcessToView(scheduler.AddAndEncapsulateProcess(newProcessDialog.GetProcess()));
             }
             newProcessDialog.Dispose();
         }
