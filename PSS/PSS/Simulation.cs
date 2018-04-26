@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Drawing;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Collections.Generic;
@@ -9,25 +10,22 @@ namespace PSS
 {
     public partial class Simulation : Form
     {
-        //Process list table
-        TableLayoutPanel tlp;
-
         //Speed of the simulation
         private int speed;
 
         //Booleans of the simulation states
         private bool pauseSimulation, stopSimulation, atClosing;
-        private Scheduler scheduler;
 
+        private Scheduler scheduler;
         private Dictionary<int, ProcessSimulationRow> processes;
 
         public Simulation(Scheduler sch, int speed)
         {
             scheduler = sch;
 
-            if (speed <= 0 || speed > 1000)
+            if (speed < 1 || speed > 1000)
             {
-                throw new ArgumentException("Parameter must be between 1 and 500", "Simulation Speed");
+                throw new ArgumentException("Parameter must be between 1 and 1000", "Simulation Speed");
             }
 
             this.speed = speed;
@@ -44,10 +42,10 @@ namespace PSS
             labelCompletion.Text = "-";
             labelrQueue.Text = "";
 
-            //Add rows to ProcessViewPanel
+            // Add rows to ProcessViewPanel
             for (int i = 0; i < scheduler.ProcessCount; i++)
             {
-                AddProcessToProcessViewPanel(scheduler.ProcessAt(i));
+                AddProcessToView(scheduler.ProcessAt(i));
             }
 
         }
@@ -56,9 +54,9 @@ namespace PSS
         /// Adds process to the Process View Panel
         /// </summary>
         /// <param name="process">The process</param>
-        private void AddProcessToProcessViewPanel(PCB process)
+        private void AddProcessToView(PCB process)
         {
-            ProcessSimulationRow psp = new ProcessSimulationRow(process.PID, process.Process.Name, process.State)
+            ProcessSimulationRow psr = new ProcessSimulationRow(process.PID, process.Process.Name, process.State)
             {
                 Height = 30,
                 //FlowLayout is tricky
@@ -66,11 +64,15 @@ namespace PSS
                 //In our case this is the Header or 'table'
                 Anchor = (AnchorStyles.Left | AnchorStyles.Right)
             };
-            processes.Add(process.PID, psp);
-            processViewPanel.Controls.Add(psp);
+
+            processes.Add(process.PID, psr);
+
+            processViewPanel.Controls.Add(psr);
         }
 
-        private void buttonStartSim_Click(object sender, EventArgs e)
+        // --------------- Buttons --------------- //
+
+        private async void buttonStartSim_Click(object sender, EventArgs e)
         {
             scheduler.Reset();
 
@@ -78,7 +80,7 @@ namespace PSS
             buttonStopSim.Enabled = true;
             buttonPauseSim.Enabled = true;
 
-            StartSimulation();
+            await Simulate();
 
         }
 
@@ -87,12 +89,12 @@ namespace PSS
             if (pauseSimulation)
             {
                 buttonPauseSim.Text = "Pause";
-                StartSimulation();
+                Simulate();
             }
             else
             {
                 buttonPauseSim.Text = "Resume";
-                PauseSimualtion();
+                PauseSimulation();
             }
         }
 
@@ -101,15 +103,31 @@ namespace PSS
             StopSimulation();
         }
 
-        private async void  StartSimulation()
+        private void buttonAddProcess_Click(object sender, EventArgs e)
+        {
+            // Open a new dialog for adding a process to the list
+            ProcessDialog newProcessDialog = new ProcessDialog();
+            DialogResult dialogResult = newProcessDialog.ShowDialog();
+            if (dialogResult == DialogResult.OK)
+            {
+                DisplayProcess(scheduler.AddAndEncapsulateProcess(newProcessDialog.GetProcess()));
+            }
+            newProcessDialog.Dispose();
+        }
+
+        // --------------------------------------- //
+
+
+        private async Task Simulate()
         {
             pauseSimulation = false;
             stopSimulation = false;
             atClosing = false;
+
+            // Simulation loop
             while (true)
             {
-
-                //If we have a paused simulation it breaks immidiately
+                // Pause
                 if (pauseSimulation)
                 {
                     break;
@@ -140,6 +158,7 @@ namespace PSS
                     labelCurrTime.Text = scheduler.ElapsedTime.ToString();
 
                     //Sets dynamic parameters of processes in the list
+                    // Update process view
                     foreach (KeyValuePair<int, ProcessSimulationRow> elem in processes)
                     {
                         PCB pcb = scheduler.GetProcessByID(elem.Key);
@@ -182,31 +201,19 @@ namespace PSS
             }
         }
 
-        private void PauseSimualtion()
+        private void PauseSimulation()
         {
             pauseSimulation = true;
-        }
-
-        private void buttonAddProcess_Click(object sender, EventArgs e)
-        {
-            // Open a new dialog for adding a process to the list
-            ProcessDialog newProcessDialog = new ProcessDialog();
-            DialogResult dialogResult = newProcessDialog.ShowDialog();
-            if (dialogResult == DialogResult.OK)
-            {
-                AddProcessToProcessViewPanel(scheduler.AddAndEncapsulateProcess(newProcessDialog.GetProcess()));
-            }
-            newProcessDialog.Dispose();
-        }
-
-        private void processViewPanel_SizeChanged(object sender, EventArgs e)
-        {
-            processHeadTable.Width = processViewPanel.ClientSize.Width;
         }
 
         private void StopSimulation()
         {
             stopSimulation = true;
+        }
+
+        private void processViewPanel_SizeChanged(object sender, EventArgs e)
+        {
+            processHeadTable.Width = processViewPanel.ClientSize.Width;
         }
 
         private void Simulation_FormClosed(object sender, FormClosedEventArgs e)
@@ -218,9 +225,7 @@ namespace PSS
             StopSimulation();
 
             //If we added new processes to the list we need to push them back to the main menu as well
-            BindingList<Process> processes = new BindingList<Process>();
-            scheduler.ProcessList.ForEach(x => processes.Add(x.Process));
-            ((MainMenu)Owner).ImportNewProcesses(processes);
+            ((MainMenu)Owner).ImportNewProcesses(scheduler.ProcessList.Select(x => x.Process).ToList());
             
             //Shows the main menu
             Owner.Show();

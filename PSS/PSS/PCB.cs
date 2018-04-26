@@ -85,7 +85,7 @@ namespace PSS
         /// <summary>
         /// Resumes the process
         /// </summary>
-            public void Resume()
+        public void Resume()
         {
             processState = ProcessState.RUNNING;
             onCPU = true;

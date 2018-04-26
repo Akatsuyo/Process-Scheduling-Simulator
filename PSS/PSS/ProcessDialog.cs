@@ -25,7 +25,11 @@ namespace PSS
         // Returns a process with set values
         public Process GetProcess()
         {
-            return new Process(nameValue.Text, (double)probabilityValue.Value / 100, (IO.Speed)SwiftnessList.SelectedIndex, (int)lengthValue.Value);
+            return new Process(
+                nameValue.Text, 
+                (double)probabilityValue.Value / 100, 
+                (IO.Speed)SwiftnessList.SelectedIndex, 
+                (int)lengthValue.Value);
         }
 
         // Sets control's values based on a process
@@ -77,19 +81,19 @@ namespace PSS
             lengthError.Text = "";
         }
 
-        private void ProcessDialog_KeyPress(object sender, System.Windows.Forms.KeyEventArgs e)
-        {
-            if (e.KeyCode == Keys.Enter)
-            {
-                //buttonOK_Click();
-                MessageBox.Show("enter");
-            }
-            if (e.KeyCode == Keys.Escape)
-            {
-                //buttonOK_Click();
-                MessageBox.Show("esc");
-            }
+        //private void ProcessDialog_KeyPress(object sender, KeyEventArgs e)
+        //{
+        //    if (e.KeyCode == Keys.Enter)
+        //    {
+        //        //buttonOK_Click();
+        //        MessageBox.Show("enter");
+        //    }
+        //    if (e.KeyCode == Keys.Escape)
+        //    {
+        //        //buttonOK_Click();
+        //        MessageBox.Show("esc");
+        //    }
 
-        }
+        //}
     }
 }

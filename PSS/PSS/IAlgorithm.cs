@@ -20,7 +20,7 @@ namespace PSS
         /// <summary>
         /// Returns the running process
         /// </summary>
-        /// <returns>Runnig PCB</returns>
+        /// <returns>Running PCB</returns>
         PCB GetRunningPCB();
 
         /// <summary>

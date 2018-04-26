@@ -29,7 +29,6 @@ namespace PSS
         /// <param name="ioProgress">Current I/O progress</param>
         public void UpdateData(PCB.ProcessState state, double progress, double ioProgress)
         {
-
             labelState.Text = state.ToString();
             progressBarProgress.Value = (int)(progress * 100);
             progressBarIO.Value = (int)(ioProgress * 100);

@@ -21,7 +21,7 @@ namespace PSS
             labelSimSpeed.Text = simSpeed.Value.ToString();
         }
 
-        private void Form1_Load(object sender, EventArgs e)
+        private void MainMenu_Load(object sender, EventArgs e)
         {
             // Initialize process list
             processList = new BindingList<Process>();
@@ -36,11 +36,13 @@ namespace PSS
             algList.DisplayMember = "Name";
         }
 
-        public void ImportNewProcesses(BindingList<Process> processes)
+        public void ImportNewProcesses(List<Process> toImport)
         {
-            processList = processes;
-            processData.DataSource = processList;
+            processList.Clear();
+            toImport.ForEach(x => processList.Add(x));
         }
+
+        // --------------- Buttons --------------- //
 
         private void buttonAddProcess_Click(object sender, EventArgs e)
         {
@@ -115,6 +117,9 @@ namespace PSS
             }
         }
 
+        // --------------------------------------- //
+
+        // Updates label below slider
         private void simSpeed_ValueChanged(object sender, EventArgs e)
         {
             labelSimSpeed.Text = simSpeed.Value.ToString();
