@@ -11,7 +11,7 @@ namespace PSS
     /// </summary>
     public class Process
     {
-        public enum State { RUNNING, BLOCKED, ENDED};
+        public enum State { RUNNING, BLOCKED, ENDED };
 
         /// <summary>
         /// Name of the process
@@ -32,7 +32,7 @@ namespace PSS
         private int length;
 
         /// <summary>
-        /// Remaining time af the process (tick)
+        /// Remaining time of the process (tick)
         /// </summary>
         private int remainingTick;
 
@@ -117,6 +117,7 @@ namespace PSS
         /// </summary>
         public double IOProbability
         {
+            // Capped to 10%?
             get { return ioProbability * 10; }
             set
             {
@@ -133,7 +134,7 @@ namespace PSS
         /// </summary>
         public int IOProbabilityPercent
         {
-            get { return (int)(ioProbability * 1000); }
+            get { return (int)Math.Round(ioProbability * 1000); }
             set
             {
                 if (value < 0 || value > 100)
@@ -173,29 +174,32 @@ namespace PSS
         /// In real life we don't know when the process will finish
         /// We do it because the interactivity
         /// </summary>
-        public double Progress
+        public int Progress
         {
-            get { return 1 - (double)remainingTick / (double)length; }
+            get { return length - remainingTick; }
         }
 
         /// <summary>
-        /// Returns the current progress of the I/O operation
-        /// If there is no I/O operation it returns 0.0
+        /// Returns the current I/O operation
         /// </summary>
-        public double IOProgress
+        public IO CurrentIO
         {
-            get { return (currentIO != null) ? currentIO.Progress : 0.0; }
+            get { return currentIO; }
         }
 
         /// <summary>
-        /// Calls the IO operation
-        /// We need this class because I/O operation makes progress whether the process is running or not
+        /// Waits for IO request
+        /// Sets <c>currentIO</c> to null when it is done.
         /// </summary>
-        public void DoIO()
+        public void WaitForIO()
         {
-            if (IsBlocked)
+            if (currentIO != null)
             {
-                if (currentIO.GetData())
+                if (!currentIO.Done)
+                {
+                    currentIO.GetData();
+                }
+                else
                 {
                     currentIO = null;
                 }
@@ -228,36 +232,11 @@ namespace PSS
                     }
                     else
                     {
-                        if (randomSwiftness == 8)
-                        {
-                            switch (ioSwiftness)
-                            {
-                                case IO.Speed.FAST:
-                                    speed = IO.Speed.SLOW;
-                                    break;
-                                case IO.Speed.MEDIUM:
-                                    speed = IO.Speed.FAST;
-                                    break;
-                                case IO.Speed.SLOW:
-                                    speed = IO.Speed.MEDIUM;
-                                    break;
-                            }
-                        }
-                        else
-                        {
-                            switch (ioSwiftness)
-                            {
-                                case IO.Speed.FAST:
-                                    speed = IO.Speed.MEDIUM;
-                                    break;
-                                case IO.Speed.MEDIUM:
-                                    speed = IO.Speed.SLOW;
-                                    break;
-                                case IO.Speed.SLOW:
-                                    speed = IO.Speed.FAST;
-                                    break;
-                            }
-                        }
+                        // This is overkill
+                        // Cycles between enum values
+                        // -- Adds randomSwiftness - 7 to currentSwiftness
+                        // -- Wraps around enum values (e.g., If enum has 3 values, then 3 + 1 == 0)
+                        speed = (IO.Speed)((randomSwiftness - 7 + (int)ioSwiftness) % Enum.GetValues(typeof(IO.Speed)).Length);
                     }
 
                     currentIO = new IO(speed);

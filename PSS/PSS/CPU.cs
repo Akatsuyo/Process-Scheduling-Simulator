@@ -61,10 +61,15 @@ namespace PSS
         {
             if (currentProcess != null)
             {
+                working = true;
                 currentProcess.Run();
                 if (currentProcess.State == PCB.ProcessState.DEAD)
                 {
                     StopProcess();
+                }
+                else if (currentProcess.Process.IsBlocked)
+                {
+                    working = false;
                 }
             }
         }

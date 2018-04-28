@@ -11,8 +11,8 @@ namespace PSS
     /// </summary>
     public class FIFO : IAlgorithm
     {
-        Queue<PCB> queue;
-        PCB current;
+        private Queue<PCB> queue;
+        private PCB current;
         private bool started = false;
 
         public void AddProcess(PCB process)

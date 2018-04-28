@@ -10,13 +10,13 @@ namespace PSS
 {
     public partial class Simulation : Form
     {
-        //Speed of the simulation
+        private Scheduler scheduler;
+
+        // Speed of the simulation
         private int speed;
 
-        //Booleans of the simulation states
-        private bool pauseSimulation, stopSimulation, atClosing;
+        private bool running, formClosed;
 
-        private Scheduler scheduler;
         private Dictionary<int, ProcessSimulationRow> processes;
 
         public Simulation(Scheduler sch, int speed)
@@ -27,8 +27,11 @@ namespace PSS
             {
                 throw new ArgumentException("Parameter must be between 1 and 1000", "Simulation Speed");
             }
-
             this.speed = speed;
+
+            running = false;
+            formClosed = false;
+
             processes = new Dictionary<int, ProcessSimulationRow>();
 
             InitializeComponent();
@@ -53,10 +56,10 @@ namespace PSS
         /// <summary>
         /// Adds process to the Process View Panel
         /// </summary>
-        /// <param name="process">The process</param>
-        private void AddProcessToView(PCB process)
+        /// <param name="pcb">The pcb</param>
+        private void AddProcessToView(PCB pcb)
         {
-            ProcessSimulationRow psr = new ProcessSimulationRow(process.PID, process.Process.Name, process.State)
+            ProcessSimulationRow psr = new ProcessSimulationRow(pcb)
             {
                 Height = 30,
                 //FlowLayout is tricky
@@ -65,7 +68,7 @@ namespace PSS
                 Anchor = (AnchorStyles.Left | AnchorStyles.Right)
             };
 
-            processes.Add(process.PID, psr);
+            processes.Add(pcb.PID, psr);
 
             processViewPanel.Controls.Add(psr);
         }
@@ -74,28 +77,20 @@ namespace PSS
 
         private async void buttonStartSim_Click(object sender, EventArgs e)
         {
-            scheduler.Reset();
-
-            buttonStartSim.Enabled = false;
-            buttonStopSim.Enabled = true;
-            buttonPauseSim.Enabled = true;
-
-            await Simulate();
-
-        }
-
-        private async void buttonPauseSim_Click(object sender, EventArgs e)
-        {
-            if (pauseSimulation)
+            if (running)
             {
-                buttonPauseSim.Text = "Pause";
-                await Simulate();
+                buttonStartSim.Text = "Resume";
+                running = false;
             }
             else
             {
-                buttonPauseSim.Text = "Resume";
-                PauseSimulation();
+                buttonStartSim.Text = "Pause";
+                buttonStopSim.Enabled = true;
+                running = true;
+
+                await Simulate();
             }
+            
         }
 
         private void buttonStopSim_Click(object sender, EventArgs e)
@@ -120,95 +115,29 @@ namespace PSS
 
         private async Task Simulate()
         {
-            pauseSimulation = false;
-            stopSimulation = false;
-            atClosing = false;
-
             // Simulation loop
-            while (true)
+            while (running)
             {
-                // Pause
-                if (pauseSimulation)
-                {
-                    break;
-                }
+                // Stop simulation when done
+                if (scheduler.Step())
+                    StopSimulation();
 
-                bool done = false;
+                if (!formClosed)
+                    UpdateUI();
 
-                //When we stop the simulation we need to update the UI
-                if (stopSimulation)
-                {
-                    scheduler.Reset();
-                }
-                //We don't want to take the first step (start the simulation) when we reseted it
-                else
-                {
-                    done = scheduler.Step();
-                }
-
-                //This is required because of the nature of async
-                //If we update the UI after closing we get a sneaky little NullReferenceException
-                if (!atClosing)
-                {
-                    // Update UI
-                    //TODO This doesn't work
-                    labelUtil.Text = (Math.Round((double)scheduler.Worktime / scheduler.ElapsedTime, 2) * 100).ToString() + "%";
-                    //TODO This doesn't work
-                    labelTurnaround.Text = scheduler.Turnaround.ToString();
-                    labelCurrTime.Text = scheduler.ElapsedTime.ToString();
-
-                    //Sets dynamic parameters of processes in the list
-                    // Update process view
-                    foreach (KeyValuePair<int, ProcessSimulationRow> elem in processes)
-                    {
-                        PCB pcb = scheduler.GetProcessByID(elem.Key);
-                        elem.Value.UpdateData(pcb.State, pcb.Process.Progress, pcb.Process.IOProgress);
-                    }
-
-                    //Updates the Ready Queue label
-                    string readyQueueString = "";
-                    foreach (PCB process in scheduler.ReadyQueue)
-                    {
-                        readyQueueString += "P#";
-                        readyQueueString += process.PID.ToString();
-                        readyQueueString += " ";
-                    }
-                    labelrQueue.Text = readyQueueString;
-                }
-
-                //When we updated the UI we don't want to update once more so we break it
-                if (stopSimulation)
-                {
-                    break;
-                }
-
-                //If the simulation is done we break it
-                if (done)
-                {
-                    break;
-                }
-                //Speed is x tick / sec
-                await Task.Delay(1000/speed);
+                // Speed is x tick / sec
+                await Task.Delay(1000 / speed);
             }
-
-            //If this isn't a paused state (i.e. stop) we have to update the control buttons as well
-            //On pause mode we update it differently
-            if (!pauseSimulation)
-            {
-                buttonStartSim.Enabled = true;
-                buttonStopSim.Enabled = false;
-                buttonPauseSim.Enabled = false;
-            }
-        }
-
-        private void PauseSimulation()
-        {
-            pauseSimulation = true;
         }
 
         private void StopSimulation()
         {
-            stopSimulation = true;
+            buttonStopSim.Enabled = false;
+            buttonStartSim.Text = "Start";
+            running = false;
+
+            scheduler.Reset();
+            UpdateUI();
         }
 
         private void processViewPanel_SizeChanged(object sender, EventArgs e)
@@ -219,16 +148,70 @@ namespace PSS
         private void Simulation_FormClosed(object sender, FormClosedEventArgs e)
         {
             //Set the state to closing
-            atClosing = true;
+            formClosed = true;
 
-            //Stop the simulation (and reset it)
-            StopSimulation();
+            // Stop simulation if running
+            running = false;
 
             //If we added new processes to the list we need to push them back to the main menu as well
             ((MainMenu)Owner).ImportNewProcesses(scheduler.ProcessList.Select(x => x.Process).ToList());
             
             //Shows the main menu
             Owner.Show();
+        }
+
+        private void UpdateUI()
+        {
+            // Update label async
+            labelUtil.BeginInvoke((Action)(() =>
+            {
+                labelUtil.Text = running ? (Math.Round((double)scheduler.Worktime * 100 / 
+                                                        scheduler.ElapsedTime).ToString() + "%") : "-";
+            }));
+            labelTurnaround.BeginInvoke((Action)(() =>
+            {
+                labelTurnaround.Text = scheduler.Turnaround.ToString();
+            }));
+            labelCurrTime.BeginInvoke((Action)(() =>
+            {
+                labelCurrTime.Text = scheduler.ElapsedTime.ToString();
+            }));
+
+            int fullLength = 0;
+            int curr = 0;
+            foreach (var pcb in scheduler.ProcessList)
+            {
+                fullLength += pcb.Process.Length;
+                curr += pcb.Process.Progress;
+            }
+
+            labelCurrTime.BeginInvoke((Action)(() =>
+            {
+                labelCompletion.Text = Math.Round((double)curr * 100 / fullLength).ToString() + "%";
+            }));
+
+            // Sets dynamic parameters of processes in the list
+            // Update process view
+            foreach (KeyValuePair<int, ProcessSimulationRow> elem in processes)
+            {
+                PCB pcb = scheduler.GetProcessByID(elem.Key);
+                elem.Value.UpdateData(pcb);
+            }
+
+            // Updates the Ready Queue label
+            string readyQueueString = "";
+            foreach (PCB process in scheduler.ReadyQueue)
+            {
+                readyQueueString += "P#";
+                readyQueueString += process.PID.ToString();
+                readyQueueString += " ";
+            }
+
+            labelrQueue.BeginInvoke((Action)(() =>
+            {
+                labelrQueue.Text = readyQueueString;
+            }));
+            
         }
     }
 }

@@ -80,20 +80,5 @@ namespace PSS
             swiftnessError.Text = "";
             lengthError.Text = "";
         }
-
-        //private void ProcessDialog_KeyPress(object sender, KeyEventArgs e)
-        //{
-        //    if (e.KeyCode == Keys.Enter)
-        //    {
-        //        //buttonOK_Click();
-        //        MessageBox.Show("enter");
-        //    }
-        //    if (e.KeyCode == Keys.Escape)
-        //    {
-        //        //buttonOK_Click();
-        //        MessageBox.Show("esc");
-        //    }
-
-        //}
     }
 }

@@ -102,7 +102,7 @@ namespace PSS
         /// </summary>
         public void Run()
         {
-            currentProcess.DoIO();
+            currentProcess.WaitForIO();
             if (onCPU)
             {
                 currentProcess.Do();

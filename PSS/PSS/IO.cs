@@ -28,12 +28,12 @@ namespace PSS
         /// Length of the I/O request
         /// This variable generated according to Speed, and it has some randomness
         /// </summary>
-        private int length;
+        public int Length { get; set; }
 
         /// <summary>
         /// Remaining tick of the I/O request
         /// </summary>
-        private int remaining;
+        public int Remaining { get; set; }
 
         /// <summary>
         /// I/O operation constructor
@@ -48,42 +48,41 @@ namespace PSS
             switch (type)
             {
                 case Speed.FAST:
-                    length = random.Next(100, 300);
+                    Length = random.Next(100, 300);
                     break;
                 case Speed.MEDIUM:
-                    length = random.Next(300, 700);
+                    Length = random.Next(300, 700);
                     break;
                 case Speed.SLOW:
-                    length = random.Next(700, 1500);
+                    Length = random.Next(700, 1500);
                     break;
             }
 
-            remaining = length;
+            Remaining = Length;
         }
 
         /// <summary>
         /// Returns the progress of the I/O operation
         /// </summary>
-        public double Progress
+        public int Progress
         {
-            get
-            {
-                return 1 - (double)remaining / (double)length;
-            }
+            get { return Length - Remaining; }
         }
 
         /// <summary>
         /// It's just a simulation, so data is also simulated
         /// </summary>
-        /// <returns>Completeness of the I/O operation</returns>
-        public bool GetData()
+        public void GetData()
         {
-            if (remaining <= 0)
+            if (!Done)
             {
-                return true;
+                Remaining--;
             }
-            remaining--;
-            return false;
+        }
+
+        public bool Done
+        {
+            get { return Remaining <= 0; }
         }
     }
 }

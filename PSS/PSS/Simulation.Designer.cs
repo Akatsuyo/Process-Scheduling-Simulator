@@ -43,15 +43,14 @@
             this.labelTurnaround = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.buttonStopSim = new System.Windows.Forms.Button();
-            this.buttonPauseSim = new System.Windows.Forms.Button();
             this.buttonAddProcess = new System.Windows.Forms.Button();
             this.processViewPanel = new System.Windows.Forms.FlowLayoutPanel();
             this.processHeadTable = new System.Windows.Forms.TableLayoutPanel();
+            this.label8 = new System.Windows.Forms.Label();
+            this.label7 = new System.Windows.Forms.Label();
             this.labelPID = new System.Windows.Forms.Label();
             this.labelName = new System.Windows.Forms.Label();
             this.labelState = new System.Windows.Forms.Label();
-            this.label7 = new System.Windows.Forms.Label();
-            this.label8 = new System.Windows.Forms.Label();
             this.tableLayoutPanel1.SuspendLayout();
             this.processViewPanel.SuspendLayout();
             this.processHeadTable.SuspendLayout();
@@ -77,10 +76,9 @@
             this.tableLayoutPanel1.Controls.Add(this.label3, 0, 3);
             this.tableLayoutPanel1.Controls.Add(this.labelTurnaround, 1, 1);
             this.tableLayoutPanel1.Controls.Add(this.label2, 0, 1);
-            this.tableLayoutPanel1.Controls.Add(this.buttonStopSim, 2, 2);
-            this.tableLayoutPanel1.Controls.Add(this.buttonPauseSim, 2, 1);
             this.tableLayoutPanel1.Controls.Add(this.buttonAddProcess, 2, 7);
             this.tableLayoutPanel1.Controls.Add(this.processViewPanel, 3, 1);
+            this.tableLayoutPanel1.Controls.Add(this.buttonStopSim, 2, 1);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
@@ -145,11 +143,11 @@
             this.label5.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.label5.AutoSize = true;
             this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.label5.Location = new System.Drawing.Point(18, 357);
+            this.label5.Location = new System.Drawing.Point(10, 357);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(112, 26);
+            this.label5.Size = new System.Drawing.Size(129, 26);
             this.label5.TabIndex = 6;
-            this.label5.Text = "Complete:";
+            this.label5.Text = "Completion:";
             // 
             // labelCompletion
             // 
@@ -244,25 +242,13 @@
             // 
             this.buttonStopSim.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.buttonStopSim.Enabled = false;
-            this.buttonStopSim.Location = new System.Drawing.Point(278, 131);
+            this.buttonStopSim.Location = new System.Drawing.Point(278, 74);
             this.buttonStopSim.Name = "buttonStopSim";
             this.buttonStopSim.Size = new System.Drawing.Size(75, 23);
             this.buttonStopSim.TabIndex = 10;
             this.buttonStopSim.Text = "Stop";
             this.buttonStopSim.UseVisualStyleBackColor = true;
             this.buttonStopSim.Click += new System.EventHandler(this.buttonStopSim_Click);
-            // 
-            // buttonPauseSim
-            // 
-            this.buttonPauseSim.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.buttonPauseSim.Enabled = false;
-            this.buttonPauseSim.Location = new System.Drawing.Point(278, 74);
-            this.buttonPauseSim.Name = "buttonPauseSim";
-            this.buttonPauseSim.Size = new System.Drawing.Size(75, 23);
-            this.buttonPauseSim.TabIndex = 14;
-            this.buttonPauseSim.Text = "Pause";
-            this.buttonPauseSim.UseVisualStyleBackColor = true;
-            this.buttonPauseSim.Click += new System.EventHandler(this.buttonPauseSim_Click);
             // 
             // buttonAddProcess
             // 
@@ -316,6 +302,30 @@
             this.processHeadTable.Size = new System.Drawing.Size(407, 30);
             this.processHeadTable.TabIndex = 6;
             // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.label8.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.label8.Location = new System.Drawing.Point(308, 1);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(95, 28);
+            this.label8.TabIndex = 4;
+            this.label8.Text = "I/O";
+            this.label8.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.label7.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.label7.Location = new System.Drawing.Point(207, 1);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(94, 28);
+            this.label7.TabIndex = 3;
+            this.label7.Text = "Progress";
+            this.label7.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
             // labelPID
             // 
             this.labelPID.AutoSize = true;
@@ -349,30 +359,6 @@
             this.labelState.TabIndex = 2;
             this.labelState.Text = "State";
             this.labelState.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // label7
-            // 
-            this.label7.AutoSize = true;
-            this.label7.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label7.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.label7.Location = new System.Drawing.Point(207, 1);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(94, 28);
-            this.label7.TabIndex = 3;
-            this.label7.Text = "Progress";
-            this.label7.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // label8
-            // 
-            this.label8.AutoSize = true;
-            this.label8.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label8.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.label8.Location = new System.Drawing.Point(308, 1);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(95, 28);
-            this.label8.TabIndex = 4;
-            this.label8.Text = "I/O";
-            this.label8.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // Simulation
             // 
@@ -411,7 +397,6 @@
         private System.Windows.Forms.Button buttonStopSim;
         private System.Windows.Forms.Button buttonExport;
         private System.Windows.Forms.Label labelrQueue;
-        private System.Windows.Forms.Button buttonPauseSim;
         private System.Windows.Forms.Button buttonAddProcess;
         private System.Windows.Forms.FlowLayoutPanel processViewPanel;
         private System.Windows.Forms.TableLayoutPanel processHeadTable;

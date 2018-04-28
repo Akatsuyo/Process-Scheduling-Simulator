@@ -12,13 +12,13 @@ namespace PSS
 {
     public partial class ProcessSimulationRow : UserControl
     {
-        public ProcessSimulationRow(int pid, string name, PCB.ProcessState state)
+        public ProcessSimulationRow(PCB pcb)
         {
             InitializeComponent();
-            labelPID.Text = pid.ToString();
-            labelName.Text = name;
-            labelState.Text = state.ToString();
-            ChangeBackgroundByState(state);
+            labelPID.Text = pcb.PID.ToString();
+            labelName.Text = pcb.Process.Name;
+            labelState.Text = pcb.State.ToString();
+            ChangeBackgroundByState(pcb.State);
         }
 
         /// <summary>
@@ -27,12 +27,21 @@ namespace PSS
         /// <param name="state">Current state</param>
         /// <param name="progress">Current progress</param>
         /// <param name="ioProgress">Current I/O progress</param>
-        public void UpdateData(PCB.ProcessState state, double progress, double ioProgress)
+        public void UpdateData(PCB pcb)
         {
-            labelState.Text = state.ToString();
-            progressBarProgress.Value = (int)(progress * 100);
-            progressBarIO.Value = (int)(ioProgress * 100);
-            ChangeBackgroundByState(state);
+            labelState.Text = pcb.State.ToString();
+            progressBarProgress.Maximum = pcb.Process.Length;
+            progressBarProgress.Value = pcb.Process.Progress;
+            if (pcb.Process.CurrentIO != null)
+            {
+                progressBarIO.Maximum = pcb.Process.CurrentIO.Length;
+                progressBarIO.Value = pcb.Process.CurrentIO.Progress;
+            }
+            else
+            {
+                progressBarIO.Value = 0;
+            }
+            ChangeBackgroundByState(pcb.State);
         }
 
         /// <summary>
