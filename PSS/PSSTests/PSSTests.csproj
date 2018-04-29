@@ -51,6 +51,7 @@
     <Compile Include="ProcessTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="IOTests.cs" />
+    <Compile Include="SchedulerTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

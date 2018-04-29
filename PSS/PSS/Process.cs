@@ -42,6 +42,26 @@ namespace PSS
         private IO currentIO;
 
         /// <summary>
+        /// Total time of process on CPU
+        /// </summary>
+        private int cpuTime;
+
+        /// <summary>
+        /// Useful time on CPU (not blocked and not done)
+        /// </summary>
+        private int usefulCPUTime;
+
+        /// <summary>
+        /// Total time of IO blocking
+        /// </summary>
+        private int ioTime;
+
+        /// <summary>
+        /// Number of IO requests
+        /// </summary>
+        private int ioCount;
+
+        /// <summary>
         /// Process constructor
         /// </summary>
         /// <param name="id">ID of process</param>
@@ -67,6 +87,11 @@ namespace PSS
             this.ioProbability = ioProbability / 10;
             this.length = length;
 
+            cpuTime = 0;
+            usefulCPUTime = 0;
+            ioTime = 0;
+            ioCount = 0;
+
             remainingTick = length;
         }
 
@@ -76,9 +101,11 @@ namespace PSS
         /// </summary>
         public void Do()
         {
+            cpuTime++;
             //If there is no I/O request running and not done
             if (!IsBlocked && remainingTick > 0)
             {
+                usefulCPUTime++;
                 AddIO();
                 remainingTick--;
             }
@@ -144,6 +171,7 @@ namespace PSS
                 ioProbability = (double)value / 100 / 10;
             }
         }
+
         /// <summary>
         /// Property of I/O swiftness
         /// </summary>
@@ -170,10 +198,60 @@ namespace PSS
         }
 
         /// <summary>
+        /// Returns the total time of process
+        /// </summary>
+        public int TotalTime
+        {
+            get { return cpuTime + ioTime; }
+        }
+
+        /// <summary>
+        /// Returns the total I/O time of process
+        /// </summary>
+        public int IOTime
+        {
+            get { return ioTime; }
+        }
+
+        /// <summary>
+        /// Returns the average I/O time per request
+        /// </summary>
+        public double AverageIORequestTime
+        {
+            get { return (double) ioTime / (double) ioCount; }
+        }
+
+        /// <summary>
+        /// Returns the ratio of I/O operation per process
+        /// between 0.0 and 1.0
+        /// </summary>
+        public double IORatio
+        {
+            get { return (double) ioTime / (double) (cpuTime + ioTime); }
+        }
+
+        /// <summary>
+        /// Returns the total CPU time of process
+        /// </summary>
+        public int CPUTime
+        {
+            get { return cpuTime; }
+        }
+
+        /// <summary>
+        /// Returns the ratio of CPU operation per process
+        /// between 0.0 and 1.0
+        /// </summary>
+        public double CPURatio
+        {
+            get { return (double)cpuTime / (double)(cpuTime + ioTime); }
+        }
+
+        /// <summary>
         /// Returns the progress of the process
+        /// </summary>
         /// In real life we don't know when the process will finish
         /// We do it because the interactivity
-        /// </summary>
         public int Progress
         {
             get { return length - remainingTick; }
@@ -197,6 +275,7 @@ namespace PSS
             {
                 if (!currentIO.Done)
                 {
+                    ioTime++;
                     currentIO.GetData();
                 }
                 else
@@ -221,6 +300,8 @@ namespace PSS
                 if (random.NextDouble() <= ioProbability)
                 {
                     //Our process wants I/O operation
+
+                    ioCount++;
 
                     //Determine speed of operation (80% chance to get ioSwiftness speed, 10-10% the other two)
                     int randomSwiftness = random.Next(0, 9);
@@ -250,6 +331,10 @@ namespace PSS
         public void Reset()
         {
             remainingTick = length;
+            cpuTime = 0;
+            usefulCPUTime = 0;
+            ioTime = 0;
+            ioCount = 0;
             currentIO = null;
         }
     }

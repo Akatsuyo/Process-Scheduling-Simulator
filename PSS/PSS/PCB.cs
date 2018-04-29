@@ -27,11 +27,6 @@ namespace PSS
         private int pID;
 
         /// <summary>
-        /// Priority (if algorithm needs)
-        /// </summary>
-        private int priority;
-
-        /// <summary>
         /// Is process currently on CPU
         /// </summary>
         private bool onCPU;
@@ -73,22 +68,6 @@ namespace PSS
         }
 
         /// <summary>
-        /// Property of priority
-        /// </summary>
-        public int Priority
-        {
-            get { return priority; }
-            set
-            {
-                if (value < 0)
-                {
-                    throw new ArgumentException("Paramter must be positive", "Priority");
-                }
-                this.priority = value;
-            }
-        }
-
-        /// <summary>
         /// Resumes the process
         /// </summary>
         public void Resume()
@@ -102,7 +81,9 @@ namespace PSS
         /// </summary>
         public void Run()
         {
+            //IO is working even if the process is not on CPU
             currentProcess.WaitForIO();
+
             if (onCPU)
             {
                 currentProcess.Do();

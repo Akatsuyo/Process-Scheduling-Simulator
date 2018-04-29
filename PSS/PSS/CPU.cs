@@ -57,7 +57,8 @@ namespace PSS
         /// <summary>
         /// As the method name says, it does work (everything)
         /// </summary>
-        public void DoWork()
+        /// <returns>Is CPU currently working</returns>
+        public bool DoWork()
         {
             if (currentProcess != null)
             {
@@ -71,7 +72,11 @@ namespace PSS
                 {
                     working = false;
                 }
+
+                return true;
             }
+
+            return false;
         }
 
         /// <summary>

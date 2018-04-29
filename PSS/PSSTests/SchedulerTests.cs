@@ -1,0 +1,62 @@
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using PSS;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace PSS.Tests
+{
+    [TestClass()]
+    public class SchedulerTests
+    {
+        [TestMethod()]
+        public void SchedulerTest()
+        {
+            List<Process> processes = new List<Process>();
+            processes.Add(new Process("pr1", 0.2, IO.Speed.FAST, 500));
+            processes.Add(new Process("pr2", 0.2, IO.Speed.FAST, 500));
+            processes.Add(new Process("pr3", 0.2, IO.Speed.FAST, 500));
+            Scheduler scheduler = new Scheduler(processes, new FIFO());
+            //process time and io time
+            int maxCounter = 500 * 300 * 3;
+            int minCounter = 500 * 3;
+            int counter = 0;
+            while (!scheduler.Step())
+            {
+                Assert.IsTrue(counter < 100000000, "Possible infinite loop");
+                counter++;
+            }
+
+            Assert.IsTrue(scheduler.ElapsedTime <= maxCounter, "Scheduler runs more than it should");
+            Assert.IsTrue(scheduler.ElapsedTime >= minCounter, "Scheduler runs less than it should");
+        }
+
+        [TestMethod()]
+        public void SchedulerAccuracyTest()
+        {
+            List<Process> processes = new List<Process>();
+            processes.Add(new Process("pr1", 0.2, IO.Speed.FAST, 500));
+            processes.Add(new Process("pr2", 0.2, IO.Speed.FAST, 500));
+            processes.Add(new Process("pr3", 0.2, IO.Speed.FAST, 500));
+            Scheduler scheduler = new Scheduler(processes, new FIFO());
+            //process time and io time
+            int counter = 0;
+            while (!scheduler.Step())
+            {
+                Assert.IsTrue(counter < 100000000, "Possible infinite loop");
+                counter++;
+            }
+
+            int theoreticalCounter = 0;
+
+            foreach (var process in scheduler.ProcessList)
+            {
+                theoreticalCounter += process.Process.TotalTime;
+            }
+
+            Assert.IsTrue(theoreticalCounter == scheduler.Worktime, "Scheduler work time is inaccurate");
+        }
+    }
+}

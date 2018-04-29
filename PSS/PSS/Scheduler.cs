@@ -202,8 +202,7 @@ namespace PSS
             }
 
             // Do cpu work
-            cpu.DoWork();
-            if (cpu.Working)
+            if (cpu.DoWork())
                 worktime++;
 
             elapsed++;
