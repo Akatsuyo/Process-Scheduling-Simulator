@@ -11,9 +11,24 @@ namespace PSS
     /// </summary>
     public class FIFO : IAlgorithm
     {
+        List<PCB> pool;
+
         private Queue<PCB> queue;
         private PCB current;
         private bool started = false;
+
+        public void Initialize(List<PCB> processes)
+        {
+            pool = processes;
+            queue = new Queue<PCB>(pool);
+            current = queue.Dequeue();
+            started = true;
+        }
+
+        public List<PCB> GetPool()
+        {
+            return pool;
+        }
 
         public void AddProcess(PCB process)
         {
@@ -23,12 +38,6 @@ namespace PSS
         public int CountRemainingProcess()
         {
             return queue.Count;
-        }
-
-        public Queue<PCB> GetBlockedPCBs()
-        {
-            //In FIFO algorithm there is not blocked queue
-            return new Queue<PCB>();
         }
 
         public string GetProcessNameByID(int pID)
@@ -66,10 +75,10 @@ namespace PSS
             return PCB.ProcessState.DEAD;
         }
 
-        public Queue<PCB> GetReadyPCBs()
+        public List<PCB> GetReadyPCBs()
         {
             //In FIFO algorithm we only have one queue
-            return queue;
+            return queue.ToList();
         }
 
         public PCB GetRunningPCB()
@@ -82,12 +91,7 @@ namespace PSS
             return (started && queue.Count == 0 );
         }
 
-        public void SetProcesses(List<PCB> processes)
-        {
-            queue = new Queue<PCB>(processes);
-            current = queue.Dequeue();
-            started = true;
-        }
+        
 
         public void Work()
         {
@@ -95,6 +99,11 @@ namespace PSS
                 if (current.State == PCB.ProcessState.DEAD)
                 {
                     //In FIFO we get the next process when the old one finished
+                    current = queue.Dequeue();
+                }
+                else if (current.State == PCB.ProcessState.WAITING)
+                {
+                    queue.Enqueue(current);
                     current = queue.Dequeue();
                 }
             }

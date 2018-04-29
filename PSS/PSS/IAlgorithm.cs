@@ -15,8 +15,14 @@ namespace PSS
         /// Sets the initial processes
         /// </summary>
         /// <param name="processes">List of the processes</param>
-        void SetProcesses(List<PCB> processes);
-  
+        void Initialize(List<PCB> processes);
+
+        /// <summary>
+        /// Gets ready to go pcbs (not blocked or finished)
+        /// </summary>
+        /// <returns>Ready PCB List</returns>
+        List<PCB> GetReadyPCBs();
+
         /// <summary>
         /// Returns the running process
         /// </summary>
@@ -24,16 +30,10 @@ namespace PSS
         PCB GetRunningPCB();
 
         /// <summary>
-        /// Returns the ready queue
+        /// Returns the pcb pool
         /// </summary>
-        /// <returns>Ready queue</returns>
-        Queue<PCB> GetReadyPCBs();
-
-        /// <summary>
-        /// Returns the blocked queue
-        /// </summary>
-        /// <returns>Blocked queue</returns>
-        Queue<PCB> GetBlockedPCBs();
+        /// <returns>PCB pool</returns>
+        List<PCB> GetPool();
 
         /// <summary>
         /// Returns true if there are no more processes left

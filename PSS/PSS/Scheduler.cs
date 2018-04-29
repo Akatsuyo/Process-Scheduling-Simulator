@@ -50,7 +50,7 @@ namespace PSS
             selectedAlgorithm = alg;
 
             //Forward all process to the algorithm (which is possibly makes a queue of it)
-            selectedAlgorithm.SetProcesses(processList);
+            selectedAlgorithm.Initialize(processList);
 
             //Init the CPU and set the current process
             cpu = new CPU();
@@ -71,7 +71,7 @@ namespace PSS
             //Reset all process
             processList.ForEach(i => i.Reset());
             //Forward the processes (again...)
-            selectedAlgorithm.SetProcesses(processList);
+            selectedAlgorithm.Initialize(processList);
 
             //Make a new CPU and set the current process
             cpu = new CPU();
@@ -146,7 +146,7 @@ namespace PSS
         /// <summary>
         /// Returns the Ready Queue
         /// </summary>
-        public Queue<PCB> ReadyQueue
+        public List<PCB> ReadyQueue
         {
             get { return selectedAlgorithm.GetReadyPCBs(); }
         }
@@ -199,6 +199,12 @@ namespace PSS
             {
                 cpu.StopProcess();
                 cpu.SetProcess(selectedAlgorithm.GetRunningPCB());
+            }
+
+            // Not optimal solution :/
+            foreach (var pcb in selectedAlgorithm.GetPool())
+            {
+                pcb.Run();
             }
 
             // Do cpu work
