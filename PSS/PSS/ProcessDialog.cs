@@ -27,7 +27,7 @@ namespace PSS
         {
             return new Process(
                 nameValue.Text, 
-                (double)probabilityValue.Value / 100, 
+                (int)probabilityValue.Value, 
                 (IO.Speed)SwiftnessList.SelectedIndex, 
                 (int)lengthValue.Value);
         }

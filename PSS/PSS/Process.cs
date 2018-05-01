@@ -70,6 +70,34 @@ namespace PSS
         /// <param name="length">Length of the process</param>
         public Process(string name, double ioProbability, IO.Speed ioSwiftness, int length)
         {
+            InitializeProcess(name, ioProbability, ioSwiftness, length);
+        }
+
+        /// <summary>
+        /// Process constructor
+        /// </summary>
+        /// <param name="id">ID of process</param>
+        /// <param name="name">Name of the rpocess</param>
+        /// <param name="ioProbability">I/O Probability of the process (in percent)</param>
+        /// <param name="length">Length of the process</param>
+        public Process(string name, int ioProbability, IO.Speed ioSwiftness, int length)
+        {
+            if (ioProbability < 0 || ioProbability > 100)
+            {
+                throw new ArgumentException("Parameter must be between 0 and 100", "I/O Probability");
+            }
+            InitializeProcess(name, (double)ioProbability / 100, ioSwiftness, length);
+        }
+
+        /// <summary>
+        /// Initializes the process (necessary for constructor overload)
+        /// </summary>
+        /// <param name="id">ID of process</param>
+        /// <param name="name">Name of the rpocess</param>
+        /// <param name="ioProbability">I/O Probability of the process</param>
+        /// <param name="length">Length of the process</param>
+        private void InitializeProcess(string name, double ioProbability, IO.Speed ioSwiftness, int length)
+        {
             if (name.Length < 2 || name.Length > 15)
             {
                 throw new ArgumentException("Parameter must be between 2 and 15 character", "Process Name");

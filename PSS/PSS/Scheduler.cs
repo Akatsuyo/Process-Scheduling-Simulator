@@ -17,6 +17,7 @@ namespace PSS
         /// </summary>
         public int counter;
 
+
         /// <summary>
         /// List of the process control vlocks
         /// </summary>
@@ -35,6 +36,8 @@ namespace PSS
         private int worktime;
         private int turn;
         private int elapsed;
+
+        private int logCounter;
 
         /// <summary>
         /// Constructor of the class
@@ -60,7 +63,9 @@ namespace PSS
             worktime = 0;
             turn = 1;
             elapsed = 0;
+            logCounter = 0;
 
+            //Initialize EventLogger and set headers
             EventLogger.Initialize();
             EventLogger.AddEvent("Selected algorithm: " + selectedAlgorithm.GetType().Name);
             EventLogger.AddEvent("Process Count: " + processList.Count);
@@ -90,7 +95,9 @@ namespace PSS
             worktime = 0;
             turn = 0;
             elapsed = 0;
+            logCounter = 0;
 
+            //Initialize EventLogger and set headers
             EventLogger.Initialize();
             EventLogger.AddEvent("Selected algorithm: " + selectedAlgorithm.GetType().Name);
             EventLogger.AddEvent("Process Count: " + processList.Count);
@@ -99,10 +106,14 @@ namespace PSS
             LogCurrentState();
         }
 
+        /// <summary>
+        /// Logs the current state (with EventLogger)
+        /// </summary>
         public void LogCurrentState()
         {
+            logCounter++;
             EventLogger.AddEventRaw("");
-            EventLogger.AddEvent("########## Turn: #" + turn + ", Worktime: " + worktime + ", Elapsed: " + elapsed + " ##########");
+            EventLogger.AddEvent("########## Turn: #" + logCounter + ", Worktime: " + worktime + ", Elapsed: " + elapsed + " ##########");
             EventLogger.AddEvent("Current process: " + selectedAlgorithm.GetRunningPCB().ToString());
             processList.ForEach(x => EventLogger.AddEvent(x.ToString()));
         }

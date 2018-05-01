@@ -106,15 +106,22 @@ namespace PSS
             else
             {
                 //TODO Calibrate simSpeed
-                // Make a scheduler class from the parameters
-                Simulation simulation = new Simulation(new Scheduler(
-                    processList.ToList(),
-                    (IAlgorithm)Activator.CreateInstance((Type)algList.SelectedItem)), simSpeed.Value);
+                try
+                {
+                    // Make a scheduler class from the parameters
+                    Simulation simulation = new Simulation(new Scheduler(
+                        processList.ToList(),
+                        (IAlgorithm)Activator.CreateInstance((Type)algList.SelectedItem)), simSpeed.Value);
 
-                //Hides the main menu
-                Hide();
-                //Shows the simulation
-                simulation.Show(this);
+                    //Hides the main menu
+                    Hide();
+                    //Shows the simulation
+                    simulation.Show(this);
+                }
+                catch(Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
             }
         }
 
@@ -183,6 +190,7 @@ namespace PSS
                 try
                 {
                     XElement file;
+                    //File validation
                     if ((file = XDocument.Load(ofd.FileName).Element("scheduler")) == null)
                     {
                         throw new System.Xml.XmlException("Scheduler tag not found");
@@ -214,6 +222,7 @@ namespace PSS
 
                     foreach (XElement item in file.Element("processes").Elements())
                     {
+                        //Process validation
                         if (item.Attribute("ioprob") == null)
                         {
                             throw new System.Xml.XmlException("Ioprob attribute not found");
@@ -241,14 +250,14 @@ namespace PSS
                         {
                             throw new System.Xml.XmlException("Ioswift must be the following: FAST, MEDIUM, SLOW");
                         }
-
-                        processList.Add(new Process(item.Value, (double)ioprob / 100, speed, length));
+                        
+                        processList.Add(new Process(item.Value, ioprob, speed, length));
                     }
                     
                 }
-                catch (System.Xml.XmlException ex)
+                catch (Exception ex)
                 {
-                    MessageBox.Show(ex.Message, "Not fatal error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
         }
@@ -263,6 +272,7 @@ namespace PSS
 
         private void buttonExport_Click(object sender, EventArgs e)
         {
+            //Exports the current settings
             SaveFileDialog sfd = new SaveFileDialog()
             {
                 FileName = "PSSExport_" + DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss") + ".exp"
@@ -270,6 +280,18 @@ namespace PSS
 
             if (sfd.ShowDialog() == DialogResult.OK)
             {
+                /*
+                 The format should be this:
+
+                 <?xml version="1.0"?>
+                 <scheduler>
+                    <algorithm>[Algorithm]</algorithm>
+	                <processes>
+		                <process ioprob="[I/O Probability]" ioswift="[I/O Swiftness]" length="[Length]">[Name]</process>
+		                <process ioprob="[I/O Probability]" ioswift="[I/O Swiftness]" length="[Length]">[Name]</process>
+	                </processes>
+                </scheduler>
+                */
                 XDocument file = new XDocument();
                 file.Add(new XElement("scheduler"));
                 file.Element("scheduler").Add(new XElement("algorithm", algList.SelectedItem.ToString()));

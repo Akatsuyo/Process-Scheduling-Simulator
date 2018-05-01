@@ -162,6 +162,7 @@ namespace PSS
 
         private void buttonExport_Click(object sender, EventArgs e)
         {
+            //Exports the event log
             SaveFileDialog sfd = new SaveFileDialog()
             {
                 FileName = "PSSLog_" + DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss") + ".exp"
