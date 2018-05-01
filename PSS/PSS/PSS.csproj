@@ -78,6 +78,7 @@
     <Compile Include="Simulation.Designer.cs">
       <DependentUpon>Simulation.cs</DependentUpon>
     </Compile>
+    <Compile Include="SortableBindingList.cs" />
     <EmbeddedResource Include="ProcessDialog.resx">
       <DependentUpon>ProcessDialog.cs</DependentUpon>
     </EmbeddedResource>

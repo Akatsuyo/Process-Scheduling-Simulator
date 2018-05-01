@@ -29,9 +29,9 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.buttonDeleteProcess = new System.Windows.Forms.Button();
@@ -50,8 +50,10 @@
             this.label3 = new System.Windows.Forms.Label();
             this.algList = new System.Windows.Forms.ComboBox();
             this.simSpeed = new System.Windows.Forms.TrackBar();
-            this.buttonReady = new System.Windows.Forms.Button();
             this.labelSimSpeed = new System.Windows.Forms.Label();
+            this.buttonReady = new System.Windows.Forms.Button();
+            this.buttonImportData = new System.Windows.Forms.Button();
+            this.clearProcesses = new System.Windows.Forms.Button();
             this.tableLayoutPanel1.SuspendLayout();
             this.flowLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.processGridView)).BeginInit();
@@ -68,6 +70,7 @@
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 15F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 10F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 5F));
+            this.tableLayoutPanel1.Controls.Add(this.buttonImportData, 2, 0);
             this.tableLayoutPanel1.Controls.Add(this.flowLayoutPanel1, 2, 1);
             this.tableLayoutPanel1.Controls.Add(this.processGridView, 0, 1);
             this.tableLayoutPanel1.Controls.Add(this.label1, 0, 0);
@@ -89,6 +92,7 @@
             // 
             // flowLayoutPanel1
             // 
+            this.flowLayoutPanel1.Controls.Add(this.clearProcesses);
             this.flowLayoutPanel1.Controls.Add(this.buttonDeleteProcess);
             this.flowLayoutPanel1.Controls.Add(this.buttonEditProcess);
             this.flowLayoutPanel1.Controls.Add(this.buttonAddProcess);
@@ -101,7 +105,7 @@
             // 
             // buttonDeleteProcess
             // 
-            this.buttonDeleteProcess.Location = new System.Drawing.Point(3, 163);
+            this.buttonDeleteProcess.Location = new System.Drawing.Point(3, 134);
             this.buttonDeleteProcess.Name = "buttonDeleteProcess";
             this.buttonDeleteProcess.Size = new System.Drawing.Size(90, 23);
             this.buttonDeleteProcess.TabIndex = 2;
@@ -111,7 +115,7 @@
             // 
             // buttonEditProcess
             // 
-            this.buttonEditProcess.Location = new System.Drawing.Point(3, 134);
+            this.buttonEditProcess.Location = new System.Drawing.Point(3, 105);
             this.buttonEditProcess.Name = "buttonEditProcess";
             this.buttonEditProcess.Size = new System.Drawing.Size(90, 23);
             this.buttonEditProcess.TabIndex = 1;
@@ -122,7 +126,7 @@
             // buttonAddProcess
             // 
             this.buttonAddProcess.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.buttonAddProcess.Location = new System.Drawing.Point(3, 105);
+            this.buttonAddProcess.Location = new System.Drawing.Point(3, 76);
             this.buttonAddProcess.Name = "buttonAddProcess";
             this.buttonAddProcess.Size = new System.Drawing.Size(90, 23);
             this.buttonAddProcess.TabIndex = 0;
@@ -137,17 +141,17 @@
             this.processGridView.AllowUserToResizeColumns = false;
             this.processGridView.AllowUserToResizeRows = false;
             this.processGridView.AutoGenerateColumns = false;
-            this.processGridView.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.ColumnHeader;
+            this.processGridView.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
             this.processGridView.BackgroundColor = System.Drawing.SystemColors.Control;
             this.processGridView.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
-            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle4.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            dataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.processGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle4;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.processGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.processGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.processGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.name,
@@ -156,14 +160,14 @@
             this.Length});
             this.tableLayoutPanel1.SetColumnSpan(this.processGridView, 2);
             this.processGridView.DataSource = this.processData;
-            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle6.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle6.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            dataGridViewCellStyle6.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle6.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle6.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.processGridView.DefaultCellStyle = dataGridViewCellStyle6;
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle3.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.processGridView.DefaultCellStyle = dataGridViewCellStyle3;
             this.processGridView.Dock = System.Windows.Forms.DockStyle.Fill;
             this.processGridView.Location = new System.Drawing.Point(13, 63);
             this.processGridView.MultiSelect = false;
@@ -175,54 +179,56 @@
             this.processGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.processGridView.Size = new System.Drawing.Size(528, 189);
             this.processGridView.TabIndex = 2;
+            this.processGridView.ColumnHeaderMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.processGridView_ColumnHeaderMouseClick);
+            this.processGridView.DataBindingComplete += new System.Windows.Forms.DataGridViewBindingCompleteEventHandler(this.MakeColumnsSortable_DataBindingComplete);
             // 
             // name
             // 
-            this.name.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.name.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.name.DataPropertyName = "Name";
-            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            this.name.DefaultCellStyle = dataGridViewCellStyle5;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            this.name.DefaultCellStyle = dataGridViewCellStyle2;
             this.name.HeaderText = "Name";
             this.name.Name = "name";
             this.name.ReadOnly = true;
             this.name.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.name.Width = 190;
             // 
             // IOProbability
             // 
+            this.IOProbability.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.IOProbability.DataPropertyName = "IOProbabilityPercent";
             this.IOProbability.HeaderText = "I/O Probability";
             this.IOProbability.Name = "IOProbability";
             this.IOProbability.ReadOnly = true;
-            this.IOProbability.Width = 133;
             // 
             // IOSwiftness
             // 
+            this.IOSwiftness.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.IOSwiftness.DataPropertyName = "IOSwiftness";
             this.IOSwiftness.HeaderText = "I/O Swiftness";
             this.IOSwiftness.Name = "IOSwiftness";
             this.IOSwiftness.ReadOnly = true;
-            this.IOSwiftness.Width = 129;
             // 
             // Length
             // 
+            this.Length.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.Length.DataPropertyName = "Length";
             this.Length.HeaderText = "Length";
             this.Length.Name = "Length";
             this.Length.ReadOnly = true;
-            this.Length.Width = 90;
             // 
             // label1
             // 
-            this.label1.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.label1.AutoSize = true;
-            this.tableLayoutPanel1.SetColumnSpan(this.label1, 5);
+            this.tableLayoutPanel1.SetColumnSpan(this.label1, 2);
+            this.label1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.label1.Location = new System.Drawing.Point(296, 16);
+            this.label1.Location = new System.Drawing.Point(13, 10);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(191, 37);
+            this.label1.Size = new System.Drawing.Size(528, 50);
             this.label1.TabIndex = 4;
             this.label1.Text = "Process List";
+            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // label2
             // 
@@ -303,6 +309,16 @@
             this.simSpeed.Value = 200;
             this.simSpeed.ValueChanged += new System.EventHandler(this.simSpeed_ValueChanged);
             // 
+            // labelSimSpeed
+            // 
+            this.labelSimSpeed.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.labelSimSpeed.AutoSize = true;
+            this.labelSimSpeed.Location = new System.Drawing.Point(202, 58);
+            this.labelSimSpeed.Name = "labelSimSpeed";
+            this.labelSimSpeed.Size = new System.Drawing.Size(13, 13);
+            this.labelSimSpeed.TabIndex = 5;
+            this.labelSimSpeed.Text = "0";
+            // 
             // buttonReady
             // 
             this.buttonReady.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
@@ -314,15 +330,27 @@
             this.buttonReady.UseVisualStyleBackColor = true;
             this.buttonReady.Click += new System.EventHandler(this.buttonReady_Click);
             // 
-            // labelSimSpeed
+            // buttonImportData
             // 
-            this.labelSimSpeed.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.labelSimSpeed.AutoSize = true;
-            this.labelSimSpeed.Location = new System.Drawing.Point(202, 58);
-            this.labelSimSpeed.Name = "labelSimSpeed";
-            this.labelSimSpeed.Size = new System.Drawing.Size(13, 13);
-            this.labelSimSpeed.TabIndex = 5;
-            this.labelSimSpeed.Text = "0";
+            this.buttonImportData.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.buttonImportData.Location = new System.Drawing.Point(556, 23);
+            this.buttonImportData.Name = "buttonImportData";
+            this.buttonImportData.Size = new System.Drawing.Size(90, 23);
+            this.buttonImportData.TabIndex = 8;
+            this.buttonImportData.Text = "Import";
+            this.buttonImportData.UseVisualStyleBackColor = true;
+            this.buttonImportData.Click += new System.EventHandler(this.buttonImportData_Click);
+            // 
+            // clearProcesses
+            // 
+            this.clearProcesses.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.clearProcesses.Location = new System.Drawing.Point(3, 163);
+            this.clearProcesses.Name = "clearProcesses";
+            this.clearProcesses.Size = new System.Drawing.Size(90, 23);
+            this.clearProcesses.TabIndex = 3;
+            this.clearProcesses.Text = "Clear Process List";
+            this.clearProcesses.UseVisualStyleBackColor = true;
+            this.clearProcesses.Click += new System.EventHandler(this.clearProcesses_Click);
             // 
             // MainMenu
             // 
@@ -363,11 +391,13 @@
         private System.Windows.Forms.ComboBox algList;
         private System.Windows.Forms.TrackBar simSpeed;
         private System.Windows.Forms.Button buttonReady;
+        private System.Windows.Forms.Label labelSimSpeed;
         private System.Windows.Forms.DataGridViewTextBoxColumn name;
         private System.Windows.Forms.DataGridViewTextBoxColumn IOProbability;
         private System.Windows.Forms.DataGridViewTextBoxColumn IOSwiftness;
         private System.Windows.Forms.DataGridViewTextBoxColumn Length;
-        private System.Windows.Forms.Label labelSimSpeed;
+        private System.Windows.Forms.Button buttonImportData;
+        private System.Windows.Forms.Button clearProcesses;
     }
 }
 

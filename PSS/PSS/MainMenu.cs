@@ -8,12 +8,13 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Reflection;
+using System.Xml.Linq;
 
 namespace PSS
 {
     public partial class MainMenu : Form
     {
-        protected BindingList<Process> processList;
+        protected SortableBindingList<Process> processList;
 
         public MainMenu()
         {
@@ -24,7 +25,7 @@ namespace PSS
         private void MainMenu_Load(object sender, EventArgs e)
         {
             // Initialize process list
-            processList = new BindingList<Process>();
+            processList = new SortableBindingList<Process>();
             processData.DataSource = processList;
 
             // Get all implemented Algorithms
@@ -123,6 +124,141 @@ namespace PSS
         private void simSpeed_ValueChanged(object sender, EventArgs e)
         {
             labelSimSpeed.Text = simSpeed.Value.ToString();
+        }
+
+        void MakeColumnsSortable_DataBindingComplete(object sender, DataGridViewBindingCompleteEventArgs e)
+        {
+            foreach (DataGridViewColumn column in processGridView.Columns)
+                column.SortMode = DataGridViewColumnSortMode.Programmatic;
+        }
+
+        private void processGridView_ColumnHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            DataGridViewColumn newColumn = processGridView.Columns[e.ColumnIndex];
+            DataGridViewColumn oldColumn = processGridView.SortedColumn;
+            ListSortDirection direction;
+
+            // If oldColumn is null, then the DataGridView is not sorted.
+            if (oldColumn != null)
+            {
+                // Sort the same column again, reversing the SortOrder.
+                if (oldColumn == newColumn &&
+                    processGridView.SortOrder == SortOrder.Ascending)
+                {
+                    direction = ListSortDirection.Descending;
+                }
+                else
+                {
+                    // Sort a new column and remove the old SortGlyph.
+                    direction = ListSortDirection.Ascending;
+                    oldColumn.HeaderCell.SortGlyphDirection = SortOrder.None;
+                }
+            }
+            else
+            {
+                direction = ListSortDirection.Ascending;
+            }
+
+            // Sort the selected column.
+            processGridView.Sort(newColumn, direction);
+            newColumn.HeaderCell.SortGlyphDirection =
+                direction == ListSortDirection.Ascending ?
+                SortOrder.Ascending : SortOrder.Descending;
+        }
+
+        private void buttonImportData_Click(object sender, EventArgs e)
+        {
+            if (processList.Count != 0)
+            {
+                if (MessageBox.Show("You are about to replace existing processes. Are you sure?", "Warning", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.No)
+                {
+                    return;
+                }
+            }
+
+            OpenFileDialog ofd = new OpenFileDialog();
+            
+            if (ofd.ShowDialog() == DialogResult.OK)
+            {
+                try
+                {
+                    XElement file;
+                    if ((file = XDocument.Load(ofd.FileName).Element("scheduler")) == null)
+                    {
+                        throw new System.Xml.XmlException("Scheduler tag not found");
+                    }
+                    if (file.Element("algorithm") == null)
+                    {
+                        throw new System.Xml.XmlException("Algorithm tag not found");
+                    }
+                    AppDomain.CurrentDomain.GetAssemblies()
+                        .SelectMany(x => x.GetTypes())
+                        .Where(y => typeof(IAlgorithm).IsAssignableFrom(y) && y.IsClass)
+                        .ToList().ForEach(x =>
+                        {
+
+                    if (x.ToString().Substring(x.ToString().LastIndexOf('.') + 1) == file.Element("algorithm").Value)
+                            {
+                                algList.SelectedIndex = algList.FindStringExact(file.Element("algorithm").Value);
+                            }
+                        });
+
+                    if (file.Element("processes") == null)
+                    {
+                        throw new System.Xml.XmlException("Processes tag not found");
+                    }
+
+                    processList.Clear();
+
+                    List<Process> processes = new List<Process>();
+
+                    foreach (XElement item in file.Element("processes").Elements())
+                    {
+                        if (item.Attribute("ioprob") == null)
+                        {
+                            throw new System.Xml.XmlException("Ioprob attribute not found");
+                        }
+                        if (item.Attribute("ioswift") == null)
+                        {
+                            throw new System.Xml.XmlException("Ioswift attribute not found");
+                        }
+                        if (item.Attribute("length") == null)
+                        {
+                            throw new System.Xml.XmlException("Length attribute not found");
+                        }
+                        int ioprob, length;
+                        IO.Speed speed;
+
+                        if (!int.TryParse(item.Attribute("ioprob").Value, out ioprob))
+                        {
+                            throw new System.Xml.XmlException("Ioprob must be numeric");
+                        }
+                        if (!int.TryParse(item.Attribute("length").Value, out length))
+                        {
+                            throw new System.Xml.XmlException("Length must be numeric");
+                        }
+                        if (!Enum.TryParse<IO.Speed>(item.Attribute("ioswift").Value, out speed))
+                        {
+                            throw new System.Xml.XmlException("Ioswift must be the following: FAST, MEDIUM, SLOW");
+                        }
+
+                        processList.Add(new Process(item.Value, (double)ioprob / 100, speed, length));
+                    }
+                    
+                }
+                catch (System.Xml.XmlException ex)
+                {
+                    MessageBox.Show(ex.Message, "Not fatal error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+        }
+
+        private void clearProcesses_Click(object sender, EventArgs e)
+        {
+            if (processList.Count == 0 || MessageBox.Show("Are you sure?", "Warning", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes)
+            {
+                processList.Clear();
+            }
         }
     }
 }
