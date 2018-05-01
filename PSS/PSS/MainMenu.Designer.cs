@@ -33,7 +33,9 @@
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.buttonImportData = new System.Windows.Forms.Button();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
+            this.clearProcesses = new System.Windows.Forms.Button();
             this.buttonDeleteProcess = new System.Windows.Forms.Button();
             this.buttonEditProcess = new System.Windows.Forms.Button();
             this.buttonAddProcess = new System.Windows.Forms.Button();
@@ -52,8 +54,7 @@
             this.simSpeed = new System.Windows.Forms.TrackBar();
             this.labelSimSpeed = new System.Windows.Forms.Label();
             this.buttonReady = new System.Windows.Forms.Button();
-            this.buttonImportData = new System.Windows.Forms.Button();
-            this.clearProcesses = new System.Windows.Forms.Button();
+            this.buttonExport = new System.Windows.Forms.Button();
             this.tableLayoutPanel1.SuspendLayout();
             this.flowLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.processGridView)).BeginInit();
@@ -70,7 +71,6 @@
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 15F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 10F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 5F));
-            this.tableLayoutPanel1.Controls.Add(this.buttonImportData, 2, 0);
             this.tableLayoutPanel1.Controls.Add(this.flowLayoutPanel1, 2, 1);
             this.tableLayoutPanel1.Controls.Add(this.processGridView, 0, 1);
             this.tableLayoutPanel1.Controls.Add(this.label1, 0, 0);
@@ -90,18 +90,42 @@
             this.tableLayoutPanel1.Size = new System.Drawing.Size(784, 561);
             this.tableLayoutPanel1.TabIndex = 0;
             // 
+            // buttonImportData
+            // 
+            this.buttonImportData.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.buttonImportData.Location = new System.Drawing.Point(3, 18);
+            this.buttonImportData.Name = "buttonImportData";
+            this.buttonImportData.Size = new System.Drawing.Size(90, 23);
+            this.buttonImportData.TabIndex = 8;
+            this.buttonImportData.Text = "Import";
+            this.buttonImportData.UseVisualStyleBackColor = true;
+            this.buttonImportData.Click += new System.EventHandler(this.buttonImportData_Click);
+            // 
             // flowLayoutPanel1
             // 
             this.flowLayoutPanel1.Controls.Add(this.clearProcesses);
             this.flowLayoutPanel1.Controls.Add(this.buttonDeleteProcess);
             this.flowLayoutPanel1.Controls.Add(this.buttonEditProcess);
             this.flowLayoutPanel1.Controls.Add(this.buttonAddProcess);
+            this.flowLayoutPanel1.Controls.Add(this.buttonExport);
+            this.flowLayoutPanel1.Controls.Add(this.buttonImportData);
             this.flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.flowLayoutPanel1.FlowDirection = System.Windows.Forms.FlowDirection.BottomUp;
             this.flowLayoutPanel1.Location = new System.Drawing.Point(547, 63);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
             this.flowLayoutPanel1.Size = new System.Drawing.Size(108, 189);
             this.flowLayoutPanel1.TabIndex = 3;
+            // 
+            // clearProcesses
+            // 
+            this.clearProcesses.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.clearProcesses.Location = new System.Drawing.Point(3, 163);
+            this.clearProcesses.Name = "clearProcesses";
+            this.clearProcesses.Size = new System.Drawing.Size(90, 23);
+            this.clearProcesses.TabIndex = 3;
+            this.clearProcesses.Text = "Clear Process List";
+            this.clearProcesses.UseVisualStyleBackColor = true;
+            this.clearProcesses.Click += new System.EventHandler(this.clearProcesses_Click);
             // 
             // buttonDeleteProcess
             // 
@@ -142,12 +166,12 @@
             this.processGridView.AllowUserToResizeRows = false;
             this.processGridView.AutoGenerateColumns = false;
             this.processGridView.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
-            this.processGridView.BackgroundColor = System.Drawing.SystemColors.Control;
+            this.processGridView.BackgroundColor = System.Drawing.SystemColors.ControlDark;
             this.processGridView.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
             dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.ActiveCaption;
             dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.ScrollBar;
             dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
             dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
             dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
@@ -330,27 +354,16 @@
             this.buttonReady.UseVisualStyleBackColor = true;
             this.buttonReady.Click += new System.EventHandler(this.buttonReady_Click);
             // 
-            // buttonImportData
+            // buttonExport
             // 
-            this.buttonImportData.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.buttonImportData.Location = new System.Drawing.Point(556, 23);
-            this.buttonImportData.Name = "buttonImportData";
-            this.buttonImportData.Size = new System.Drawing.Size(90, 23);
-            this.buttonImportData.TabIndex = 8;
-            this.buttonImportData.Text = "Import";
-            this.buttonImportData.UseVisualStyleBackColor = true;
-            this.buttonImportData.Click += new System.EventHandler(this.buttonImportData_Click);
-            // 
-            // clearProcesses
-            // 
-            this.clearProcesses.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.clearProcesses.Location = new System.Drawing.Point(3, 163);
-            this.clearProcesses.Name = "clearProcesses";
-            this.clearProcesses.Size = new System.Drawing.Size(90, 23);
-            this.clearProcesses.TabIndex = 3;
-            this.clearProcesses.Text = "Clear Process List";
-            this.clearProcesses.UseVisualStyleBackColor = true;
-            this.clearProcesses.Click += new System.EventHandler(this.clearProcesses_Click);
+            this.buttonExport.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.buttonExport.Location = new System.Drawing.Point(3, 47);
+            this.buttonExport.Name = "buttonExport";
+            this.buttonExport.Size = new System.Drawing.Size(90, 23);
+            this.buttonExport.TabIndex = 9;
+            this.buttonExport.Text = "Export";
+            this.buttonExport.UseVisualStyleBackColor = true;
+            this.buttonExport.Click += new System.EventHandler(this.buttonExport_Click);
             // 
             // MainMenu
             // 
@@ -398,6 +411,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn Length;
         private System.Windows.Forms.Button buttonImportData;
         private System.Windows.Forms.Button clearProcesses;
+        private System.Windows.Forms.Button buttonExport;
     }
 }
 

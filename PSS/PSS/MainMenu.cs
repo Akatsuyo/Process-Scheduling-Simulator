@@ -260,5 +260,30 @@ namespace PSS
                 processList.Clear();
             }
         }
+
+        private void buttonExport_Click(object sender, EventArgs e)
+        {
+            SaveFileDialog sfd = new SaveFileDialog()
+            {
+                FileName = "PSSExport_" + DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss") + ".exp"
+            };
+
+            if (sfd.ShowDialog() == DialogResult.OK)
+            {
+                XDocument file = new XDocument();
+                file.Add(new XElement("scheduler"));
+                file.Element("scheduler").Add(new XElement("algorithm", algList.SelectedItem.ToString()));
+                file.Element("scheduler").Add(new XElement("processes"));
+                foreach (Process p in processList)
+                {
+                    XElement elem = new XElement("process", p.Name);
+                    elem.SetAttributeValue("ioprob", p.IOProbabilityPercent);
+                    elem.SetAttributeValue("ioswift", p.IOSwiftness.ToString());
+                    elem.SetAttributeValue("length", p.Length);
+                    file.Element("scheduler").Element("processes").Add(elem);
+                }
+                file.Save(sfd.FileName);
+            }
+        }
     }
 }

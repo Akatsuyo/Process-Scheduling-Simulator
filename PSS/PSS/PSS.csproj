@@ -46,6 +46,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CPU.cs" />
+    <Compile Include="EventLogger.cs" />
     <Compile Include="IAlgorithm.cs" />
     <Compile Include="FIFO.cs" />
     <Compile Include="IO.cs" />

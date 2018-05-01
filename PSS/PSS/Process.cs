@@ -337,5 +337,16 @@ namespace PSS
             ioCount = 0;
             currentIO = null;
         }
+
+        public override string ToString()
+        {
+            string ret = "";
+            ret += Name + " [";
+            ret += "I/O Probability: " + IOProbabilityPercent + "%, ";
+            ret += "I/O Switness: " + IOSwiftness + ", ";
+            ret += "Length: " + Length + "]";
+
+            return ret;
+        }
     }
 }
