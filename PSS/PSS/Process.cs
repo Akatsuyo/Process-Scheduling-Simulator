@@ -70,6 +70,34 @@ namespace PSS
         /// <param name="length">Length of the process</param>
         public Process(string name, double ioProbability, IO.Speed ioSwiftness, int length)
         {
+            InitializeProcess(name, ioProbability, ioSwiftness, length);
+        }
+
+        /// <summary>
+        /// Process constructor
+        /// </summary>
+        /// <param name="id">ID of process</param>
+        /// <param name="name">Name of the rpocess</param>
+        /// <param name="ioProbability">I/O Probability of the process (in percent)</param>
+        /// <param name="length">Length of the process</param>
+        public Process(string name, int ioProbability, IO.Speed ioSwiftness, int length)
+        {
+            if (ioProbability < 0 || ioProbability > 100)
+            {
+                throw new ArgumentException("Parameter must be between 0 and 100", "I/O Probability");
+            }
+            InitializeProcess(name, (double)ioProbability / 100, ioSwiftness, length);
+        }
+
+        /// <summary>
+        /// Initializes the process (necessary for constructor overload)
+        /// </summary>
+        /// <param name="id">ID of process</param>
+        /// <param name="name">Name of the rpocess</param>
+        /// <param name="ioProbability">I/O Probability of the process</param>
+        /// <param name="length">Length of the process</param>
+        private void InitializeProcess(string name, double ioProbability, IO.Speed ioSwiftness, int length)
+        {
             if (name.Length < 2 || name.Length > 15)
             {
                 throw new ArgumentException("Parameter must be between 2 and 15 character", "Process Name");
@@ -338,5 +366,90 @@ namespace PSS
         {
             get { return currentIO; }
         }
+      
+        /// <summary>
+        /// Waits for IO request
+        /// Sets <c>currentIO</c> to null when it is done.
+        /// </summary>
+        public void WaitForIO()
+        {
+            if (currentIO != null)
+            {
+                if (!currentIO.Done)
+                {
+                    ioTime++;
+                    currentIO.GetData();
+                }
+                else
+                {
+                    currentIO = null;
+                }
+            }
+        }
+
+        /// <summary>
+        /// This function starts an I/O operation.
+        /// </summary>
+        private void AddIO()
+        {
+            //There is no I/O operation
+            if (!IsBlocked)
+            {
+                //Process has a chance to get I/O operation
+                Random random = new Random();
+                
+                //TODO Change this to normal distribution
+                if (random.NextDouble() <= ioProbability)
+                {
+                    //Our process wants I/O operation
+
+                    ioCount++;
+
+                    //Determine speed of operation (80% chance to get ioSwiftness speed, 10-10% the other two)
+                    int randomSwiftness = random.Next(0, 9);
+                    IO.Speed speed = IO.Speed.FAST;
+
+                    if (randomSwiftness < 8)
+                    {
+                        speed = ioSwiftness;
+                    }
+                    else
+                    {
+                        // This is overkill
+                        // Cycles between enum values
+                        // -- Adds randomSwiftness - 7 to currentSwiftness
+                        // -- Wraps around enum values (e.g., If enum has 3 values, then 3 + 1 == 0)
+                        speed = (IO.Speed)((randomSwiftness - 7 + (int)ioSwiftness) % Enum.GetValues(typeof(IO.Speed)).Length);
+                    }
+
+                    currentIO = new IO(speed);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Resets process state
+        /// </summary>
+        public void Reset()
+        {
+            remainingTick = length;
+            cpuTime = 0;
+            usefulCPUTime = 0;
+            ioTime = 0;
+            ioCount = 0;
+            currentIO = null;
+        }
+
+        public override string ToString()
+        {
+            string ret = "";
+            ret += Name + " [";
+            ret += "I/O Probability: " + IOProbabilityPercent + "%, ";
+            ret += "I/O Switness: " + IOSwiftness + ", ";
+            ret += "Length: " + Length + "]";
+
+            return ret;
+        }
+      
     }
 }

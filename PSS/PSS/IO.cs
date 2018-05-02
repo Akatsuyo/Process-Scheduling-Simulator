@@ -80,6 +80,9 @@ namespace PSS
             }
         }
 
+        /// <summary>
+        /// Returns true if the IO is done
+        /// </summary>
         public bool Done
         {
             get { return Remaining <= 0; }

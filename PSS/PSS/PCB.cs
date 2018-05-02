@@ -90,5 +90,16 @@ namespace PSS
                 }
             }
         }
+
+        public override string ToString()
+        {
+            string ret = "";
+            ret += "(#" + PID + ") " + Process.Name + " [";
+            ret += "State: " + State + ", ";
+            ret += "I/O time: " + Process.IOTime + ", ";
+            ret += "CPU time: " + Process.CPUTime + ", ";
+            ret += "Total time: " + Process.TotalTime + "]";
+            return ret;
+        }
     }
 }

@@ -87,6 +87,7 @@ namespace PSS
                 buttonStartSim.Text = "Pause";
                 buttonStopSim.Enabled = true;
                 running = true;
+                scheduler.Reset();
 
                 await Simulate();
             }
@@ -136,7 +137,6 @@ namespace PSS
             buttonStartSim.Text = "Start";
             running = false;
 
-            scheduler.Reset();
             UpdateUI();
         }
 
@@ -158,6 +158,23 @@ namespace PSS
             
             //Shows the main menu
             Owner.Show();
+        }
+
+        private void buttonExport_Click(object sender, EventArgs e)
+        {
+            //Exports the event log
+            SaveFileDialog sfd = new SaveFileDialog()
+            {
+                FileName = "PSSLog_" + DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss") + ".exp"
+            };
+
+            if (sfd.ShowDialog() == DialogResult.OK)
+            {
+                scheduler.LogCurrentState();
+                System.IO.StreamWriter sw = new System.IO.StreamWriter(sfd.FileName);
+                EventLogger.ExportTo(sw);
+                sw.Close();
+            }
         }
 
         private void UpdateUI()

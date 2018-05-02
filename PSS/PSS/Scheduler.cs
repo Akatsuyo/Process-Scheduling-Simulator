@@ -17,6 +17,7 @@ namespace PSS
         /// </summary>
         public int counter;
 
+
         /// <summary>
         /// List of the process control vlocks
         /// </summary>
@@ -36,6 +37,8 @@ namespace PSS
         private int turn;
         private int elapsed;
 
+        private int logCounter;
+
         /// <summary>
         /// Constructor of the class
         /// </summary>
@@ -43,6 +46,7 @@ namespace PSS
         /// <param name="alg">Instance of the chosen algorithm</param>
         public Scheduler(List<Process> list, IAlgorithm alg)
         {
+
             //Set PID default value
             counter = 0;
 
@@ -56,8 +60,17 @@ namespace PSS
             cpu = new CPU();
 
             worktime = 0;
-            turn = 0;
+            turn = 1;
             elapsed = 0;
+            logCounter = 0;
+
+            //Initialize EventLogger and set headers
+            EventLogger.Initialize();
+            EventLogger.AddEvent("Selected algorithm: " + selectedAlgorithm.GetType().Name);
+            EventLogger.AddEvent("Process Count: " + processList.Count);
+            EventLogger.AddEvent("Processes: ");
+            processList.ForEach(x => EventLogger.AddEvent(x.Process.ToString()));
+            LogCurrentState();
         }
 
         /// <summary>
@@ -65,6 +78,8 @@ namespace PSS
         /// </summary>
         public void Reset()
         {
+            EventLogger.Clear();
+
             //Clears algorithm storage (queue, etc.)
             selectedAlgorithm.Clear();
             //Reset all process
@@ -79,6 +94,27 @@ namespace PSS
             worktime = 0;
             turn = 0;
             elapsed = 0;
+            logCounter = 0;
+
+            //Initialize EventLogger and set headers
+            EventLogger.Initialize();
+            EventLogger.AddEvent("Selected algorithm: " + selectedAlgorithm.GetType().Name);
+            EventLogger.AddEvent("Process Count: " + processList.Count);
+            EventLogger.AddEvent("Processes: ");
+            processList.ForEach(x => EventLogger.AddEvent(x.Process.ToString()));
+            LogCurrentState();
+        }
+
+        /// <summary>
+        /// Logs the current state (with EventLogger)
+        /// </summary>
+        public void LogCurrentState()
+        {
+            logCounter++;
+            EventLogger.AddEventRaw("");
+            EventLogger.AddEvent("########## Turn: #" + logCounter + ", Worktime: " + worktime + ", Elapsed: " + elapsed + " ##########");
+            EventLogger.AddEvent("Current process: " + selectedAlgorithm.GetRunningPCB().ToString());
+            processList.ForEach(x => EventLogger.AddEvent(x.ToString()));
         }
 
         /// <summary>
@@ -100,6 +136,7 @@ namespace PSS
         /// <returns>The encapsulated PCB</returns>
         public PCB AddAndEncapsulateProcess(Process process)
         {
+            EventLogger.AddEvent("New process: " + process.ToString());
             PCB pcb = new PCB(counter++, process);
             ProcessList.Add(pcb);
             //Add process to the scheduling algorithm too
@@ -193,7 +230,8 @@ namespace PSS
         public bool Step()
         {
             selectedAlgorithm.Work();
-
+            
+            int lastOnCPU = cpu.ProcessID;
             if (selectedAlgorithm.ProcessAvailable)
             {
                 cpu.SetProcess(selectedAlgorithm.RunningPCB);
@@ -203,6 +241,13 @@ namespace PSS
                 cpu.UnsetProcess();
             }
 
+            if (lastOnCPU != cpu.ProcessID)
+            {
+                // Process changed
+                turn++;
+                LogCurrentState();
+            }
+            
             foreach (var pcb in selectedAlgorithm.Pool)
             {
                 pcb.Process.WaitForIO();

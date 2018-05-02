@@ -42,7 +42,6 @@
             this.label3 = new System.Windows.Forms.Label();
             this.labelTurnaround = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
-            this.buttonStopSim = new System.Windows.Forms.Button();
             this.buttonAddProcess = new System.Windows.Forms.Button();
             this.processViewPanel = new System.Windows.Forms.FlowLayoutPanel();
             this.processHeadTable = new System.Windows.Forms.TableLayoutPanel();
@@ -51,6 +50,7 @@
             this.labelPID = new System.Windows.Forms.Label();
             this.labelName = new System.Windows.Forms.Label();
             this.labelState = new System.Windows.Forms.Label();
+            this.buttonStopSim = new System.Windows.Forms.Button();
             this.tableLayoutPanel1.SuspendLayout();
             this.processViewPanel.SuspendLayout();
             this.processHeadTable.SuspendLayout();
@@ -169,6 +169,7 @@
             this.buttonExport.TabIndex = 11;
             this.buttonExport.Text = "Export...";
             this.buttonExport.UseVisualStyleBackColor = true;
+            this.buttonExport.Click += new System.EventHandler(this.buttonExport_Click);
             // 
             // label4
             // 
@@ -237,18 +238,6 @@
             this.label2.Size = new System.Drawing.Size(128, 26);
             this.label2.TabIndex = 2;
             this.label2.Text = "Turnaround:";
-            // 
-            // buttonStopSim
-            // 
-            this.buttonStopSim.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.buttonStopSim.Enabled = false;
-            this.buttonStopSim.Location = new System.Drawing.Point(278, 74);
-            this.buttonStopSim.Name = "buttonStopSim";
-            this.buttonStopSim.Size = new System.Drawing.Size(75, 23);
-            this.buttonStopSim.TabIndex = 10;
-            this.buttonStopSim.Text = "Stop";
-            this.buttonStopSim.UseVisualStyleBackColor = true;
-            this.buttonStopSim.Click += new System.EventHandler(this.buttonStopSim_Click);
             // 
             // buttonAddProcess
             // 
@@ -359,6 +348,18 @@
             this.labelState.TabIndex = 2;
             this.labelState.Text = "State";
             this.labelState.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // buttonStopSim
+            // 
+            this.buttonStopSim.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.buttonStopSim.Enabled = false;
+            this.buttonStopSim.Location = new System.Drawing.Point(278, 74);
+            this.buttonStopSim.Name = "buttonStopSim";
+            this.buttonStopSim.Size = new System.Drawing.Size(75, 23);
+            this.buttonStopSim.TabIndex = 10;
+            this.buttonStopSim.Text = "Stop";
+            this.buttonStopSim.UseVisualStyleBackColor = true;
+            this.buttonStopSim.Click += new System.EventHandler(this.buttonStopSim_Click);
             // 
             // Simulation
             // 
