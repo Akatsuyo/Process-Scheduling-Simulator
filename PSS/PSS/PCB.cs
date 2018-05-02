@@ -59,6 +59,7 @@ namespace PSS
         public void Work()
         {
             currentProcess.Do();
+            processState = ProcessState.RUNNING;
         }
 
         /// <summary>

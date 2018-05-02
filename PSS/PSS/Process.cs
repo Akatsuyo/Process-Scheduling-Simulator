@@ -134,8 +134,12 @@ namespace PSS
             if (!IsBlocked && remainingTick > 0)
             {
                 usefulCPUTime++;
-                AddIO();
-                remainingTick--;
+
+                // Don't add IO if process gets finished
+                if (--remainingTick > 0)
+                {
+                    AddIO();
+                }
             }
         }
 

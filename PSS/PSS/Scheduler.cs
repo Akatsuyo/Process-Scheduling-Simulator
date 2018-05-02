@@ -113,7 +113,14 @@ namespace PSS
             logCounter++;
             EventLogger.AddEventRaw("");
             EventLogger.AddEvent("########## Turn: #" + logCounter + ", Worktime: " + worktime + ", Elapsed: " + elapsed + " ##########");
-            EventLogger.AddEvent("Current process: " + selectedAlgorithm.GetRunningPCB().ToString());
+            if (selectedAlgorithm.ProcessAvailable)
+            {
+                EventLogger.AddEvent("Current process: " + selectedAlgorithm.RunningPCB.ToString());
+            }
+            else
+            {
+                EventLogger.AddEvent("Current process: " + "No process running");
+            }
             processList.ForEach(x => EventLogger.AddEvent(x.ToString()));
         }
 
