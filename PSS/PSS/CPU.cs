@@ -37,18 +37,16 @@ namespace PSS
         public void SetProcess(PCB process)
         {
             currentProcess = process;
-            process.Resume();
             working = true;
         }
 
         /// <summary>
         /// Removes the current process from the CPU
         /// </summary>
-        public void StopProcess()
+        public void UnsetProcess()
         {
             if (currentProcess != null)
             {
-                currentProcess.Pause();
                 currentProcess = null;
                 working = false;
             }
@@ -63,10 +61,10 @@ namespace PSS
             if (currentProcess != null)
             {
                 working = true;
-                currentProcess.Run();
+                currentProcess.Work();
                 if (currentProcess.State == PCB.ProcessState.DEAD)
                 {
-                    StopProcess();
+                    UnsetProcess();
                 }
                 else if (currentProcess.Process.IsBlocked)
                 {

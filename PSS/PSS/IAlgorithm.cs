@@ -15,38 +15,40 @@ namespace PSS
         /// Sets the initial processes
         /// </summary>
         /// <param name="processes">List of the processes</param>
-        void SetProcesses(List<PCB> processes);
-  
+        void Initialize(List<PCB> processes);
+
+        /// <summary>
+        /// Returns the pcb pool
+        /// </summary>
+        /// <returns>PCB pool</returns>
+        List<PCB> Pool { get; }
+
+        /// <summary>
+        /// Gets ready to go pcbs (not blocked or finished)
+        /// </summary>
+        /// <returns>Ready PCB List</returns>
+        List<PCB> ReadyPCBs { get; }
+
         /// <summary>
         /// Returns the running process
         /// </summary>
-        /// <returns>Running PCB</returns>
-        PCB GetRunningPCB();
+        PCB RunningPCB { get; }
 
         /// <summary>
-        /// Returns the ready queue
+        /// Checks if there is a process that could be assigned for the CPU at the moment.
         /// </summary>
-        /// <returns>Ready queue</returns>
-        Queue<PCB> GetReadyPCBs();
-
-        /// <summary>
-        /// Returns the blocked queue
-        /// </summary>
-        /// <returns>Blocked queue</returns>
-        Queue<PCB> GetBlockedPCBs();
+        bool ProcessAvailable { get; }
 
         /// <summary>
         /// Returns true if there are no more processes left
         /// Warning! This also returns true, if the current process is running yet
         /// </summary>
-        /// <returns>Returns true if there are no more processes left</returns>
-        bool IsDone();
+        bool Done { get; }
 
         /// <summary>
         /// Returns the amount of remaining processes (includes all queue)
         /// </summary>
-        /// <returns>Amount of remaining processes</returns>
-        int CountRemainingProcess();
+        int RemainingProcessCount { get; }
 
         /// <summary>
         /// Returns the process name where IDs are equal
@@ -72,6 +74,11 @@ namespace PSS
         /// Calls the scheduling algorithm
         /// </summary>
         void Work();
+
+        /// <summary>
+        /// Starts the algorithm.
+        /// </summary>
+        void Start();
 
         /// <summary>
         /// Clears the algorithm, including everything (queues, variables, etc.)

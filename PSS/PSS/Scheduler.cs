@@ -54,11 +54,10 @@ namespace PSS
             selectedAlgorithm = alg;
 
             //Forward all process to the algorithm (which is possibly makes a queue of it)
-            selectedAlgorithm.SetProcesses(processList);
+            selectedAlgorithm.Initialize(processList);
+            selectedAlgorithm.Start();
 
-            //Init the CPU and set the current process
             cpu = new CPU();
-            cpu.SetProcess(selectedAlgorithm.GetRunningPCB());
 
             worktime = 0;
             turn = 1;
@@ -86,11 +85,11 @@ namespace PSS
             //Reset all process
             processList.ForEach(i => i.Reset());
             //Forward the processes (again...)
-            selectedAlgorithm.SetProcesses(processList);
+            selectedAlgorithm.Initialize(processList);
+            selectedAlgorithm.Start();
 
-            //Make a new CPU and set the current process
-            cpu = new CPU();
-            cpu.SetProcess(selectedAlgorithm.GetRunningPCB());
+            // Unset process in CPU if there's any set
+            cpu.UnsetProcess();
 
             worktime = 0;
             turn = 0;
@@ -183,9 +182,9 @@ namespace PSS
         /// <summary>
         /// Returns the Ready Queue
         /// </summary>
-        public Queue<PCB> ReadyQueue
+        public List<PCB> ReadyQueue
         {
-            get { return selectedAlgorithm.GetReadyPCBs(); }
+            get { return selectedAlgorithm.ReadyPCBs; }
         }
 
         public int Worktime
@@ -227,17 +226,31 @@ namespace PSS
         /// <summary>
         /// One step of the scheduler
         /// </summary>
-        /// <returns>Returns true if there are no active process, otherwise false</returns>
+        /// <returns>Returns true if all of the processes have been finished.</returns>
         public bool Step()
         {
             selectedAlgorithm.Work();
-
-            if (selectedAlgorithm.GetRunningPCB().PID != cpu.ProcessID)
+            
+            int lastOnCPU = cpu.ProcessID;
+            if (selectedAlgorithm.ProcessAvailable)
             {
+                cpu.SetProcess(selectedAlgorithm.RunningPCB);
+            }
+            else
+            {
+                cpu.UnsetProcess();
+            }
+
+            if (lastOnCPU != cpu.ProcessID)
+            {
+                // Process changed
                 turn++;
-                cpu.StopProcess();
-                cpu.SetProcess(selectedAlgorithm.GetRunningPCB());
                 LogCurrentState();
+            }
+            
+            foreach (var pcb in selectedAlgorithm.Pool)
+            {
+                pcb.Process.WaitForIO();
             }
 
             // Do cpu work
@@ -247,7 +260,7 @@ namespace PSS
             elapsed++;
 
             // Check if all processes are done
-            return (selectedAlgorithm.IsDone() && selectedAlgorithm.GetRunningPCB().State == PCB.ProcessState.DEAD);
+            return selectedAlgorithm.Done;
         }
     }
 }

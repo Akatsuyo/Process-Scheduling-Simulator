@@ -24,12 +24,7 @@ namespace PSS
         /// <summary>
         /// Process ID
         /// </summary>
-        private int pID;
-
-        /// <summary>
-        /// Is process currently on CPU
-        /// </summary>
-        private bool onCPU;
+        public int PID { get; }
 
         /// <summary>
         /// Current state of the process
@@ -47,16 +42,10 @@ namespace PSS
             {
                 throw new ArgumentException("Parameter must be greater or equal than 0", "Process ID");
             }
-            this.pID = pID;
-            this.onCPU = false;
+            PID = pID;
             this.currentProcess = currentProcess;
             processState = ProcessState.NEW;
         }
-
-        /// <summary>
-        /// Returns the Process ID
-        /// </summary>
-        public int PID => pID;
 
         /// <summary>
         /// Property of process
@@ -67,36 +56,9 @@ namespace PSS
             set { currentProcess = value; }
         }
 
-        /// <summary>
-        /// Resumes the process
-        /// </summary>
-        public void Resume()
+        public void Work()
         {
-            processState = ProcessState.RUNNING;
-            onCPU = true;
-        }
-    
-        /// <summary>
-        /// Run the process
-        /// </summary>
-        public void Run()
-        {
-            //IO is working even if the process is not on CPU
-            currentProcess.WaitForIO();
-
-            if (onCPU)
-            {
-                currentProcess.Do();
-            }
-        }
-
-        /// <summary>
-        /// Pause the process
-        /// </summary>
-        public void Pause()
-        {
-            processState = ProcessState.READY;
-            onCPU = false;
+            currentProcess.Do();
         }
 
         /// <summary>
@@ -106,7 +68,6 @@ namespace PSS
         {
             currentProcess.Reset();
             processState = ProcessState.NEW;
-            onCPU = false;
         }
 
         /// <summary>
