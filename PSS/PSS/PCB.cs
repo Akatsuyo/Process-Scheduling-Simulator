@@ -72,6 +72,18 @@ namespace PSS
         }
 
         /// <summary>
+        /// Handles I/O operations and changes state to ready when there is no I/O operation
+        /// </summary>
+        public void IOWork()
+        {
+            currentProcess.WaitForIO();
+            if (!currentProcess.IsBlocked)
+            {
+                processState = ProcessState.READY;
+            }
+        }
+
+        /// <summary>
         /// Returns the state of the process
         /// </summary>
         public ProcessState State {

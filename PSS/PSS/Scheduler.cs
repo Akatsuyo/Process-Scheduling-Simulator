@@ -255,9 +255,10 @@ namespace PSS
                 LogCurrentState();
             }
             
+            //This must be befor cpu.DoWork
             foreach (var pcb in selectedAlgorithm.Pool)
             {
-                pcb.Process.WaitForIO();
+                pcb.IOWork();
             }
 
             // Do cpu work
