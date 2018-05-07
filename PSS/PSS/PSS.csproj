@@ -47,7 +47,7 @@
   <ItemGroup>
     <Compile Include="CPU.cs" />
     <Compile Include="EventLogger.cs" />
-    <Compile Include="IAlgorithm.cs" />
+    <Compile Include="SchedulingAlgorithm.cs" />
     <Compile Include="FIFO.cs" />
     <Compile Include="IO.cs" />
     <Compile Include="PCB.cs" />
@@ -72,6 +72,7 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RoundRobin.cs" />
     <Compile Include="Scheduler.cs" />
     <Compile Include="Simulation.cs">
       <SubType>Form</SubType>

@@ -202,7 +202,7 @@
             this.labelrQueue.Name = "labelrQueue";
             this.labelrQueue.Size = new System.Drawing.Size(254, 57);
             this.labelrQueue.TabIndex = 13;
-            this.labelrQueue.Text = "rQueue";
+            this.labelrQueue.Text = "readyList";
             this.labelrQueue.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // label3
@@ -211,11 +211,11 @@
             this.label3.AutoSize = true;
             this.tableLayoutPanel1.SetColumnSpan(this.label3, 2);
             this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.label3.Location = new System.Drawing.Point(57, 186);
+            this.label3.Location = new System.Drawing.Point(38, 186);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(146, 26);
+            this.label3.Size = new System.Drawing.Size(183, 26);
             this.label3.TabIndex = 4;
-            this.label3.Text = "Ready Queue";
+            this.label3.Text = "Ready Processes";
             // 
             // labelTurnaround
             // 

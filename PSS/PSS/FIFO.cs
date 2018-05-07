@@ -9,152 +9,51 @@ namespace PSS
     /// <summary>
     /// FIFO (First In First Out) Scheduling Algorithm
     /// </summary>
-    public class FIFO : IAlgorithm
+    public class FIFO : SchedulingAlgorithm
     {
-        List<PCB> pool;
-        List<PCB> blocked;
-        private Queue<PCB> queue;
-        private PCB current;
-        private bool started;
+        Queue<PCB> rQueue;
 
-        public void Initialize(List<PCB> processes)
+        public FIFO()
         {
-            pool = processes;
-            queue = new Queue<PCB>();
-            blocked = new List<PCB>();
+            rQueue = new Queue<PCB>();
         }
 
-        // Should set current and started
-        public void Start()
+        public override void Work()
         {
-            pool.ForEach(x => queue.Enqueue(x));
-            current = queue.Dequeue();
-            started = true;
-        }
-
-        public List<PCB> Pool
         {
-            get { return pool; }
-        }
-
-        public void AddProcess(PCB process)
-        {
-            pool.Add(process);
-            queue.Enqueue(process);
-        }
-
-        public int RemainingProcessCount
-        {
-            get { return pool.Select(x => x.Process.IsDone).Count(); }
-        }
-
-        public string GetProcessNameByID(int pID)
-        {
-            if (current.PID == pID)
-            {
-                return current.Process.Name;
-            }
-            foreach (PCB process in queue)
-            {
-                if (process.PID == pID)
-                {
-                    return process.Process.Name;
-                }
-            }
-            //If there is no process with this ID
-            return "";
-        }
-
-        public PCB.ProcessState GetProcessStateByID(int pID)
-        {
-            if (current.PID == pID)
-            {
-                return current.State;
-            }
-            foreach (PCB process in queue)
-            {
-                if (process.PID == pID)
-                {
-                    return process.State;
-                }
-            }
-
-            //If there is no process with this ID
-            return PCB.ProcessState.DEAD;
-        }
-
-        public List<PCB> ReadyPCBs
-        {
-            get { return queue.ToList(); }
-        }
-
-        public PCB RunningPCB
-        {
-            get { return current; }
-        }
-
-        public bool ProcessAvailable
-        {
-            get { return current != null; }
-        }
-
-        public bool Done
-        {
-            get { return pool.Count == pool.Count(x => x.State == PCB.ProcessState.DEAD); }
-        }
-
-        public void Work()
-        {
-            if (!started)
+            if (!ready)
                 return;
 
-            // Enqueue all PCBs that are now not blocked anymore
-            foreach (var pcb in blocked)
+            // Enqueue
+            foreach (var pcb in Pool)
             {
-                if (!pcb.Process.IsBlocked)
+                if (pcb.State == PCB.ProcessState.NEW || pcb.State == PCB.ProcessState.READY)
                 {
-                    queue.Enqueue(pcb);
+                    if (!rQueue.Contains(pcb))
+                    {
+                        rQueue.Enqueue(pcb);
+                    }
                 }
             }
-            // And remove them from the list
-            blocked.RemoveAll(x => !x.Process.IsBlocked);
 
+            // Swap
             if (current != null)
             {
-                // If there's a process currently assigned to the CPU
-
-                if (current.State == PCB.ProcessState.DEAD)
+                if (current.State == PCB.ProcessState.WAITING || current.State == PCB.ProcessState.DEAD)
                 {
-                    // If it's dead, get the next one
-                    current = Next();
-                }
-                else if (current.State == PCB.ProcessState.WAITING)
-                {
-                    // If it's blocked, add it to the blocked list, and get the next one
-                    blocked.Add(current);
-                    current = Next();
-                }
-            }
-            else
+                    current = null;
+                }  
+            } 
+            else if (rQueue.Count > 0)
             {
-                // If there's not
-                current = Next();
+                current = rQueue.Dequeue();
             }
         }
 
-        // Returns next process to assign (null if not available)
-        private PCB Next()
+        public override void Reset()
         {
-            return queue.Count == 0 ? null : queue.Dequeue();
-        }
-
-        public void Clear()
-        {
-            // Must call Initialize() again before using the algorithm
-            pool = null;
-            blocked = null;
-            queue = null;
-            current = null;
+            base.Reset();
+            rQueue.Clear();
         }
     }
 }

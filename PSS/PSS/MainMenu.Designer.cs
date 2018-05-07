@@ -29,16 +29,17 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle16 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle18 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle17 = new System.Windows.Forms.DataGridViewCellStyle();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-            this.buttonImportData = new System.Windows.Forms.Button();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.clearProcesses = new System.Windows.Forms.Button();
             this.buttonDeleteProcess = new System.Windows.Forms.Button();
             this.buttonEditProcess = new System.Windows.Forms.Button();
             this.buttonAddProcess = new System.Windows.Forms.Button();
+            this.buttonExport = new System.Windows.Forms.Button();
+            this.buttonImportData = new System.Windows.Forms.Button();
             this.processGridView = new System.Windows.Forms.DataGridView();
             this.name = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.IOProbability = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -47,20 +48,24 @@
             this.processData = new System.Windows.Forms.BindingSource(this.components);
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
-            this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
+            this.settingsPanel = new System.Windows.Forms.TableLayoutPanel();
             this.label4 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.algList = new System.Windows.Forms.ComboBox();
             this.simSpeed = new System.Windows.Forms.TrackBar();
             this.labelSimSpeed = new System.Windows.Forms.Label();
             this.buttonReady = new System.Windows.Forms.Button();
-            this.buttonExport = new System.Windows.Forms.Button();
+            this.labelQT = new System.Windows.Forms.Label();
+            this.numericQT = new System.Windows.Forms.NumericUpDown();
+            this.trackBarQT = new System.Windows.Forms.TrackBar();
             this.tableLayoutPanel1.SuspendLayout();
             this.flowLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.processGridView)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.processData)).BeginInit();
-            this.tableLayoutPanel2.SuspendLayout();
+            this.settingsPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.simSpeed)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericQT)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.trackBarQT)).BeginInit();
             this.SuspendLayout();
             // 
             // tableLayoutPanel1
@@ -75,7 +80,7 @@
             this.tableLayoutPanel1.Controls.Add(this.processGridView, 0, 1);
             this.tableLayoutPanel1.Controls.Add(this.label1, 0, 0);
             this.tableLayoutPanel1.Controls.Add(this.label2, 0, 2);
-            this.tableLayoutPanel1.Controls.Add(this.tableLayoutPanel2, 0, 3);
+            this.tableLayoutPanel1.Controls.Add(this.settingsPanel, 0, 3);
             this.tableLayoutPanel1.Controls.Add(this.buttonReady, 2, 3);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
@@ -89,17 +94,6 @@
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10F));
             this.tableLayoutPanel1.Size = new System.Drawing.Size(784, 561);
             this.tableLayoutPanel1.TabIndex = 0;
-            // 
-            // buttonImportData
-            // 
-            this.buttonImportData.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.buttonImportData.Location = new System.Drawing.Point(3, 18);
-            this.buttonImportData.Name = "buttonImportData";
-            this.buttonImportData.Size = new System.Drawing.Size(90, 23);
-            this.buttonImportData.TabIndex = 8;
-            this.buttonImportData.Text = "Import";
-            this.buttonImportData.UseVisualStyleBackColor = true;
-            this.buttonImportData.Click += new System.EventHandler(this.buttonImportData_Click);
             // 
             // flowLayoutPanel1
             // 
@@ -158,6 +152,28 @@
             this.buttonAddProcess.UseVisualStyleBackColor = true;
             this.buttonAddProcess.Click += new System.EventHandler(this.buttonAddProcess_Click);
             // 
+            // buttonExport
+            // 
+            this.buttonExport.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.buttonExport.Location = new System.Drawing.Point(3, 47);
+            this.buttonExport.Name = "buttonExport";
+            this.buttonExport.Size = new System.Drawing.Size(90, 23);
+            this.buttonExport.TabIndex = 9;
+            this.buttonExport.Text = "Export";
+            this.buttonExport.UseVisualStyleBackColor = true;
+            this.buttonExport.Click += new System.EventHandler(this.buttonExport_Click);
+            // 
+            // buttonImportData
+            // 
+            this.buttonImportData.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.buttonImportData.Location = new System.Drawing.Point(3, 18);
+            this.buttonImportData.Name = "buttonImportData";
+            this.buttonImportData.Size = new System.Drawing.Size(90, 23);
+            this.buttonImportData.TabIndex = 8;
+            this.buttonImportData.Text = "Import";
+            this.buttonImportData.UseVisualStyleBackColor = true;
+            this.buttonImportData.Click += new System.EventHandler(this.buttonImportData_Click);
+            // 
             // processGridView
             // 
             this.processGridView.AllowUserToAddRows = false;
@@ -168,14 +184,14 @@
             this.processGridView.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
             this.processGridView.BackgroundColor = System.Drawing.SystemColors.ControlDark;
             this.processGridView.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.ActiveCaption;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.ScrollBar;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.processGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle16.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle16.BackColor = System.Drawing.SystemColors.ActiveCaption;
+            dataGridViewCellStyle16.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            dataGridViewCellStyle16.ForeColor = System.Drawing.SystemColors.ScrollBar;
+            dataGridViewCellStyle16.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle16.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle16.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.processGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle16;
             this.processGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.processGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.name,
@@ -184,14 +200,14 @@
             this.Length});
             this.tableLayoutPanel1.SetColumnSpan(this.processGridView, 2);
             this.processGridView.DataSource = this.processData;
-            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle3.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.processGridView.DefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle18.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle18.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle18.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            dataGridViewCellStyle18.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle18.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle18.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle18.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.processGridView.DefaultCellStyle = dataGridViewCellStyle18;
             this.processGridView.Dock = System.Windows.Forms.DockStyle.Fill;
             this.processGridView.Location = new System.Drawing.Point(13, 63);
             this.processGridView.MultiSelect = false;
@@ -210,8 +226,8 @@
             // 
             this.name.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.name.DataPropertyName = "Name";
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            this.name.DefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle17.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            this.name.DefaultCellStyle = dataGridViewCellStyle17;
             this.name.HeaderText = "Name";
             this.name.Name = "name";
             this.name.ReadOnly = true;
@@ -266,28 +282,31 @@
             this.label2.TabIndex = 5;
             this.label2.Text = "Settings";
             // 
-            // tableLayoutPanel2
+            // settingsPanel
             // 
-            this.tableLayoutPanel2.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.tableLayoutPanel2.ColumnCount = 2;
-            this.tableLayoutPanel1.SetColumnSpan(this.tableLayoutPanel2, 2);
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel2.Controls.Add(this.label4, 0, 1);
-            this.tableLayoutPanel2.Controls.Add(this.label3, 0, 0);
-            this.tableLayoutPanel2.Controls.Add(this.algList, 1, 0);
-            this.tableLayoutPanel2.Controls.Add(this.simSpeed, 1, 1);
-            this.tableLayoutPanel2.Controls.Add(this.labelSimSpeed, 1, 2);
-            this.tableLayoutPanel2.Location = new System.Drawing.Point(137, 360);
-            this.tableLayoutPanel2.Name = "tableLayoutPanel2";
-            this.tableLayoutPanel2.RowCount = 5;
-            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
-            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
-            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
-            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
-            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(279, 146);
-            this.tableLayoutPanel2.TabIndex = 6;
+            this.settingsPanel.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.settingsPanel.ColumnCount = 2;
+            this.tableLayoutPanel1.SetColumnSpan(this.settingsPanel, 2);
+            this.settingsPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.settingsPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.settingsPanel.Controls.Add(this.label4, 0, 1);
+            this.settingsPanel.Controls.Add(this.label3, 0, 0);
+            this.settingsPanel.Controls.Add(this.algList, 1, 0);
+            this.settingsPanel.Controls.Add(this.simSpeed, 1, 1);
+            this.settingsPanel.Controls.Add(this.labelSimSpeed, 1, 2);
+            this.settingsPanel.Controls.Add(this.labelQT, 0, 3);
+            this.settingsPanel.Controls.Add(this.numericQT, 1, 4);
+            this.settingsPanel.Controls.Add(this.trackBarQT, 1, 3);
+            this.settingsPanel.Location = new System.Drawing.Point(137, 360);
+            this.settingsPanel.Name = "settingsPanel";
+            this.settingsPanel.RowCount = 5;
+            this.settingsPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
+            this.settingsPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
+            this.settingsPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
+            this.settingsPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
+            this.settingsPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
+            this.settingsPanel.Size = new System.Drawing.Size(279, 146);
+            this.settingsPanel.TabIndex = 6;
             // 
             // label4
             // 
@@ -318,6 +337,7 @@
             this.algList.Name = "algList";
             this.algList.Size = new System.Drawing.Size(121, 21);
             this.algList.TabIndex = 2;
+            this.algList.SelectedValueChanged += new System.EventHandler(this.algList_SelectedValueChanged);
             // 
             // simSpeed
             // 
@@ -354,16 +374,49 @@
             this.buttonReady.UseVisualStyleBackColor = true;
             this.buttonReady.Click += new System.EventHandler(this.buttonReady_Click);
             // 
-            // buttonExport
+            // labelQT
             // 
-            this.buttonExport.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.buttonExport.Location = new System.Drawing.Point(3, 47);
-            this.buttonExport.Name = "buttonExport";
-            this.buttonExport.Size = new System.Drawing.Size(90, 23);
-            this.buttonExport.TabIndex = 9;
-            this.buttonExport.Text = "Export";
-            this.buttonExport.UseVisualStyleBackColor = true;
-            this.buttonExport.Click += new System.EventHandler(this.buttonExport_Click);
+            this.labelQT.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.labelQT.AutoSize = true;
+            this.labelQT.Location = new System.Drawing.Point(30, 95);
+            this.labelQT.Name = "labelQT";
+            this.labelQT.Size = new System.Drawing.Size(79, 13);
+            this.labelQT.TabIndex = 6;
+            this.labelQT.Text = "Quantum Time:";
+            this.labelQT.Visible = false;
+            // 
+            // numericQT
+            // 
+            this.numericQT.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.numericQT.Location = new System.Drawing.Point(189, 121);
+            this.numericQT.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.numericQT.Name = "numericQT";
+            this.numericQT.Size = new System.Drawing.Size(40, 20);
+            this.numericQT.TabIndex = 7;
+            this.numericQT.Value = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+            this.numericQT.Visible = false;
+            this.numericQT.ValueChanged += new System.EventHandler(this.numericQT_ValueChanged);
+            // 
+            // trackBarQT
+            // 
+            this.trackBarQT.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.trackBarQT.Location = new System.Drawing.Point(157, 90);
+            this.trackBarQT.Maximum = 100;
+            this.trackBarQT.Minimum = 1;
+            this.trackBarQT.Name = "trackBarQT";
+            this.trackBarQT.Size = new System.Drawing.Size(104, 23);
+            this.trackBarQT.TabIndex = 8;
+            this.trackBarQT.Value = 10;
+            this.trackBarQT.Visible = false;
+            this.trackBarQT.ValueChanged += new System.EventHandler(this.trackBarQT_ValueChanged);
             // 
             // MainMenu
             // 
@@ -380,9 +433,11 @@
             this.flowLayoutPanel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.processGridView)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.processData)).EndInit();
-            this.tableLayoutPanel2.ResumeLayout(false);
-            this.tableLayoutPanel2.PerformLayout();
+            this.settingsPanel.ResumeLayout(false);
+            this.settingsPanel.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.simSpeed)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericQT)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.trackBarQT)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -398,7 +453,7 @@
         private System.Windows.Forms.Button buttonEditProcess;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
+        private System.Windows.Forms.TableLayoutPanel settingsPanel;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.ComboBox algList;
@@ -412,6 +467,9 @@
         private System.Windows.Forms.Button buttonImportData;
         private System.Windows.Forms.Button clearProcesses;
         private System.Windows.Forms.Button buttonExport;
+        private System.Windows.Forms.Label labelQT;
+        private System.Windows.Forms.NumericUpDown numericQT;
+        private System.Windows.Forms.TrackBar trackBarQT;
     }
 }
 

@@ -217,7 +217,7 @@ namespace PSS
 
             // Updates the Ready Queue label
             string readyQueueString = "";
-            foreach (PCB process in scheduler.ReadyQueue)
+            foreach (PCB process in scheduler.ReadyProcesses)
             {
                 readyQueueString += "P#";
                 readyQueueString += process.PID.ToString();

@@ -31,7 +31,7 @@ namespace PSS
             // Get all implemented Algorithms
             var types = AppDomain.CurrentDomain.GetAssemblies()
                 .SelectMany(x => x.GetTypes())
-                .Where(y => typeof(IAlgorithm).IsAssignableFrom(y) && y.IsClass);
+                .Where(y => typeof(SchedulingAlgorithm).IsAssignableFrom(y) && y.IsClass && !y.IsAbstract);
 
             algList.DataSource = types.ToArray();
             algList.DisplayMember = "Name";
@@ -108,10 +108,19 @@ namespace PSS
                 //TODO Calibrate simSpeed
                 try
                 {
+                    SchedulingAlgorithm algorithm;
+                    if (algList.Text == "RoundRobin")
+                    {
+                        algorithm = (SchedulingAlgorithm)Activator.CreateInstance((Type)algList.SelectedItem, trackBarQT.Value);
+                    }
+                    else
+                    {
+                        algorithm = (SchedulingAlgorithm)Activator.CreateInstance((Type)algList.SelectedItem);
+                    }
+                    
                     // Make a scheduler class from the parameters
                     Simulation simulation = new Simulation(new Scheduler(
-                        processList.ToList(),
-                        (IAlgorithm)Activator.CreateInstance((Type)algList.SelectedItem)), simSpeed.Value);
+                        processList.ToList(), algorithm), simSpeed.Value);
 
                     //Hides the main menu
                     Hide();
@@ -201,7 +210,7 @@ namespace PSS
                     }
                     AppDomain.CurrentDomain.GetAssemblies()
                         .SelectMany(x => x.GetTypes())
-                        .Where(y => typeof(IAlgorithm).IsAssignableFrom(y) && y.IsClass)
+                        .Where(y => typeof(SchedulingAlgorithm).IsAssignableFrom(y) && y.IsClass)
                         .ToList().ForEach(x =>
                         {
 
@@ -306,6 +315,32 @@ namespace PSS
                 }
                 file.Save(sfd.FileName);
             }
+        }
+
+        private void algList_SelectedValueChanged(object sender, EventArgs e)
+        {
+            if (algList.Text == "RoundRobin")
+            {
+                labelQT.Visible = true;
+                trackBarQT.Visible = true;
+                numericQT.Visible = true;
+            }
+            else
+            {
+                labelQT.Visible = false;
+                trackBarQT.Visible = false;
+                numericQT.Visible = false;
+            }
+        }
+
+        private void trackBarQT_ValueChanged(object sender, EventArgs e)
+        {
+            numericQT.Value = trackBarQT.Value;
+        }
+
+        private void numericQT_ValueChanged(object sender, EventArgs e)
+        {
+            trackBarQT.Value = (int)numericQT.Value;
         }
     }
 }

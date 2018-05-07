@@ -26,7 +26,7 @@ namespace PSS
         /// <summary>
         /// Selected algorithm
         /// </summary>
-        private IAlgorithm selectedAlgorithm;
+        private SchedulingAlgorithm selectedAlgorithm;
 
         /// <summary>
         /// CPU which 'does the work'
@@ -44,18 +44,17 @@ namespace PSS
         /// </summary>
         /// <param name="list">List of the processes</param>
         /// <param name="alg">Instance of the chosen algorithm</param>
-        public Scheduler(List<Process> list, IAlgorithm alg)
+        public Scheduler(List<Process> list, SchedulingAlgorithm alg)
         {
 
-            //Set PID default value
+            // Set PID default value
             counter = 0;
 
             processList = EncapsulateProcesses(list);
             selectedAlgorithm = alg;
 
-            //Forward all process to the algorithm (which is possibly makes a queue of it)
+            // Initialize algorithm with the list of processes
             selectedAlgorithm.Initialize(processList);
-            selectedAlgorithm.Start();
 
             cpu = new CPU();
 
@@ -81,12 +80,11 @@ namespace PSS
             EventLogger.Clear();
 
             //Clears algorithm storage (queue, etc.)
-            selectedAlgorithm.Clear();
+            selectedAlgorithm.Reset();
             //Reset all process
             processList.ForEach(i => i.Reset());
             //Forward the processes (again...)
             selectedAlgorithm.Initialize(processList);
-            selectedAlgorithm.Start();
 
             // Unset process in CPU if there's any set
             cpu.UnsetProcess();
@@ -115,7 +113,7 @@ namespace PSS
             EventLogger.AddEvent("########## Turn: #" + logCounter + ", Worktime: " + worktime + ", Elapsed: " + elapsed + " ##########");
             if (selectedAlgorithm.ProcessAvailable)
             {
-                EventLogger.AddEvent("Current process: " + selectedAlgorithm.RunningPCB.ToString());
+                EventLogger.AddEvent("Current process: " + selectedAlgorithm.RunningProcess.ToString());
             }
             else
             {
@@ -147,7 +145,7 @@ namespace PSS
             PCB pcb = new PCB(counter++, process);
             ProcessList.Add(pcb);
             //Add process to the scheduling algorithm too
-            selectedAlgorithm.AddProcess(pcb);
+            selectedAlgorithm.AddNewProcess(pcb);
             return pcb;
         }
 
@@ -180,18 +178,23 @@ namespace PSS
         /// <summary>
         /// Returns the current scheduling algorithm
         /// </summary>
-        IAlgorithm Algorithm
+        SchedulingAlgorithm Algorithm
         {
             get { return selectedAlgorithm; }
             set { selectedAlgorithm = value; }
         }
 
         /// <summary>
-        /// Returns the Ready Queue
+        /// Returns every process with READY or NEW states.
         /// </summary>
-        public List<PCB> ReadyQueue
+        public List<PCB> ReadyProcesses
         {
-            get { return selectedAlgorithm.ReadyPCBs; }
+            get
+            {
+                return selectedAlgorithm.Pool
+                    .Where(x => x.State == PCB.ProcessState.NEW || x.State == PCB.ProcessState.READY)
+                    .ToList();
+            }
         }
 
         public int Worktime
@@ -219,15 +222,7 @@ namespace PSS
         /// <returns>Process Instance</returns>
         public PCB GetProcessByID(int PID)
         {
-            PCB pcb = null;
-            processList.ForEach(x => {
-                if (x.PID == PID)
-                {
-                    pcb = x;
-                    return;
-                }
-            });
-            return pcb;
+            return processList.Where(x => x.PID == PID).FirstOrDefault();
         }
 
         /// <summary>
@@ -241,7 +236,7 @@ namespace PSS
             int lastOnCPU = cpu.ProcessID;
             if (selectedAlgorithm.ProcessAvailable)
             {
-                cpu.SetProcess(selectedAlgorithm.RunningPCB);
+                cpu.SetProcess(selectedAlgorithm.RunningProcess);
             }
             else
             {
