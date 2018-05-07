@@ -20,7 +20,6 @@ namespace PSS
 
         public override void Work()
         {
-        {
             if (!ready)
                 return;
 
