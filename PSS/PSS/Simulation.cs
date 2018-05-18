@@ -140,7 +140,13 @@ namespace PSS
             running = false;
 
             if (reset)
+            {
                 scheduler.Reset();
+            }
+            else
+            {
+                needsReset = true;
+            }
 
             UpdateUI();
         }
