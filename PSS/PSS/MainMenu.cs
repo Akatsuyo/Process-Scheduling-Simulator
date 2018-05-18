@@ -16,10 +16,28 @@ namespace PSS
     {
         protected SortableBindingList<Process> processList;
 
+        private enum SimulationSpeed
+        {
+            VERY_SLOW = 1,
+            SLOW,
+            MEDIUM,
+            FAST,
+            VERY_FAST
+        }
+
+        private Dictionary<SimulationSpeed, int> speeds = new Dictionary<SimulationSpeed, int>()
+        {
+            { SimulationSpeed.VERY_SLOW, 1000},
+            { SimulationSpeed.SLOW, 500},
+            { SimulationSpeed.MEDIUM, 250},
+            { SimulationSpeed.FAST, 100},
+            { SimulationSpeed.VERY_FAST, 10}
+        };
+        
         public MainMenu()
         {
             InitializeComponent();
-            labelSimSpeed.Text = simSpeed.Value.ToString();
+            labelSimSpeed.Text = ((SimulationSpeed)simSpeed.Value).ToString();
         }
 
         private void MainMenu_Load(object sender, EventArgs e)
@@ -105,7 +123,6 @@ namespace PSS
             }
             else
             {
-                //TODO Calibrate simSpeed
                 try
                 {
                     SchedulingAlgorithm algorithm;
@@ -120,7 +137,7 @@ namespace PSS
                     
                     // Make a scheduler class from the parameters
                     Simulation simulation = new Simulation(new Scheduler(
-                        processList.ToList(), algorithm), simSpeed.Value);
+                        processList.ToList(), algorithm), speeds[(SimulationSpeed)simSpeed.Value]);
 
                     //Hides the main menu
                     Hide();
@@ -139,7 +156,7 @@ namespace PSS
         // Updates label below slider
         private void simSpeed_ValueChanged(object sender, EventArgs e)
         {
-            labelSimSpeed.Text = simSpeed.Value.ToString();
+            labelSimSpeed.Text = ((SimulationSpeed)simSpeed.Value).ToString();
         }
 
         void MakeColumnsSortable_DataBindingComplete(object sender, DataGridViewBindingCompleteEventArgs e)

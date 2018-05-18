@@ -59,10 +59,10 @@
             // tableLayoutPanel1
             // 
             this.tableLayoutPanel1.ColumnCount = 4;
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 19.04762F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 14.28571F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 14.28571F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 52.38095F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 22.25883F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 12.26259F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 12.26259F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 53.216F));
             this.tableLayoutPanel1.Controls.Add(this.label6, 3, 0);
             this.tableLayoutPanel1.Controls.Add(this.labelUtil, 1, 0);
             this.tableLayoutPanel1.Controls.Add(this.label1, 0, 0);
@@ -99,7 +99,7 @@
             this.label6.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.label6.AutoSize = true;
             this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.label6.Location = new System.Drawing.Point(520, 15);
+            this.label6.Location = new System.Drawing.Point(518, 15);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(114, 26);
             this.label6.TabIndex = 12;
@@ -110,7 +110,7 @@
             this.labelUtil.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.labelUtil.AutoSize = true;
             this.labelUtil.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.labelUtil.Location = new System.Drawing.Point(172, 15);
+            this.labelUtil.Location = new System.Drawing.Point(189, 15);
             this.labelUtil.Name = "labelUtil";
             this.labelUtil.Size = new System.Drawing.Size(65, 26);
             this.labelUtil.TabIndex = 1;
@@ -121,16 +121,16 @@
             this.label1.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.label1.Location = new System.Drawing.Point(49, 15);
+            this.label1.Location = new System.Drawing.Point(4, 15);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(50, 26);
+            this.label1.Size = new System.Drawing.Size(166, 26);
             this.label1.TabIndex = 0;
-            this.label1.Text = "Util:";
+            this.label1.Text = "CPU Utilization:";
             // 
             // buttonStartSim
             // 
             this.buttonStartSim.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.buttonStartSim.Location = new System.Drawing.Point(278, 17);
+            this.buttonStartSim.Location = new System.Drawing.Point(280, 17);
             this.buttonStartSim.Name = "buttonStartSim";
             this.buttonStartSim.Size = new System.Drawing.Size(75, 23);
             this.buttonStartSim.TabIndex = 9;
@@ -143,7 +143,7 @@
             this.label5.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.label5.AutoSize = true;
             this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.label5.Location = new System.Drawing.Point(10, 357);
+            this.label5.Location = new System.Drawing.Point(22, 357);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(129, 26);
             this.label5.TabIndex = 6;
@@ -154,7 +154,7 @@
             this.labelCompletion.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.labelCompletion.AutoSize = true;
             this.labelCompletion.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.labelCompletion.Location = new System.Drawing.Point(172, 357);
+            this.labelCompletion.Location = new System.Drawing.Point(189, 357);
             this.labelCompletion.Name = "labelCompletion";
             this.labelCompletion.Size = new System.Drawing.Size(65, 26);
             this.labelCompletion.TabIndex = 8;
@@ -163,7 +163,7 @@
             // buttonExport
             // 
             this.buttonExport.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.buttonExport.Location = new System.Drawing.Point(278, 359);
+            this.buttonExport.Location = new System.Drawing.Point(280, 359);
             this.buttonExport.Name = "buttonExport";
             this.buttonExport.Size = new System.Drawing.Size(75, 23);
             this.buttonExport.TabIndex = 11;
@@ -176,7 +176,7 @@
             this.label4.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.label4.Location = new System.Drawing.Point(5, 300);
+            this.label4.Location = new System.Drawing.Point(18, 300);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(138, 26);
             this.label4.TabIndex = 5;
@@ -187,7 +187,7 @@
             this.labelCurrTime.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.labelCurrTime.AutoSize = true;
             this.labelCurrTime.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.labelCurrTime.Location = new System.Drawing.Point(187, 300);
+            this.labelCurrTime.Location = new System.Drawing.Point(205, 300);
             this.labelCurrTime.Name = "labelCurrTime";
             this.labelCurrTime.Size = new System.Drawing.Size(34, 26);
             this.labelCurrTime.TabIndex = 7;
@@ -198,7 +198,7 @@
             this.labelrQueue.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.tableLayoutPanel1.SetColumnSpan(this.labelrQueue, 2);
             this.labelrQueue.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.labelrQueue.Location = new System.Drawing.Point(3, 228);
+            this.labelrQueue.Location = new System.Drawing.Point(8, 228);
             this.labelrQueue.Name = "labelrQueue";
             this.labelrQueue.Size = new System.Drawing.Size(254, 57);
             this.labelrQueue.TabIndex = 13;
@@ -211,7 +211,7 @@
             this.label3.AutoSize = true;
             this.tableLayoutPanel1.SetColumnSpan(this.label3, 2);
             this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.label3.Location = new System.Drawing.Point(38, 186);
+            this.label3.Location = new System.Drawing.Point(43, 186);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(183, 26);
             this.label3.TabIndex = 4;
@@ -222,7 +222,7 @@
             this.labelTurnaround.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.labelTurnaround.AutoSize = true;
             this.labelTurnaround.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.labelTurnaround.Location = new System.Drawing.Point(187, 72);
+            this.labelTurnaround.Location = new System.Drawing.Point(205, 72);
             this.labelTurnaround.Name = "labelTurnaround";
             this.labelTurnaround.Size = new System.Drawing.Size(34, 26);
             this.labelTurnaround.TabIndex = 3;
@@ -233,16 +233,16 @@
             this.label2.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.label2.Location = new System.Drawing.Point(10, 72);
+            this.label2.Location = new System.Drawing.Point(21, 72);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(128, 26);
+            this.label2.Size = new System.Drawing.Size(132, 26);
             this.label2.TabIndex = 2;
-            this.label2.Text = "Turnaround:";
+            this.label2.Text = "CS Counter:";
             // 
             // buttonAddProcess
             // 
             this.buttonAddProcess.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.buttonAddProcess.Location = new System.Drawing.Point(278, 418);
+            this.buttonAddProcess.Location = new System.Drawing.Point(280, 418);
             this.buttonAddProcess.Name = "buttonAddProcess";
             this.buttonAddProcess.Size = new System.Drawing.Size(75, 23);
             this.buttonAddProcess.TabIndex = 15;
@@ -257,10 +257,10 @@
             this.processViewPanel.Controls.Add(this.processHeadTable);
             this.processViewPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.processViewPanel.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
-            this.processViewPanel.Location = new System.Drawing.Point(374, 60);
+            this.processViewPanel.Location = new System.Drawing.Point(369, 60);
             this.processViewPanel.Name = "processViewPanel";
             this.tableLayoutPanel1.SetRowSpan(this.processViewPanel, 7);
-            this.processViewPanel.Size = new System.Drawing.Size(407, 398);
+            this.processViewPanel.Size = new System.Drawing.Size(412, 398);
             this.processViewPanel.TabIndex = 16;
             this.processViewPanel.WrapContents = false;
             this.processViewPanel.SizeChanged += new System.EventHandler(this.processViewPanel_SizeChanged);
@@ -353,7 +353,7 @@
             // 
             this.buttonStopSim.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.buttonStopSim.Enabled = false;
-            this.buttonStopSim.Location = new System.Drawing.Point(278, 74);
+            this.buttonStopSim.Location = new System.Drawing.Point(280, 74);
             this.buttonStopSim.Name = "buttonStopSim";
             this.buttonStopSim.Size = new System.Drawing.Size(75, 23);
             this.buttonStopSim.TabIndex = 10;

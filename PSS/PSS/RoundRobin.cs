@@ -39,7 +39,8 @@ namespace PSS
                     tickCounter++;
                 }
             }
-            else
+            
+            if (current == null)
             {
                 int counter = Pool.Count;
                 while (counter > 0)

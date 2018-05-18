@@ -44,17 +44,16 @@ namespace PSS
             this.type = type;
             Random random = new Random();
 
-            //TODO Calibrate the ranges
             switch (type)
             {
                 case Speed.FAST:
-                    Length = random.Next(100, 300);
+                    Length = random.Next(5, 10);
                     break;
                 case Speed.MEDIUM:
-                    Length = random.Next(300, 700);
+                    Length = random.Next(10, 20);
                     break;
                 case Speed.SLOW:
-                    Length = random.Next(700, 1500);
+                    Length = random.Next(20, 50);
                     break;
             }
 

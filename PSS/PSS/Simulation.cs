@@ -12,22 +12,17 @@ namespace PSS
     {
         private Scheduler scheduler;
 
-        // Speed of the simulation
-        private int speed;
+        private int delay;
 
         private bool running, formClosed;
 
         private Dictionary<int, ProcessSimulationRow> processes;
 
-        public Simulation(Scheduler sch, int speed)
+        public Simulation(Scheduler sch, int delay)
         {
             scheduler = sch;
 
-            if (speed < 1 || speed > 1000)
-            {
-                throw new ArgumentException("Parameter must be between 1 and 1000", "Simulation Speed");
-            }
-            this.speed = speed;
+            this.delay = delay;
 
             running = false;
             formClosed = false;
@@ -80,18 +75,17 @@ namespace PSS
             if (running)
             {
                 buttonStartSim.Text = "Resume";
+
                 running = false;
             }
             else
             {
                 buttonStartSim.Text = "Pause";
                 buttonStopSim.Enabled = true;
-                running = true;
-                scheduler.Reset();
 
+                running = true;
                 await Simulate();
             }
-            
         }
 
         private void buttonStopSim_Click(object sender, EventArgs e)
@@ -127,7 +121,7 @@ namespace PSS
                     UpdateUI();
 
                 // Speed is x tick / sec
-                await Task.Delay(1000 / speed);
+                await Task.Delay(delay);
             }
         }
 
@@ -135,8 +129,9 @@ namespace PSS
         {
             buttonStopSim.Enabled = false;
             buttonStartSim.Text = "Start";
-            running = false;
 
+            running = false;
+            scheduler.Reset();
             UpdateUI();
         }
 
@@ -150,8 +145,9 @@ namespace PSS
             //Set the state to closing
             formClosed = true;
 
-            // Stop simulation if running
+            // Stop and reset simulation
             running = false;
+            scheduler.Reset();
 
             //If we added new processes to the list we need to push them back to the main menu as well
             ((MainMenu)Owner).ImportNewProcesses(scheduler.ProcessList.Select(x => x.Process).ToList());

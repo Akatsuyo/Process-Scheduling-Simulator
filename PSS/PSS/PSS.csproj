@@ -81,6 +81,7 @@
       <DependentUpon>Simulation.cs</DependentUpon>
     </Compile>
     <Compile Include="SortableBindingList.cs" />
+    <Compile Include="SRTF.cs" />
     <EmbeddedResource Include="ProcessDialog.resx">
       <DependentUpon>ProcessDialog.cs</DependentUpon>
     </EmbeddedResource>

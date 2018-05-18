@@ -29,9 +29,9 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle16 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle18 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle17 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle10 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle12 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle11 = new System.Windows.Forms.DataGridViewCellStyle();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.clearProcesses = new System.Windows.Forms.Button();
@@ -54,10 +54,10 @@
             this.algList = new System.Windows.Forms.ComboBox();
             this.simSpeed = new System.Windows.Forms.TrackBar();
             this.labelSimSpeed = new System.Windows.Forms.Label();
-            this.buttonReady = new System.Windows.Forms.Button();
             this.labelQT = new System.Windows.Forms.Label();
             this.numericQT = new System.Windows.Forms.NumericUpDown();
             this.trackBarQT = new System.Windows.Forms.TrackBar();
+            this.buttonReady = new System.Windows.Forms.Button();
             this.tableLayoutPanel1.SuspendLayout();
             this.flowLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.processGridView)).BeginInit();
@@ -117,7 +117,7 @@
             this.clearProcesses.Name = "clearProcesses";
             this.clearProcesses.Size = new System.Drawing.Size(90, 23);
             this.clearProcesses.TabIndex = 3;
-            this.clearProcesses.Text = "Clear Process List";
+            this.clearProcesses.Text = "Clear List";
             this.clearProcesses.UseVisualStyleBackColor = true;
             this.clearProcesses.Click += new System.EventHandler(this.clearProcesses_Click);
             // 
@@ -159,7 +159,7 @@
             this.buttonExport.Name = "buttonExport";
             this.buttonExport.Size = new System.Drawing.Size(90, 23);
             this.buttonExport.TabIndex = 9;
-            this.buttonExport.Text = "Export";
+            this.buttonExport.Text = "Export...";
             this.buttonExport.UseVisualStyleBackColor = true;
             this.buttonExport.Click += new System.EventHandler(this.buttonExport_Click);
             // 
@@ -170,7 +170,7 @@
             this.buttonImportData.Name = "buttonImportData";
             this.buttonImportData.Size = new System.Drawing.Size(90, 23);
             this.buttonImportData.TabIndex = 8;
-            this.buttonImportData.Text = "Import";
+            this.buttonImportData.Text = "Import...";
             this.buttonImportData.UseVisualStyleBackColor = true;
             this.buttonImportData.Click += new System.EventHandler(this.buttonImportData_Click);
             // 
@@ -184,14 +184,14 @@
             this.processGridView.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
             this.processGridView.BackgroundColor = System.Drawing.SystemColors.ControlDark;
             this.processGridView.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
-            dataGridViewCellStyle16.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle16.BackColor = System.Drawing.SystemColors.ActiveCaption;
-            dataGridViewCellStyle16.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            dataGridViewCellStyle16.ForeColor = System.Drawing.SystemColors.ScrollBar;
-            dataGridViewCellStyle16.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle16.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle16.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.processGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle16;
+            dataGridViewCellStyle10.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle10.BackColor = System.Drawing.SystemColors.ActiveCaption;
+            dataGridViewCellStyle10.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            dataGridViewCellStyle10.ForeColor = System.Drawing.SystemColors.ScrollBar;
+            dataGridViewCellStyle10.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle10.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle10.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.processGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle10;
             this.processGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.processGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.name,
@@ -200,14 +200,14 @@
             this.Length});
             this.tableLayoutPanel1.SetColumnSpan(this.processGridView, 2);
             this.processGridView.DataSource = this.processData;
-            dataGridViewCellStyle18.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle18.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle18.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            dataGridViewCellStyle18.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle18.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle18.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle18.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.processGridView.DefaultCellStyle = dataGridViewCellStyle18;
+            dataGridViewCellStyle12.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle12.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle12.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            dataGridViewCellStyle12.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle12.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle12.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle12.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.processGridView.DefaultCellStyle = dataGridViewCellStyle12;
             this.processGridView.Dock = System.Windows.Forms.DockStyle.Fill;
             this.processGridView.Location = new System.Drawing.Point(13, 63);
             this.processGridView.MultiSelect = false;
@@ -226,8 +226,8 @@
             // 
             this.name.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.name.DataPropertyName = "Name";
-            dataGridViewCellStyle17.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            this.name.DefaultCellStyle = dataGridViewCellStyle17;
+            dataGridViewCellStyle11.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            this.name.DefaultCellStyle = dataGridViewCellStyle11;
             this.name.HeaderText = "Name";
             this.name.Name = "name";
             this.name.ReadOnly = true;
@@ -342,37 +342,26 @@
             // simSpeed
             // 
             this.simSpeed.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.simSpeed.LargeChange = 100;
+            this.simSpeed.LargeChange = 1;
             this.simSpeed.Location = new System.Drawing.Point(157, 32);
-            this.simSpeed.Maximum = 1000;
+            this.simSpeed.Maximum = 5;
             this.simSpeed.Minimum = 1;
             this.simSpeed.Name = "simSpeed";
             this.simSpeed.Size = new System.Drawing.Size(104, 23);
-            this.simSpeed.SmallChange = 20;
             this.simSpeed.TabIndex = 4;
-            this.simSpeed.Value = 200;
+            this.simSpeed.Value = 3;
             this.simSpeed.ValueChanged += new System.EventHandler(this.simSpeed_ValueChanged);
             // 
             // labelSimSpeed
             // 
             this.labelSimSpeed.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.labelSimSpeed.AutoSize = true;
-            this.labelSimSpeed.Location = new System.Drawing.Point(202, 58);
+            this.labelSimSpeed.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.labelSimSpeed.Location = new System.Drawing.Point(201, 58);
             this.labelSimSpeed.Name = "labelSimSpeed";
-            this.labelSimSpeed.Size = new System.Drawing.Size(13, 13);
+            this.labelSimSpeed.Size = new System.Drawing.Size(16, 17);
             this.labelSimSpeed.TabIndex = 5;
             this.labelSimSpeed.Text = "0";
-            // 
-            // buttonReady
-            // 
-            this.buttonReady.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
-            this.buttonReady.Location = new System.Drawing.Point(563, 485);
-            this.buttonReady.Name = "buttonReady";
-            this.buttonReady.Size = new System.Drawing.Size(75, 23);
-            this.buttonReady.TabIndex = 7;
-            this.buttonReady.Text = "Ready";
-            this.buttonReady.UseVisualStyleBackColor = true;
-            this.buttonReady.Click += new System.EventHandler(this.buttonReady_Click);
             // 
             // labelQT
             // 
@@ -389,6 +378,11 @@
             // 
             this.numericQT.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.numericQT.Location = new System.Drawing.Point(189, 121);
+            this.numericQT.Maximum = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
             this.numericQT.Minimum = new decimal(new int[] {
             1,
             0,
@@ -398,7 +392,7 @@
             this.numericQT.Size = new System.Drawing.Size(40, 20);
             this.numericQT.TabIndex = 7;
             this.numericQT.Value = new decimal(new int[] {
-            10,
+            3,
             0,
             0,
             0});
@@ -409,14 +403,24 @@
             // 
             this.trackBarQT.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.trackBarQT.Location = new System.Drawing.Point(157, 90);
-            this.trackBarQT.Maximum = 100;
             this.trackBarQT.Minimum = 1;
             this.trackBarQT.Name = "trackBarQT";
             this.trackBarQT.Size = new System.Drawing.Size(104, 23);
             this.trackBarQT.TabIndex = 8;
-            this.trackBarQT.Value = 10;
+            this.trackBarQT.Value = 3;
             this.trackBarQT.Visible = false;
             this.trackBarQT.ValueChanged += new System.EventHandler(this.trackBarQT_ValueChanged);
+            // 
+            // buttonReady
+            // 
+            this.buttonReady.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
+            this.buttonReady.Location = new System.Drawing.Point(563, 485);
+            this.buttonReady.Name = "buttonReady";
+            this.buttonReady.Size = new System.Drawing.Size(75, 23);
+            this.buttonReady.TabIndex = 7;
+            this.buttonReady.Text = "Ready";
+            this.buttonReady.UseVisualStyleBackColor = true;
+            this.buttonReady.Click += new System.EventHandler(this.buttonReady_Click);
             // 
             // MainMenu
             // 

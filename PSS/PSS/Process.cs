@@ -112,7 +112,7 @@ namespace PSS
             }
             this.name = name;
             this.ioSwiftness = ioSwiftness;
-            this.ioProbability = ioProbability / 10;
+            this.ioProbability = ioProbability;
             this.length = length;
 
             cpuTime = 0;
@@ -175,7 +175,6 @@ namespace PSS
                 //Process has a chance to get I/O operation
                 Random random = new Random();
 
-                //TODO Change this to normal distribution
                 if (random.NextDouble() <= ioProbability)
                 {
                     //Our process wants I/O operation
@@ -250,32 +249,20 @@ namespace PSS
         /// </summary>
         public double IOProbability
         {
-            // Capped to 10%?
-            get { return ioProbability * 10; }
+            get { return ioProbability; }
             set
             {
                 if (value < 0 || value > 1)
                 {
                     throw new ArgumentException("Parameter must be between 0 and 1", "I/O Probability");
                 }
-                ioProbability = value / 10;
+                ioProbability = value;
             }
         }
 
-        /// <summary>
-        /// Property of I/O probability scaled to 0-100 range
-        /// </summary>
         public int IOProbabilityPercent
         {
-            get { return (int)Math.Round(ioProbability * 1000); }
-            set
-            {
-                if (value < 0 || value > 100)
-                {
-                    throw new ArgumentException("Parameter must be between 0 and 100", "I/O Probability");
-                }
-                ioProbability = (double)value / 100 / 10;
-            }
+            get { return (int)Math.Round(ioProbability * 100); }
         }
 
         /// <summary>

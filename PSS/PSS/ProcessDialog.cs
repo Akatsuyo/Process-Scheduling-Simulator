@@ -19,6 +19,7 @@ namespace PSS
             InitializeComponent();
             editing = edit;
             SwiftnessList.DataSource = Enum.GetValues(typeof(IO.Speed)).Cast<IO.Speed>();
+            SwiftnessList.SelectedIndex = 1;
             nameValue.Select();
         }
 
