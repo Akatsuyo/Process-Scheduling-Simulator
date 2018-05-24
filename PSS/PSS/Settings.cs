@@ -99,6 +99,8 @@ namespace PSS
         private void algList_SelectedIndexChanged(object sender, EventArgs e)
         {
             algorithm = (SchedulingAlgorithm)Activator.CreateInstance((Type)algList.SelectedItem);
+            //Show Description
+            descLabel.Text = algorithm.Desc();
             if (algorithm != null && algorithm.GetAlgorithmSettings() != null)
             {
                 AlgorithmSettings.ISetting[] settings = algorithm.GetAlgorithmSettings().Settings;

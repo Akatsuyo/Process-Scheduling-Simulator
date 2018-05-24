@@ -1,71 +1,61 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace PSS
 {
-    class HRRN : IAlgorithm
+    /// <summary>
+    /// Highest Response Ratio Next (HRRN) In this scheduling, processes with highest response ratio is scheduled
+    /// </summary>
+    public class HRRN : SchedulingAlgorithm
     {
-        LinkedList<PCB> processes;
-
+        /// <summary>
+        /// Constructor of the algorithm
+        /// </summary>
         public HRRN()
         {
+            desc = "In this scheduling, processes with highest response ratio is scheduled. This algorithm avoids starvation.";
         }
 
-        public List<PCB> Pool => throw new NotImplementedException();
-
-        public List<PCB> ReadyPCBs => throw new NotImplementedException();
-
-        public PCB RunningPCB => throw new NotImplementedException();
-
-        public bool ProcessAvailable => throw new NotImplementedException();
-
-        public bool Done => throw new NotImplementedException();
-
-        public int RemainingProcessCount => throw new NotImplementedException();
-
-        public void AddProcess(PCB process)
+        /// <summary>
+        /// Returns the algorithm settings of the algorithm
+        /// </summary>
+        /// <returns>Algorithm settings</returns>
+        public override AlgorithmSettings GetAlgorithmSettings()
         {
-            throw new NotImplementedException();
+            return null;
         }
 
-        public void Clear()
+        /// <summary>
+        /// This is where the algorithm works (does its job)
+        /// </summary>
+        public override void Work()
         {
-            throw new NotImplementedException();
-        }
+            if (!ready)
+                return;
 
-        public string GetProcessNameByID(int pID)
-        {
-            throw new NotImplementedException();
-        }
+            PCB shortest = null;
+            double maxRespRatio=0;
 
-        public PCB.ProcessState GetProcessStateByID(int pID)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Initialize(List<PCB> processes)
-        {
-            this.processes = new LinkedList<PCB>(processes);
-        }
-
-        public void Start()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Work()
-        {
-            throw new NotImplementedException();
-        }
-
-        private double ResponseRatio(PCB pcb)
-        {
-            int turnaround = 
-            int burst
-            return (double)turnaround / (double)burst;
+            foreach (var pcb in Pool)
+            {
+                //calculate Response Ratio
+                if (pcb.State != PCB.ProcessState.WAITING && pcb.State != PCB.ProcessState.DEAD && (pcb.Process.WaitTime+pcb.Process.RemainingTick) / pcb.Process.RemainingTick > maxRespRatio)
+                {
+                    //set shortest
+                    shortest = pcb;
+                    //set max burst time
+                    maxRespRatio = (pcb.Process.RemainingTick + pcb.Process.Progress)/ pcb.Process.RemainingTick;
+                }
+                
+            }
+            if (current != shortest)
+            {
+                current = shortest;
+            }
         }
     }
 }

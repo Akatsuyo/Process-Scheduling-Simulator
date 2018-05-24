@@ -18,6 +18,7 @@ namespace PSS
         /// </summary>
         public FIFO()
         {
+            desc = "FIFO is the simplest scheduling algorithm that schedules according to arrival times of processes.";
             rQueue = new Queue<PCB>();
         }
 

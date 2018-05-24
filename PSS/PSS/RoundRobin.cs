@@ -20,6 +20,7 @@ namespace PSS
         /// </summary>
         public RoundRobin()
         {
+            desc = "Round-Robin scheduler generally employs time-sharing, giving each job a time slot or quantum, and interrupting the job if it is not completed by then.";
             currentIndex = 0;
             qTicks = 10;
             tickCounter = 0;

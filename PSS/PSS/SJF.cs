@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -7,16 +8,16 @@ using System.Threading.Tasks;
 namespace PSS
 {
     /// <summary>
-    /// Shortest Remaining Time First (SRTF)
+    /// Highest Response Ratio Next (HRRN) In this scheduling, processes with highest response ratio is scheduled
     /// </summary>
-    public class SRTF : SchedulingAlgorithm
+    public class SJF : SchedulingAlgorithm
     {
         /// <summary>
         /// Constructor of the algorithm
         /// </summary>
-        public SRTF()
+        public SJF()
         {
-            desc = "It is preemptive mode of SJF algorithm in which jobs are schedule according to shortest remaining time.";
+            desc = "Process which have the shortest burst time are scheduled first.";
         }
 
         /// <summary>
@@ -36,9 +37,21 @@ namespace PSS
             if (!ready)
                 return;
 
-            PCB shortest = Pool.Where(x => x.State != PCB.ProcessState.DEAD && x.State != PCB.ProcessState.WAITING)
-                    .OrderBy(x => x.Process.Length - x.Process.Progress).FirstOrDefault();
+            PCB shortest = null;
+            double minLength = int.MaxValue;
 
+            foreach (var pcb in Pool)
+            {
+                //calculate Response Ratio
+                if (pcb.State != PCB.ProcessState.WAITING && pcb.State != PCB.ProcessState.DEAD && pcb.Process.Length < minLength)
+                {
+                    //set shortest
+                    shortest = pcb;
+                    //set min burst time
+                    minLength = pcb.Process.Length;
+                }
+                
+            }
             if (current != shortest)
             {
                 current = shortest;

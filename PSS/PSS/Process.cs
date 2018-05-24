@@ -63,6 +63,11 @@ namespace PSS
         private int cpuTime;
 
         /// <summary>
+        /// time passed since last on CPU
+        /// </summary>
+        private int waitTime;
+
+        /// <summary>
         /// Total time of IO blocking
         /// </summary>
         private int ioTime;
@@ -127,6 +132,7 @@ namespace PSS
             this.length = length;
 
             cpuTime = 0;
+            waitTime = 0;
             ioTime = 0;
             ioCount = 0;
 
@@ -175,6 +181,21 @@ namespace PSS
                 }
             }
         }
+        /// <summary>
+        /// This function increases actual wait time
+        /// </summary>
+        public void Wait()
+        {
+            waitTime++;
+        }
+
+        /// <summary>
+        /// This function resets actual wait time
+        /// </summary>
+        public void ResetWait()
+        {
+            waitTime = 0;
+        }
 
         /// <summary>
         /// This function starts an I/O operation.
@@ -222,6 +243,7 @@ namespace PSS
         {
             remainingTick = length;
             cpuTime = 0;
+            waitTime = 0;
             ioTime = 0;
             ioCount = 0;
             currentIO = null;
@@ -310,6 +332,22 @@ namespace PSS
         public int TotalTime
         {
             get { return cpuTime + ioTime; }
+        }
+
+        /// <summary>
+        /// Returns the current wait time of process
+        /// </summary>
+        public int WaitTime
+        {
+            get { return waitTime; }
+        }
+
+        /// <summary>
+        /// Returns the remainingTicks
+        /// </summary>
+        public int RemainingTick
+        {
+            get { return remainingTick; }
         }
 
         /// <summary>

@@ -14,6 +14,11 @@ namespace PSS
         private List<PCB> pool;
 
         /// <summary>
+        /// Scheduler Description
+        /// </summary>
+        protected String desc="No Description";
+
+        /// <summary>
         /// Currently running process
         /// </summary>
         protected PCB current;
@@ -62,6 +67,14 @@ namespace PSS
         }
 
         /// <summary>
+        /// Get Description
+        /// </summary>
+        public virtual String Desc()
+        {
+            return desc;
+        }
+
+        /// <summary>
         /// List of processes
         /// </summary>
         public List<PCB> Pool
@@ -88,7 +101,7 @@ namespace PSS
         /// <summary>
         /// Scheduler should swap processes
         /// </summary>
-        public bool SholdSwap
+        public bool ShouldSwap
         {
             get { return current != null; }
         }

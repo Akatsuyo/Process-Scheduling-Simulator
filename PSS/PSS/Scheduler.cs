@@ -114,7 +114,7 @@ namespace PSS
             logCounter++;
             EventLogger.AddEventRaw("");
             EventLogger.AddEvent("########## Turn: #" + logCounter + ", Worktime: " + worktime + ", Elapsed: " + elapsed + " ##########");
-            if (selectedAlgorithm.SholdSwap)
+            if (selectedAlgorithm.ShouldSwap)
             {
                 EventLogger.AddEvent("Current process: " + selectedAlgorithm.RunningProcess.ToString());
             }
@@ -261,7 +261,7 @@ namespace PSS
         {
             selectedAlgorithm.Work();
             
-            if (selectedAlgorithm.SholdSwap)
+            if (selectedAlgorithm.ShouldSwap)
             {
                 // Process changed
                 turn++;
@@ -269,12 +269,20 @@ namespace PSS
                 LogCurrentState();
                 cpu.UnsetProcess();
                 cpu.SetProcess(selectedAlgorithm.RunningProcess);
+
+                //Reset wait
+                selectedAlgorithm.RunningProcess.Process.ResetWait();
             }
-            
+
             //This must be before cpu.DoWork
             foreach (var pcb in selectedAlgorithm.Pool)
             {
                 pcb.IOWork();
+
+                if (pcb != selectedAlgorithm.RunningProcess)
+                {
+                    pcb.Process.Wait();
+                }
             }
 
             // Do cpu work
