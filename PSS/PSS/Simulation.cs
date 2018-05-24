@@ -8,6 +8,9 @@ using System.ComponentModel;
 
 namespace PSS
 {
+    /// <summary>
+    /// Simulation dialog (this is where the magic happens)
+    /// </summary>
     public partial class Simulation : Form
     {
         private Scheduler scheduler;
@@ -18,6 +21,11 @@ namespace PSS
 
         private Dictionary<int, ProcessSimulationRow> processes;
 
+        /// <summary>
+        /// Constructor of the simulation dialog
+        /// </summary>
+        /// <param name="sch">Scheduler class</param>
+        /// <param name="delay">Speed of the simulation</param>
         public Simulation(Scheduler sch, int delay)
         {
             scheduler = sch;
@@ -34,6 +42,7 @@ namespace PSS
 
         private void Simulation_Load(object sender, EventArgs e)
         {
+            this.Icon = PSS.Properties.Resources.ApplicationIcon;
             labelUtil.Text = "-";
             labelTurnaround.Text = "-";
             labelCurrTime.Text = "-";
@@ -178,12 +187,11 @@ namespace PSS
             // Update label async
             labelUtil.BeginInvoke((Action)(() =>
             {
-                labelUtil.Text = running ? (Math.Round((double)scheduler.Worktime * 100 / 
-                                                        scheduler.ElapsedTime).ToString() + "%") : "-";
+                labelUtil.Text = running ? (Math.Round(scheduler.UsefulCPUTime * 100).ToString() + "%") : "-";
             }));
             labelTurnaround.BeginInvoke((Action)(() =>
             {
-                labelTurnaround.Text = scheduler.Turnaround.ToString();
+                labelTurnaround.Text = scheduler.Turns.ToString();
             }));
             labelCurrTime.BeginInvoke((Action)(() =>
             {

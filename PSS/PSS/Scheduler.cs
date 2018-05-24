@@ -36,6 +36,7 @@ namespace PSS
         private int worktime;
         private int turn;
         private int elapsed;
+        private int wasted;
 
         private int logCounter;
 
@@ -60,8 +61,9 @@ namespace PSS
 
             worktime = 0;
             turn = 1;
-            elapsed = 0;
+            elapsed = 1;
             logCounter = 0;
+            wasted = 0;
 
             //Initialize EventLogger and set headers
             EventLogger.Initialize();
@@ -90,9 +92,10 @@ namespace PSS
             cpu.UnsetProcess();
 
             worktime = 0;
-            turn = 0;
-            elapsed = 0;
+            turn = 1;
+            elapsed = 1;
             logCounter = 0;
+            wasted = 0;
 
             //Initialize EventLogger and set headers
             EventLogger.Initialize();
@@ -111,7 +114,7 @@ namespace PSS
             logCounter++;
             EventLogger.AddEventRaw("");
             EventLogger.AddEvent("########## Turn: #" + logCounter + ", Worktime: " + worktime + ", Elapsed: " + elapsed + " ##########");
-            if (selectedAlgorithm.ProcessAvailable)
+            if (selectedAlgorithm.SholdSwap)
             {
                 EventLogger.AddEvent("Current process: " + selectedAlgorithm.RunningProcess.ToString());
             }
@@ -197,22 +200,47 @@ namespace PSS
             }
         }
 
+        /// <summary>
+        /// Total CPU work time
+        /// </summary>
         public int Worktime
         {
             get { return worktime; }
-            set { worktime = value; }
         }
 
-        public int Turnaround
+        /// <summary>
+        /// The number of total Process switching
+        /// </summary>
+        public int Turns
         {
             get { return turn; }
-            set { turn = value; }
         }
 
+        /// <summary>
+        /// Elapsed time from the start of the simulation
+        /// </summary>
         public int ElapsedTime
         {
             get { return elapsed; }
-            set { elapsed = value; }
+        }
+
+        /// <summary>
+        /// Wasted time (CPU is not running, waits for I/O)
+        /// </summary>
+        public int WastedTime
+        {
+            get { return wasted;  }
+        }
+
+        /// <summary>
+        /// Useful CPU time (when the process is doing something)
+        /// </summary>
+        public double UsefulCPUTime
+        {
+            get
+            {
+                return ((double)worktime / (double)elapsed);
+            }
         }
 
         /// <summary>
@@ -233,24 +261,17 @@ namespace PSS
         {
             selectedAlgorithm.Work();
             
-            int lastOnCPU = cpu.ProcessID;
-            if (selectedAlgorithm.ProcessAvailable)
-            {
-                cpu.SetProcess(selectedAlgorithm.RunningProcess);
-            }
-            else
-            {
-                cpu.UnsetProcess();
-            }
-
-            if (lastOnCPU != cpu.ProcessID)
+            if (selectedAlgorithm.SholdSwap)
             {
                 // Process changed
                 turn++;
+                elapsed++;
                 LogCurrentState();
+                cpu.UnsetProcess();
+                cpu.SetProcess(selectedAlgorithm.RunningProcess);
             }
             
-            //This must be befor cpu.DoWork
+            //This must be before cpu.DoWork
             foreach (var pcb in selectedAlgorithm.Pool)
             {
                 pcb.IOWork();
@@ -258,7 +279,13 @@ namespace PSS
 
             // Do cpu work
             if (cpu.DoWork())
+            {
                 worktime++;
+            }
+            else
+            {
+                wasted++;
+            }
 
             elapsed++;
 

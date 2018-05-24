@@ -13,16 +13,26 @@ namespace PSS
     {
         /// <summary>
         /// This simulation has three type of I/O Speed
-        ///     FAST - Possibly RAM
-        ///     MEDIUM - Possibly HDD, SSD
-        ///     SLOW - Possibly Keyboard, Mouse, TCP connection, etc.
         /// </summary>
-        public enum Speed { FAST, MEDIUM, SLOW };
+        public enum Speed {
+            /// <summary>
+            /// Possibly RAM
+            /// </summary>
+            FAST,
+            /// <summary>
+            /// Possibly HDD, SSD
+            /// </summary>
+            MEDIUM,
+            /// <summary>
+            /// Possibly Keyboard, Mouse, TCP connection, etc.
+            /// </summary>
+            SLOW
+        };
 
         /// <summary>
-        /// Current speed of I/O 'device
+        /// Current speed of I/O device
         /// </summary>
-        private Speed type;
+        private readonly Speed type;
 
         /// <summary>
         /// Length of the I/O request

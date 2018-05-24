@@ -14,7 +14,28 @@ namespace PSS
         /// <summary>
         /// Possible states of a process
         /// </summary>
-        public enum ProcessState { NEW, READY, RUNNING, WAITING, DEAD };
+        public enum ProcessState {
+            /// <summary>
+            /// The process is new
+            /// </summary>
+            NEW,
+            /// <summary>
+            /// The process is waiting for its turn
+            /// </summary>
+            READY,
+            /// <summary>
+            /// The rpocess is on the CPU
+            /// </summary>
+            RUNNING,
+            /// <summary>
+            /// The process is waiting for I/O
+            /// </summary>
+            WAITING,
+            /// <summary>
+            /// THe process is completed
+            /// </summary>
+            DEAD
+        };
 
         /// <summary>
         /// The current process
@@ -56,10 +77,14 @@ namespace PSS
             set { currentProcess = value; }
         }
 
-        public void Work()
+        /// <summary>
+        /// Make something happen (simulates the process running)
+        /// </summary>
+        /// <returns>Process work was userful (not blocked/dead)</returns>
+        public bool Work()
         {
-            currentProcess.Do();
             processState = ProcessState.RUNNING;
+            return currentProcess.Do();
         }
 
         /// <summary>
@@ -77,7 +102,7 @@ namespace PSS
         public void IOWork()
         {
             currentProcess.WaitForIO();
-            if (!currentProcess.IsBlocked)
+            if (!currentProcess.Blocked)
             {
                 processState = ProcessState.READY;
             }
@@ -89,7 +114,7 @@ namespace PSS
         public ProcessState State {
             get
             {
-                if (currentProcess.IsBlocked)
+                if (currentProcess.Blocked)
                 {
                     return ProcessState.WAITING;
                 }
@@ -104,6 +129,10 @@ namespace PSS
             }
         }
 
+        /// <summary>
+        /// Returns the string representation of the class
+        /// </summary>
+        /// <returns>Parsed string</returns>
         public override string ToString()
         {
             string ret = "";

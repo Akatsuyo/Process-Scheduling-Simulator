@@ -14,10 +14,12 @@ namespace PSS.Tests
         [TestMethod()]
         public void SchedulerTest()
         {
-            List<Process> processes = new List<Process>();
-            processes.Add(new Process("pr1", 0.2, IO.Speed.FAST, 500));
-            processes.Add(new Process("pr2", 0.2, IO.Speed.FAST, 500));
-            processes.Add(new Process("pr3", 0.2, IO.Speed.FAST, 500));
+            List<Process> processes = new List<Process>
+            {
+                new Process("pr1", 0.2, IO.Speed.FAST, 500),
+                new Process("pr2", 0.2, IO.Speed.FAST, 500),
+                new Process("pr3", 0.2, IO.Speed.FAST, 500)
+            };
             Scheduler scheduler = new Scheduler(processes, new FIFO());
             //process time and io time
             int maxCounter = 500 * 300 * 3;
@@ -34,12 +36,14 @@ namespace PSS.Tests
         }
 
         [TestMethod()]
-        public void SchedulerAccuracyTest()
+        public void SchedulerWorkTimeAccuracyTest()
         {
-            List<Process> processes = new List<Process>();
-            processes.Add(new Process("pr1", 0.2, IO.Speed.FAST, 500));
-            processes.Add(new Process("pr2", 0.2, IO.Speed.FAST, 500));
-            processes.Add(new Process("pr3", 0.2, IO.Speed.FAST, 500));
+            List<Process> processes = new List<Process>
+            {
+                new Process("pr1", 0.2, IO.Speed.FAST, 500),
+                new Process("pr2", 0.2, IO.Speed.FAST, 500),
+                new Process("pr3", 0.2, IO.Speed.FAST, 500)
+            };
             Scheduler scheduler = new Scheduler(processes, new FIFO());
             //process time and io time
             int counter = 0;
@@ -53,10 +57,37 @@ namespace PSS.Tests
 
             foreach (var process in scheduler.ProcessList)
             {
-                theoreticalCounter += process.Process.TotalTime;
+                theoreticalCounter += process.Process.CPUTime;
             }
 
             Assert.IsTrue(theoreticalCounter == scheduler.Worktime, "Scheduler work time is inaccurate");
+        }
+
+        [TestMethod()]
+        public void SchedulerTotalTimeAccuracyTest()
+        {
+            List<Process> processes = new List<Process>
+            {
+                new Process("pr1", 0.2, IO.Speed.FAST, 500),
+                new Process("pr2", 0.2, IO.Speed.FAST, 500),
+                new Process("pr3", 0.2, IO.Speed.FAST, 500)
+            };
+            Scheduler scheduler = new Scheduler(processes, new FIFO());
+            //process time and io time
+            int counter = 0;
+            while (!scheduler.Step())
+            {
+                Assert.IsTrue(counter < 100000000, "Possible infinite loop");
+                counter++;
+            }
+
+            int theoreticalCounter = 0;
+
+            foreach (var process in scheduler.ProcessList)
+            {
+                theoreticalCounter += process.Process.CPUTime;
+            }
+            Assert.IsTrue(theoreticalCounter + scheduler.Turns + scheduler.WastedTime == scheduler.ElapsedTime, "Scheduler total time is inaccurate");
         }
     }
 }

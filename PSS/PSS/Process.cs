@@ -11,7 +11,23 @@ namespace PSS
     /// </summary>
     public class Process
     {
-        public enum State { RUNNING, BLOCKED, ENDED };
+        /// <summary>
+        /// State of a process
+        /// </summary>
+        public enum State {
+            /// <summary>
+            /// Process is running (alive and not blocked)
+            /// </summary>
+            RUNNING,
+            /// <summary>
+            /// Process is blocked (by I/O)
+            /// </summary>
+            BLOCKED,
+            /// <summary>
+            /// Process is ended
+            /// </summary>
+            ENDED
+        };
 
         /// <summary>
         /// Name of the process
@@ -47,11 +63,6 @@ namespace PSS
         private int cpuTime;
 
         /// <summary>
-        /// Useful time on CPU (not blocked and not done)
-        /// </summary>
-        private int usefulCPUTime;
-
-        /// <summary>
         /// Total time of IO blocking
         /// </summary>
         private int ioTime;
@@ -64,10 +75,10 @@ namespace PSS
         /// <summary>
         /// Process constructor
         /// </summary>
-        /// <param name="id">ID of process</param>
-        /// <param name="name">Name of the rpocess</param>
+        /// <param name="name">Name of the process</param>
         /// <param name="ioProbability">I/O Probability of the process</param>
-        /// <param name="length">Length of the process</param>
+        /// <param name="ioSwiftness">I/O Swiftness of the process</param>
+        /// <param name="length">Process length</param>
         public Process(string name, double ioProbability, IO.Speed ioSwiftness, int length)
         {
             InitializeProcess(name, ioProbability, ioSwiftness, length);
@@ -76,10 +87,10 @@ namespace PSS
         /// <summary>
         /// Process constructor
         /// </summary>
-        /// <param name="id">ID of process</param>
-        /// <param name="name">Name of the rpocess</param>
+        /// <param name="name">Name of the process</param>
         /// <param name="ioProbability">I/O Probability of the process (in percent)</param>
-        /// <param name="length">Length of the process</param>
+        /// <param name="ioSwiftness">I/O Swiftness of the process</param>
+        /// <param name="length">Process length</param>
         public Process(string name, int ioProbability, IO.Speed ioSwiftness, int length)
         {
             if (ioProbability < 0 || ioProbability > 100)
@@ -92,9 +103,9 @@ namespace PSS
         /// <summary>
         /// Initializes the process (necessary for constructor overload)
         /// </summary>
-        /// <param name="id">ID of process</param>
         /// <param name="name">Name of the rpocess</param>
         /// <param name="ioProbability">I/O Probability of the process</param>
+        /// <param name="ioSwiftness">I/O Swiftness of the process</param>
         /// <param name="length">Length of the process</param>
         private void InitializeProcess(string name, double ioProbability, IO.Speed ioSwiftness, int length)
         {
@@ -116,7 +127,6 @@ namespace PSS
             this.length = length;
 
             cpuTime = 0;
-            usefulCPUTime = 0;
             ioTime = 0;
             ioCount = 0;
 
@@ -127,20 +137,22 @@ namespace PSS
         /// This function equals as 'do something'
         /// We only simulate the process so there is isn't any real work, only a counter
         /// </summary>
-        public void Do()
+        /// <returns>Process running was useful (not blocked or dead)</returns>
+        public bool Do()
         {
-            cpuTime++;
             //If there is no I/O request running and not done
-            if (!IsBlocked && remainingTick > 0)
+            if (currentIO == null && remainingTick > 0)
             {
-                usefulCPUTime++;
+                cpuTime++;
 
                 // Don't add IO if process gets finished
                 if (--remainingTick > 0)
                 {
                     AddIO();
                 }
+                return true;
             }
+            return false;
         }
 
         /// <summary>
@@ -170,7 +182,7 @@ namespace PSS
         private void AddIO()
         {
             //There is no I/O operation
-            if (!IsBlocked)
+            if (currentIO == null)
             {
                 //Process has a chance to get I/O operation
                 Random random = new Random();
@@ -210,7 +222,6 @@ namespace PSS
         {
             remainingTick = length;
             cpuTime = 0;
-            usefulCPUTime = 0;
             ioTime = 0;
             ioCount = 0;
             currentIO = null;
@@ -220,7 +231,7 @@ namespace PSS
         /// Returns the blocked state of the process
         /// </summary>
         /// <returns>Process is blocked by an I/O operation</returns>
-        public bool IsBlocked => (currentIO != null);
+        public bool Blocked => (currentIO != null);
 
         /// <summary>
         /// Returns true if the process is done
@@ -260,6 +271,9 @@ namespace PSS
             }
         }
 
+        /// <summary>
+        /// Property of I/O Probability (by percent)
+        /// </summary>
         public int IOProbabilityPercent
         {
             get { return (int)Math.Round(ioProbability * 100); }
@@ -358,6 +372,10 @@ namespace PSS
             get { return currentIO; }
         }
 
+        /// <summary>
+        /// Returns the string representation of the class
+        /// </summary>
+        /// <returns>Parsed string</returns>
         public override string ToString()
         {
             string ret = "";

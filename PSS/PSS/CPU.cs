@@ -60,18 +60,13 @@ namespace PSS
         {
             if (currentProcess != null)
             {
-                working = true;
-                currentProcess.Work();
+                working = currentProcess.Work();
                 if (currentProcess.State == PCB.ProcessState.DEAD)
                 {
-                    UnsetProcess();
-                }
-                else if (currentProcess.Process.IsBlocked)
-                {
-                    working = false;
+                    currentProcess = null;
                 }
 
-                return true;
+                return working;
             }
 
             return false;

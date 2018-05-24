@@ -6,9 +6,24 @@ using System.Threading.Tasks;
 
 namespace PSS
 {
-    class SRTF : SchedulingAlgorithm
+    /// <summary>
+    /// Shortest Remaining Time First (SRTF)
+    /// </summary>
+    public class SRTF : SchedulingAlgorithm
     {
-  
+
+        /// <summary>
+        /// Returns the algorithm settings of the algorithm
+        /// </summary>
+        /// <returns>Algorithm settings</returns>
+        public override AlgorithmSettings GetAlgorithmSettings()
+        {
+            return null;
+        }
+
+        /// <summary>
+        /// This is where the algorithm works (does its job)
+        /// </summary>
         public override void Work()
         {
             if (!ready)

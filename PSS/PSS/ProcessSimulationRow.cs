@@ -10,8 +10,15 @@ using System.Windows.Forms;
 
 namespace PSS
 {
+    /// <summary>
+    /// A row of the simulationdialog (a process)
+    /// </summary>
     public partial class ProcessSimulationRow : UserControl
     {
+        /// <summary>
+        /// Constructor of the Control
+        /// </summary>
+        /// <param name="pcb"></param>
         public ProcessSimulationRow(PCB pcb)
         {
             InitializeComponent();
@@ -22,11 +29,10 @@ namespace PSS
         }
 
         /// <summary>
-        /// Changes layout by parameters
+        /// Changes layout by a specified process
         /// </summary>
-        /// <param name="state">Current state</param>
-        /// <param name="progress">Current progress</param>
-        /// <param name="ioProgress">Current I/O progress</param>
+        /// <param name="pcb">Process which the layout should be based on</param>
+
         public void UpdateData(PCB pcb)
         {
             labelState.Text = pcb.State.ToString();

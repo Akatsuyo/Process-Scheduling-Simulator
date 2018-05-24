@@ -10,7 +10,7 @@ namespace PSS
     /// <summary>
     /// Provides a logging mechanism for the solution.
     /// </summary>
-    class EventLogger
+    public class EventLogger
     {
         /// <summary>
         /// List of the entries (rows)

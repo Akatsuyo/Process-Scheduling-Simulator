@@ -12,14 +12,29 @@ namespace PSS
     public abstract class SchedulingAlgorithm
     {
         private List<PCB> pool;
+
+        /// <summary>
+        /// Currently running process
+        /// </summary>
         protected PCB current;
+
+        /// <summary>
+        /// Is scheduler ready 
+        /// </summary>
         protected bool ready;
 
+        /// <summary>
+        /// Constructor of the scheduling algorithm
+        /// </summary>
         public SchedulingAlgorithm()
         {
             ready = false;
         }
 
+        /// <summary>
+        /// Populates the algorithm with processes
+        /// </summary>
+        /// <param name="pool"></param>
         public void Initialize(List<PCB> pool)
         {
             // Copy list instead referencing it
@@ -27,11 +42,18 @@ namespace PSS
             ready = true;
         }
 
+        /// <summary>
+        /// Adds new processes (even at runtime)
+        /// </summary>
+        /// <param name="pcb"></param>
         public void AddNewProcess(PCB pcb)
         {
             pool.Add(pcb);
         }
 
+        /// <summary>
+        /// Clears the algorithm, resets it to defaults
+        /// </summary>
         public virtual void Reset()
         {
             pool.Clear();
@@ -39,26 +61,47 @@ namespace PSS
             ready = false;
         }
 
+        /// <summary>
+        /// List of processes
+        /// </summary>
         public List<PCB> Pool
         {
             get { return pool; }
         }
 
+        /// <summary>
+        /// Currently running process
+        /// </summary>
         public PCB RunningProcess
         {
             get { return current; }
         }
 
+        /// <summary>
+        /// Is algorithm done
+        /// </summary>
         public bool Done
         {
             get { return Pool.Count(x => x.State != PCB.ProcessState.DEAD) == 0; }
         }
 
-        public bool ProcessAvailable
+        /// <summary>
+        /// Scheduler should swap processes
+        /// </summary>
+        public bool SholdSwap
         {
             get { return current != null; }
         }
 
+        /// <summary>
+        /// This is where the algorithm works (does its job)
+        /// </summary>
         public abstract void Work();
+
+        /// <summary>
+        /// Returns the algorithm settings of the algorithm
+        /// </summary>
+        /// <returns>Algorithm settings</returns>
+        public abstract AlgorithmSettings GetAlgorithmSettings();
     }
 }

@@ -13,11 +13,26 @@ namespace PSS
     {
         Queue<PCB> rQueue;
 
+        /// <summary>
+        /// Constructor of the algorithm
+        /// </summary>
         public FIFO()
         {
             rQueue = new Queue<PCB>();
         }
 
+        /// <summary>
+        /// Returns the algorithm settings of the algorithm
+        /// </summary>
+        /// <returns>Algorithm settings</returns>
+        public override AlgorithmSettings GetAlgorithmSettings()
+        {
+            return null;
+        }
+
+        /// <summary>
+        /// This is where the algorithm works (does its job)
+        /// </summary>
         public override void Work()
         {
             if (!ready)
@@ -49,6 +64,9 @@ namespace PSS
             }
         }
 
+        /// <summary>
+        /// Clears the algorithm, resets it to defaults
+        /// </summary>
         public override void Reset()
         {
             base.Reset();

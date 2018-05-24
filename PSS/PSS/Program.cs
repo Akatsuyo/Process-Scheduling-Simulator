@@ -6,7 +6,10 @@ using System.Windows.Forms;
 
 namespace PSS
 {
-    static class Program
+    /// <summary>
+    /// 42 - The Almighty Answer to the Meaning of Life, the Universe, and Everything.
+    /// </summary>
+    public static class Program
     {
         /// <summary>
         /// The main entry point for the application.
