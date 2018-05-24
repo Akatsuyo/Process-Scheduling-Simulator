@@ -17,7 +17,7 @@ namespace PSS
 
         private int delay;
 
-        private bool running, formClosed;
+        private bool running, formClosed, needsReset;
 
         private Dictionary<int, ProcessSimulationRow> processes;
 
@@ -34,6 +34,7 @@ namespace PSS
 
             running = false;
             formClosed = false;
+            needsReset = true;
 
             processes = new Dictionary<int, ProcessSimulationRow>();
 
@@ -92,6 +93,12 @@ namespace PSS
                 buttonStartSim.Text = "Pause";
                 buttonStopSim.Enabled = true;
 
+                if (needsReset)
+                {
+                    scheduler.Reset();
+                    needsReset = false;
+                }
+
                 running = true;
                 await Simulate();
             }
@@ -99,7 +106,7 @@ namespace PSS
 
         private void buttonStopSim_Click(object sender, EventArgs e)
         {
-            StopSimulation();
+            StopSimulation(true);
         }
 
         private void buttonAddProcess_Click(object sender, EventArgs e)
@@ -124,7 +131,7 @@ namespace PSS
             {
                 // Stop simulation when done
                 if (scheduler.Step())
-                    StopSimulation();
+                    StopSimulation(false);
 
                 if (!formClosed)
                     UpdateUI();
@@ -134,13 +141,22 @@ namespace PSS
             }
         }
 
-        private void StopSimulation()
+        private void StopSimulation(bool reset)
         {
             buttonStopSim.Enabled = false;
             buttonStartSim.Text = "Start";
 
             running = false;
-            scheduler.Reset();
+
+            if (reset)
+            {
+                scheduler.Reset();
+            }
+            else
+            {
+                needsReset = true;
+            }
+
             UpdateUI();
         }
 
