@@ -205,10 +205,16 @@ namespace PSS
             //There is no I/O operation
             if (currentIO == null)
             {
-                //Process has a chance to get I/O operation
+                //Process has a chance to get I/O operation (normal distribution, 5% deviation, Box-Muller transform)
                 Random random = new Random();
 
-                if (random.NextDouble() <= ioProbability)
+                double u1 = 1.0 - random.NextDouble();
+                double u2 = 1.0 - random.NextDouble();
+                double randStdNormal = Math.Sqrt(-2.0 * Math.Log(u1)) * Math.Sin(2.0 * Math.PI * u2);
+
+                double randNormal =ioProbability + 0.05 * randStdNormal;
+                double rand = random.NextDouble();
+                if (rand <= randNormal)
                 {
                     //Our process wants I/O operation
 
